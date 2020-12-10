@@ -1,0 +1,11 @@
+.table-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+.row div {
+    width: 25%;
+}
