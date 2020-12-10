@@ -1,4 +1,4 @@
-export default class CovidData {
+class CovidData {
   constructor() {
     this.summary = {};
     this.countries = {};
@@ -25,3 +25,10 @@ export default class CovidData {
     return this;
   }
 }
+
+const DATA = new CovidData();
+
+DATA.getCountries();
+DATA.getSummary();
+
+export default DATA;

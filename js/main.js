@@ -1,7 +1,3 @@
-import CovidData from './CovidData.js';
-
-const DATA = new CovidData();
-DATA.getCountries();
-DATA.getSummary();
+import DATA from './CovidData.js';
 
 console.log(DATA);
