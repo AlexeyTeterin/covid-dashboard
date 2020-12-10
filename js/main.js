@@ -1,7 +1,8 @@
-import CovidData from './CovidData.js';
+import { getSummary } from './CovidData.js';
+import { getCountries } from './CovidData.js';
 
-const DATA = new CovidData();
-DATA.getCountries();
-DATA.getSummary();
+getSummary()
+  .then((res) => console.log(res.Global.TotalConfirmed));
 
-console.log(DATA);
+getCountries()
+  .then((res) => console.log(res));
