@@ -3,6 +3,7 @@ import { getCountries } from './CovidData.js';
 
 getSummary().then((data) => {
   data.Countries.forEach((country) => {
+    console.log('country :>> ', country);
     const row = document.createElement('div');
     row.classList.add('list__row');
     const name = document.createElement('div');
@@ -10,6 +11,7 @@ getSummary().then((data) => {
     name.textContent = country.Country;
     indicator.textContent = country.TotalConfirmed;
     row.dataset.indicator = country.TotalConfirmed;
+    Object.assign(row.dataset, country);
 
     row.append(name, indicator);
     document.querySelector('.list').append(row);
