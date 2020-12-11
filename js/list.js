@@ -49,6 +49,7 @@ const loadRows = (data, option) => {
 };
 
 const sortRows = (option) => {
+  const activeElement = document.querySelector('.list__row_active');
   const rows = document.querySelectorAll('.list__row');
   const rowsSorted = Array.from(rows).sort((a, b) => {
     const firtNum = parseFloat(a.dataset[option], 10);
@@ -62,6 +63,7 @@ const sortRows = (option) => {
     const value = row.querySelector('#value');
     value.textContent = row.dataset[option];
   });
+  if (activeElement) activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
 
 const splitWords = (string) => {
