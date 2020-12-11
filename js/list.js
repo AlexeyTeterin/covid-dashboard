@@ -1,7 +1,11 @@
 import { getSummary } from './CovidData.js';
 import { getCountries } from './CovidData.js';
 
-const createOptions = (data) => Object.keys(data.Global);
+const createOptions = (data) => {
+  const options = Object.keys(data.Global);
+  options.forEach((opt) => options.push(`${opt}Per100k`));
+  return options;
+};
 
 const calcValuesPer100k = (data, country) => {
   const result = {};
@@ -17,10 +21,16 @@ const calcValuesPer100k = (data, country) => {
 const loadRows = (data, option) => {
   data.Countries.forEach((country) => {
     const row = document.createElement('div');
-    row.classList.add('list__row');
     const name = document.createElement('div');
     const value = document.createElement('div');
+
+    row.classList.add('list__row');
+    row.id = country.CountryCode;
+
     name.textContent = country.Country;
+    name.style.setProperty('background-image', `url(https://www.countryflags.io/${row.id}/shiny/16.png)`);
+
+    value.id = 'value';
     value.textContent = country[option];
 
     Object.assign(row.dataset, country, calcValuesPer100k(data, country));
@@ -41,12 +51,12 @@ const sortRows = (option) => {
   });
   rows.forEach((row) => {
     row.style.setProperty('order', rowsSorted.indexOf(row));
-    const value = row.children[1];
+    const value = row.querySelector('#value');
     value.textContent = row.dataset[option];
   });
 };
 
-const indicator = document.querySelector('.list__indicator');
+const indicator = document.querySelector('#list__indicator');
 
 const splitWords = (string) => {
   let result = string;
@@ -59,22 +69,25 @@ const splitWords = (string) => {
   return result;
 };
 
+const createSelector = (options) => {
+  options.forEach((option) => {
+    const selectorOption = document.createElement('option');
+    selectorOption.value = option;
+    selectorOption.textContent = splitWords(option);
+
+    indicator.appendChild(selectorOption);
+    if (option === 'TotalConfirmed') selectorOption.setAttribute('selected', true);
+  });
+  return options;
+};
+
 getSummary()
   .then((data) => {
     const options = createOptions(data);
-    options.forEach((opt) => options.push(`${opt}Per100k`));
-    options.forEach((option) => {
-      const selectOption = document.createElement('option');
-      selectOption.value = option;
-      selectOption.textContent = splitWords(option);
-
-      indicator.appendChild(selectOption);
-      if (option === 'TotalConfirmed') selectOption.setAttribute('selected', true);
-    });
-
-    indicator.addEventListener('change', () => sortRows(indicator.value));
-
+    createSelector(options);
     loadRows(data, 'TotalConfirmed');
     sortRows('TotalConfirmed');
+
+    indicator.addEventListener('change', () => sortRows(indicator.value));
   })
-  .catch((e) => console.log(e));
+  .catch((e) => new Error(e));
