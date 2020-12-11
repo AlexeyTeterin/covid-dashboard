@@ -1,8 +1,13 @@
 import { getSummary } from './CovidData.js';
+import Keyboard from './keyboard.js';
 
 const searchInput = document.querySelector('#list__search');
 const indicator = document.querySelector('#list__indicator');
 const list = document.querySelector('.list');
+const keyboardButton = document.querySelector('.keyboard-button');
+
+const keyboard = new Keyboard();
+keyboard.init();
 
 const createOptions = (data) => {
   const options = Object.keys(data.Global);
@@ -114,6 +119,7 @@ getSummary()
 
     list.addEventListener('click', (event) => listClickHandler(event));
     searchInput.addEventListener('input', () => listSearchHandler());
+    keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
     indicator.addEventListener('change', () => sortRows(indicator.value));
   })
   .catch((e) => new Error(e));

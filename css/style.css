@@ -6,6 +6,11 @@ body {
   justify-content: center;
 }
 
+body .hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
 body .list {
   margin-top: 4rem;
   position: relative;
@@ -25,7 +30,30 @@ body .list .list__header {
   height: 1.25rem;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   order: -1;
+}
+
+body .list .list__header .keyboard-button {
+  width: 1.25rem;
+  height: 1.25rem;
+  background-image: url(../assets/img/keyboard-button.svg);
+  background-repeat: no-repeat;
+  background-color: inherit;
+  background-size: contain;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: transform 0.075s, opacity 0.075s;
+}
+
+body .list .list__header .keyboard-button:hover {
+  transform: scale(1.2);
+}
+
+body .list .list__header .keyboard-button:active {
+  opacity: 0.5;
+  transform: scale(1.1);
 }
 
 body .list .list__header .list__search,
