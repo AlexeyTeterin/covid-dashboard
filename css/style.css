@@ -1,0 +1,12 @@
+.table-wrapper {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+}
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+.row div {
+    width: 25%;
+}
