@@ -1,4 +1,7 @@
-import { getSummary } from './CovidData.js';
+import { getSummary, getCountries } from './CovidData.js';
 
 getSummary()
-  .then((res) => console.log(res));
+  .then((res) => console.log(res.Global));
+
+// getCountries()
+//   .then((res) => console.log(res));
