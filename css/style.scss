@@ -1,1 +1,88 @@
-body {}
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+
+  .wrapper {}
+
+  .hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .list {
+    margin-top: 4rem;
+    position: relative;
+    padding: 0;
+    background-color: rgba($color: #000000, $alpha: 0.1);
+    width: 400px;
+    height: 300px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+
+    .list__header {
+      position: sticky;
+      top: 0;
+      background-color: lightgrey;
+      height: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      order: -1;
+
+      .keyboard-button {
+        width: 1.25rem;
+        height: 1.25rem;
+        background-image: url(../assets/img/keyboard-button.svg);
+        background-repeat: no-repeat;
+        background-color: inherit;
+        background-size: contain;
+        border: none;
+        outline: none;
+				cursor: pointer;
+				transition: transform 0.075s, opacity 0.075s;
+
+        &:hover {
+          transform: scale(1.2);
+        }
+
+        &:active {
+          opacity: 0.5;
+          transform: scale(1.1);
+        }
+      }
+
+      .list__search,
+      .list__indicator {
+        outline: none;
+      }
+    }
+
+    .list__row {
+      display: flex;
+      justify-content: space-between;
+      cursor: default;
+
+      >div:first-child {
+        padding: 0 0 0 24px;
+        background-position: 0;
+        background-size: 1rem;
+        background-repeat: no-repeat;
+        width: 100%;
+      }
+
+      &:hover {
+        background-color: rgba($color: #000000, $alpha: 0.1);
+      }
+    }
+
+    .list__row_active {
+      font-weight: bold;
+      background-color: rgba($color: #000000, $alpha: 0.5);
+      color: white;
+    }
+  }
+}

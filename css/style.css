@@ -1,3 +1,89 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+body .hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+body .list {
+  margin-top: 4rem;
+  position: relative;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 400px;
+  height: 300px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+body .list .list__header {
+  position: sticky;
+  top: 0;
+  background-color: lightgrey;
+  height: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  order: -1;
+}
+
+body .list .list__header .keyboard-button {
+  width: 1.25rem;
+  height: 1.25rem;
+  background-image: url(../assets/img/keyboard-button.svg);
+  background-repeat: no-repeat;
+  background-color: inherit;
+  background-size: contain;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: transform 0.075s, opacity 0.075s;
+}
+
+body .list .list__header .keyboard-button:hover {
+  transform: scale(1.2);
+}
+
+body .list .list__header .keyboard-button:active {
+  opacity: 0.5;
+  transform: scale(1.1);
+}
+
+body .list .list__header .list__search,
+body .list .list__header .list__indicator {
+  outline: none;
+}
+
+body .list .list__row {
+  display: flex;
+  justify-content: space-between;
+  cursor: default;
+}
+
+body .list .list__row > div:first-child {
+  padding: 0 0 0 24px;
+  background-position: 0;
+  background-size: 1rem;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
+body .list .list__row:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+body .list .list__row_active {
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+
 .table-wrapper {
     display: flex;
     flex-direction: column;
@@ -9,4 +95,5 @@
 }
 .row div {
     width: 25%;
+
 }
