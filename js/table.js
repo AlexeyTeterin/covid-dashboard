@@ -1,10 +1,9 @@
-import { getSummary, getCountries } from './CovidData.js';
+import { getSummary, getCountries, getWorldStatsByDay } from './CovidData.js';
 
 const divDeaths = document.querySelector('.table-deaths');
 const divRecovered = document.querySelector('.table-recovered');
 const divCases = document.querySelector('.table-cases');
 const buttonCount = document.querySelector('.row-title-count');
-const buttonArea = document.querySelector('.row-title-area');
 const buttonAbs = document.querySelector('.row-title-abs');
 
 getSummary()
@@ -14,8 +13,8 @@ getSummary()
 
     const worldPopulation = 7827000000000; // get smwhr or const?
     // default settings
-    let population = worldPopulation;
-    let source = res.Global;
+    const population = worldPopulation;
+    const source = res.Global;
     const stat = { world: true, total: true, absolute: true };
     let con = source.TotalConfirmed;
     let deat = source.TotalDeaths;
@@ -52,7 +51,7 @@ getSummary()
       setStat();
     });
 
-    buttonArea.addEventListener('click', () => {
+    /* buttonArea.addEventListener('click', () => {
       stat.world = !stat.world;
       if (stat.world) {
         buttonArea.innerText = 'word';
@@ -65,6 +64,6 @@ getSummary()
         population = res.Countries[`${countryNumber}`].Premium.CountryStats.Population;
       }
       setStat();
-    });
+    }); */
     setStat();
   });
