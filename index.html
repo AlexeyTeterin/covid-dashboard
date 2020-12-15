@@ -6,17 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./css/style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js" integrity="sha512-hZf9Qhp3rlDJBvAKvmiG+goaaKRZA6LKUO35oK6EsM0/kjPK32Yw7URqrq3Q+Nvbbt8Usss+IekL7CRn83dYmw==" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./css/keyboard.css">
   <title>Covid-19 Dashboard</title>
 </head>
 
 <body>
 
-  <canvas class="graph" id="graph">
+  <div class="list wrapper">
+    <div class="list__header">
+      <input type="text" id="list__search" placeholder="Search..." class="list__search">
+      <button class="keyboard-button"></button>
+      <select class="list__indicator" id="list__indicator"></select>
+    </div>
+  </div>
 
+  <canvas class="graph" id="graph">
   </canvas>
 
   <script src="./js/main.js" type="module"></script>
-  <script src="./js/graph.js" type="module"></script>
+  <script src="./js/list.js" type="module"></script>
+
 </body>
 
 </html>
