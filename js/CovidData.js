@@ -16,3 +16,9 @@ export async function getWorldStatsByDay() {
   const data = await response.json();
   return data;
 }
+
+export async function getCountryStatsByDay(countryCode) {
+  const response = await fetch(`https://disease.sh/v3/covid-19/historical/${countryCode}?lastdays=all`);
+  const data = await response.json();
+  return data;
+}

@@ -14,7 +14,6 @@ body .hidden {
 }
 
 body .list {
-  margin-top: 4rem;
   position: relative;
   padding: 0;
   background-color: rgba(0, 0, 0, 0.1);
@@ -85,4 +84,10 @@ body .list .list__row_active {
   font-weight: bold;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
+}
+
+body .graph {
+  position: relative;
+  height: 400px;
+  width: 800px;
 }
