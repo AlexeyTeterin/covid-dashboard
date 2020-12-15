@@ -10,6 +10,11 @@ const newCasesByDay = (totalCasesByDay) => {
   });
 };
 
+const casesPer100k = (totalCasesByDay) => {
+  const cases = Object.values(totalCasesByDay);
+  return cases.map((el) => el / 78270000);
+};
+
 const graphCountryHandler = (graph, countryCode) => {
   getCountryStatsByDay(countryCode).then((res) => {
     const chart = graph;
@@ -82,6 +87,13 @@ getWorldStatsByDay().then((DailyWorldStats) => {
         pointHoverRadius: 2.5,
         pointBackgroundColor: 'rgba(0, 0, 0, 0.6)',
         hidden: true,
+      }, {
+        label: 'Total confirmed per 100k',
+        data: casesPer100k(DailyWorldStats.cases),
+        backgroundColor: 'rgba(0, 0, 0, 0)',
+        pointRadius: 1,
+        pointHoverRadius: 2.5,
+        pointBackgroundColor: '#d96459',
       }],
     },
     options: {
