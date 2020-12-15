@@ -4,6 +4,8 @@ body {
   box-sizing: border-box;
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 body .hidden {
@@ -12,9 +14,9 @@ body .hidden {
 }
 
 body .list {
-  margin-top: 4rem;
+  margin-bottom: 1rem;
   position: relative;
-  padding: 0;
+  padding: 0 0 1rem 0;
   background-color: rgba(0, 0, 0, 0.1);
   width: 400px;
   height: 300px;
@@ -83,17 +85,26 @@ body .list .list__row_active {
   font-weight: bold;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
-
-.table-wrapper {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid;
 }
-.row {
-    display: flex;
-    justify-content: space-between;
-}
-.row div {
-    width: 25%;
 
+body .table-wrapper {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid;
+}
+
+body .table-wrapper .row {
+  display: flex;
+  justify-content: space-between;
+}
+
+body .table-wrapper .row div {
+  width: 25%;
+}
+
+body .graph {
+  position: relative;
+  height: 400px;
+  width: 800px;
+  margin-top: 1rem;
 }
