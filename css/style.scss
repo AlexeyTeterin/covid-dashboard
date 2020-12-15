@@ -3,7 +3,9 @@ body {
   padding: 0;
   box-sizing: border-box;
   display: flex;
-  justify-content: center;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
 
   .wrapper {}
 
@@ -84,5 +86,5 @@ body {
       background-color: rgba($color: #000000, $alpha: 0.5);
       color: white;
     }
-  }
+	}
 }
