@@ -33,15 +33,14 @@ const loadRows = (data, option) => {
     const value = document.createElement('div');
 
     row.classList.add('list__row');
-    row.id = country.CountryCode;
 
     name.textContent = country.Country;
-    name.style.setProperty('background-image', `url(https://www.countryflags.io/${row.id}/shiny/16.png)`);
+    name.style.setProperty('background-image', `url(https://www.countryflags.io/${country.CountryCode}/shiny/16.png)`);
 
-    value.id = 'value';
     value.textContent = country[option];
 
     Object.assign(row.dataset, country, calcValuesPer100k(data, country));
+    ['Slug', 'Premium', 'Date'].forEach((prop) => delete row.dataset[prop]);
 
     row.append(name, value);
     document.querySelector('.list').append(row);
@@ -60,7 +59,7 @@ const sortRows = (option) => {
   });
   rows.forEach((row) => {
     row.style.setProperty('order', rowsSorted.indexOf(row));
-    const value = row.querySelector('#value');
+    const value = row.children[1];
     value.textContent = row.dataset[option];
   });
   if (activeElement) activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
