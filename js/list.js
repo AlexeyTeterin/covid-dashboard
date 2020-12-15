@@ -31,6 +31,7 @@ const loadRows = (data, option) => {
     const row = document.createElement('div');
     const name = document.createElement('div');
     const value = document.createElement('div');
+    const population = { population: country.Premium.CountryStats.Population };
 
     row.classList.add('list__row');
 
@@ -39,7 +40,7 @@ const loadRows = (data, option) => {
 
     value.textContent = country[option];
 
-    Object.assign(row.dataset, country, calcValuesPer100k(data, country));
+    Object.assign(row.dataset, country, calcValuesPer100k(data, country), population);
     ['Slug', 'Premium', 'Date'].forEach((prop) => delete row.dataset[prop]);
 
     row.append(name, value);
