@@ -1,25 +1,25 @@
-import { getSummary, getCountries, getWorldStatsByDay } from './CovidData.js';
+import { getSummary } from './CovidData.js';
 
 const divDeaths = document.querySelector('.table-deaths');
 const divRecovered = document.querySelector('.table-recovered');
 const divCases = document.querySelector('.table-cases');
 const buttonCount = document.querySelector('.row-title-count');
 const buttonAbs = document.querySelector('.row-title-abs');
+const buttonArea = document.querySelector('.row-title-area');
 
 getSummary()
   .then((res) => {
-    console.log(res);
-    console.log(res.Countries[140].Premium.CountryStats.Population);
-
     const worldPopulation = 7827000000000; // get smwhr or const?
     // default settings
-    const population = worldPopulation;
-    const source = res.Global;
+    let population = worldPopulation;
+    let source = res.Global;
     const stat = { world: true, total: true, absolute: true };
     let con = source.TotalConfirmed;
     let deat = source.TotalDeaths;
     let rec = source.TotalRecovered;
-
+    function round(n) {
+      return Math.round(n * 100) / 100;
+    }
     function setStat() {
       let k = 1;
       if (!stat.absolute) {
@@ -34,9 +34,9 @@ getSummary()
         deat = source.NewDeaths;
         rec = source.NewRecovered;
       }
-      divCases.innerText = con / k;
-      divDeaths.innerText = deat / k;
-      divRecovered.innerText = rec / k;
+      divCases.innerText = round(con / k);
+      divDeaths.innerText = round(deat / k);
+      divRecovered.innerText = round(rec / k);
     }
 
     buttonCount.addEventListener('click', () => { // total / last day
@@ -47,23 +47,21 @@ getSummary()
 
     buttonAbs.addEventListener('click', () => { // absolute / per 100
       stat.absolute = !stat.absolute;
-      buttonAbs.innerText = stat.absolute ? 'absolute' : 'per 100k'; // get area & stats
+      buttonAbs.innerText = stat.absolute ? 'absolute' : 'per 100k';
       setStat();
     });
-
-    /* buttonArea.addEventListener('click', () => {
-      stat.world = !stat.world;
-      if (stat.world) {
-        buttonArea.innerText = 'word';
-        population = worldPopulation;
-        source = res.Global;
-      } else {
-        const countryNumber = 140; // need to get it
-        buttonArea.innerText = res.Countries[`${countryNumber}`].Country;
-        source = res.Countries[`${countryNumber}`];
-        population = res.Countries[`${countryNumber}`].Premium.CountryStats.Population;
-      }
+    buttonArea.addEventListener('click', () => {
+      buttonArea.innerText = 'Word';
+      population = worldPopulation;
+      source = res.Global;
       setStat();
-    }); */
+    });
+    document.querySelectorAll('.list__row').forEach((l) => l.addEventListener('click', (e) => {
+      source = res.Countries.find((a) => a.CountryCode === e.path[1].dataset.CountryCode);
+      buttonArea.innerText = source.Country;
+      population = source.Premium.CountryStats.Population;
+      setStat();
+    }));
+
     setStat();
   });
