@@ -51,7 +51,7 @@ getSummary()
       setStat();
     });
     buttonArea.addEventListener('click', () => {
-      buttonArea.innerText = 'Word';
+      buttonArea.innerText = 'World';
       population = worldPopulation;
       source = res.Global;
       setStat();
