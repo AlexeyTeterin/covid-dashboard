@@ -16,22 +16,27 @@ const graphCountryHandler = (graph, countryCode) => {
     const activeRow = document.querySelector('.list__row_active');
     const countryName = activeRow.dataset.Country;
     chart.options.title.text = countryName;
-    chart.data.datasets.forEach((dataset) => dataset.data = []);
-    if (!res.timeline) return;
-    const { cases, recovered, deaths } = res.timeline;
-    chart.data.datasets[0].data = Object.values(cases);
-    chart.data.datasets[1].data = Object.values(recovered);
-    chart.data.datasets[2].data = Object.values(deaths);
-    chart.data.datasets[3].data = newCasesByDay(cases);
-    chart.data.datasets[4].data = newCasesByDay(recovered);
-    chart.data.datasets[5].data = newCasesByDay(deaths);
-    chart.update();
-    console.log(res);
+    if (!res.timeline) {
+      chart.data.datasets.forEach((el) => {
+        const dataset = el;
+        dataset.data = [];
+      });
+      chart.update();
+    }
+    if (res.timeline) {
+      const { cases, recovered, deaths } = res.timeline;
+      chart.data.datasets[0].data = Object.values(cases);
+      chart.data.datasets[1].data = Object.values(recovered);
+      chart.data.datasets[2].data = Object.values(deaths);
+      chart.data.datasets[3].data = newCasesByDay(cases);
+      chart.data.datasets[4].data = newCasesByDay(recovered);
+      chart.data.datasets[5].data = newCasesByDay(deaths);
+      chart.update();
+    }
   });
 };
 
 getWorldStatsByDay().then((DailyWorldStats) => {
-  console.log(DailyWorldStats);
   const chart = new Chart(canvas, {
     type: 'line',
     data: {
