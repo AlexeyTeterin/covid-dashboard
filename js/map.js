@@ -1,6 +1,4 @@
-import { getSummary } from './CovidData.js';
-
-getSummary().then((data) => {
+export default function setMap(res) {
   const request = new XMLHttpRequest();
   request.open('GET', './assets/json/countries.json');
   request.onload = () => {
@@ -26,7 +24,7 @@ getSummary().then((data) => {
 
     const info = L.control();
 
-    info.onAdd = function (map) {
+    info.onAdd = function () {
       this.div = L.DomUtil.create('div', 'info');
       this.update();
       return this.div;
@@ -34,8 +32,8 @@ getSummary().then((data) => {
 
     info.update = function (e) {
       let country = false;
-      if (e) country = data.Countries.find((c) => c.Country === e.name);
-      const stats = country ? country.TotalConfirmed : 'no information'
+      if (e) country = res.Countries.find((c) => c.Country === e.name);
+      const stats = country ? country.TotalConfirmed : 'no information';
       this.div.innerHTML = `<h4>Covid statistics</h4>${e
         ? `<b>${e.name}</b><br/>${stats}`
         : 'Hover over a country'}`;
@@ -44,9 +42,12 @@ getSummary().then((data) => {
     info.addTo(map);
 
     let geoJson;
-    console.log(data);
+    function handleClick(e) {
+      const { name } = e.target.feature.properties;
+      document.querySelector('.row-title-area').innerText = name;
+    }
     function getColor(name) {
-      const country = data.Countries.find((c) => c.Country === name);
+      const country = res.Countries.find((c) => c.Country === name);
       if (!country) { return ''; }
       const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
         '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0'];
@@ -84,50 +85,14 @@ getSummary().then((data) => {
       layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
-        // click: zoomToFeature,
+        click: handleClick,
       });
     }
     geoJson = L.geoJson(collection, {
       style,
       onEachFeature,
     }).addTo(map);
-    console.log(collection);
-
-    /* const collection = JSON.parse(request.responseText);
-    const geojson = L.geoJson(collection, {
-      onEachFeature: onEachFeature,
-    }).addTo(map); */
-    //
-
-    /* const geoInfo = {
-      array: data.map((country = {}) => {
-        const { countryInfo = {} } = country;
-        const { lat, long: lng } = countryInfo;
-        return {
-          properties: {
-            ...country,
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: [lng, lat],
-          },
-        };
-      }),
-    };
-    console.log(geoInfo);
-
-    geoInfo.array.forEach((country) => {
-      const icon = L.icon({
-        iconUrl: 'https://infoznaki.ru/wa-data/public/shop/products/09/56/5609/images/11729/11729.970.png',
-        iconSize: [10, 10], // size of the icon
-        // shadowSize:   [50, 64], // size of the shadow
-        // iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-        // shadowAnchor: [4, 62],  // the same for the shadow
-        // popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-      });
-      const marker = L.marker([country.geometry.coordinates[1], country.geometry.coordinates[0]], { icon }).addTo(map);
-    }); */
   };
 
   request.send();
-});
+}
