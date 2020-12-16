@@ -17,6 +17,7 @@ const casesPer100k = (casesByDay, population) => casesByDay
 const updateChartData = (chart, data, countryCode) => {
   const { cases, recovered, deaths } = data;
   const { datasets } = chart.data;
+  const { options } = chart;
   const worldPopulation = 7827000000000;
   const selectedCountry = document.querySelector('.list__row_active');
   const population = countryCode ? selectedCountry.dataset.population : worldPopulation;
@@ -33,6 +34,7 @@ const updateChartData = (chart, data, countryCode) => {
       dataset.data = casesPer100k(dataset.data, population);
     });
   }
+  if (!countryCode) options.title.text = 'World';
   chart.update();
 };
 
@@ -117,12 +119,13 @@ getWorldStatsByDay().then((DailyWorldStats) => {
   document.querySelector('.list').addEventListener('click', (event) => {
     const target = event.target.parentElement;
     if (!target.classList.contains('list__row')) return;
-    handleCountrySelection(chart, target.dataset.CountryCode);
+    const countryIsSelected = !target.classList.contains('list__row_active');
+    if (!countryIsSelected) updateChartData(chart, DailyWorldStats);
+    if (countryIsSelected) handleCountrySelection(chart, target.dataset.CountryCode);
   });
 
   graphButton.addEventListener('click', () => {
     const btn = graphButton;
-    const click = new Event('click', { bubbles: true });
     const activeRow = document.querySelector('.list__row_active');
     const tail = ' per 100k';
     if (btn.className === 'graph__button_abs') {
@@ -134,7 +137,7 @@ getWorldStatsByDay().then((DailyWorldStats) => {
       btn.className = 'graph__button_abs';
       removeTailFromLabels(chart, tail);
     }
-    if (activeRow) activeRow.firstChild.dispatchEvent(click);
+    if (activeRow) handleCountrySelection(chart, activeRow.dataset.CountryCode);
     if (!activeRow) updateChartData(chart, DailyWorldStats);
   });
 });

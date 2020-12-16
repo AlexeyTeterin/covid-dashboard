@@ -106,8 +106,10 @@ const listClickHandler = (event) => {
   const target = event.target.parentElement;
   const activeElement = document.querySelector('.list__row_active');
   if (!target.classList.contains('list__row')) return;
+
   if (activeElement) activeElement.classList.remove('list__row_active');
   target.classList.add('list__row_active');
+  if (activeElement === target) target.classList.remove('list__row_active');
   searchInput.value = '';
   listSearchHandler();
   target.scrollIntoView({ behavior: 'smooth', block: 'center' });
