@@ -98,7 +98,7 @@ getWorldStatsByDay().then((DailyWorldStats) => {
       },
       legend: {
         labels: {
-          boxWidth: 12,
+          boxWidth: 8,
           usePointStyle: true,
         },
       },
