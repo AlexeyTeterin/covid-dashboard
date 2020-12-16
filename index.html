@@ -4,16 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
   <link rel="stylesheet" href="./css/style.css">
-
   <link rel="stylesheet" href="./css/keyboard.css">
 
   <title>Covid-19 Dashboard</title>
 </head>
 
 <body>
-
-
+<div class="content">
   <div class="list wrapper">
     <div class="list__header">
       <input type="text" id="list__search" placeholder="Search..." class="list__search">
@@ -22,22 +23,28 @@
     </div>
   </div>
 
-
-
   <div class="table-wrapper">
     <div class="row"> <button class="row-title-area">World</button>
+    </div>
+    <div class="row">
       <button class="row-title-count">Total</button> <button class="row-title-abs">absolute</button>
     </div>
     <div class="row row-head">
-      <div>Cases</div><div>Deaths</div><div>Recovered</div>
+      <div class="cases">Cases</div><div class="deaths">Deaths</div><div class="recovered">Recovered</div>
     </div>
     <div class="row">
-      <div class="table-cases">100500</div><div class="table-deaths">666</div><div class="table-recovered">0</div>
+      <div class="table-cases cases">100500</div><div class="table-deaths deaths">666</div><div class="table-recovered recovered">0</div>
     </div>
+
+
+  <div class="map" id="mapid"></div>
   </div>
-
-
+</div>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+          integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+          crossorigin=""></script>
   <script src="./js/main.js" type="module"></script>
+  <script src="./js/map.js" type="module"></script>
   <script src="./js/list.js" type="module"></script>
   <script src="./js/table.js" type="module"></script>
 
