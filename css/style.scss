@@ -4,6 +4,10 @@ body {
   box-sizing: border-box;
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: #09100d;
+  color: aliceblue;
 
   .wrapper {}
 
@@ -12,77 +16,159 @@ body {
     visibility: hidden;
   }
 
-  .list {
-    margin-top: 4rem;
-    position: relative;
-    padding: 0;
-    background-color: rgba($color: #000000, $alpha: 0.1);
-    width: 400px;
-    height: 300px;
-    overflow: auto;
+  .content {
     display: flex;
-    flex-direction: column;
+    width: 100%;
+    height: 95vh;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column wrap;
+    color: white;
 
-    .list__header {
-      position: sticky;
-      top: 0;
-      background-color: lightgrey;
-      height: 1.25rem;
+    .list {
+      margin-bottom: 1rem;
+      position: relative;
+      padding: 0 0 1rem 0;
+      background-color: rgba($color: #000000, $alpha: 0.1);
+      width: 25vw;
+      min-width: 300px;
+      max-width: 400px;
+      height: 40vh;
+      overflow: auto;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      order: -1;
+      flex-direction: column;
 
-      .keyboard-button {
-        width: 1.25rem;
+      .list__header {
+        position: sticky;
+        top: 0;
+        background-color: lightgrey;
         height: 1.25rem;
-        background-image: url(../assets/img/keyboard-button.svg);
-        background-repeat: no-repeat;
-        background-color: inherit;
-        background-size: contain;
-        border: none;
-        outline: none;
-				cursor: pointer;
-				transition: transform 0.075s, opacity 0.075s;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        order: -1;
+
+        .keyboard-button {
+          width: 1.25rem;
+          height: 1.25rem;
+          background-image: url(../assets/img/keyboard-button.svg);
+          background-repeat: no-repeat;
+          background-color: inherit;
+          background-size: contain;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          transition: transform 0.075s, opacity 0.075s;
+
+          &:hover {
+            transform: scale(1.2);
+          }
+
+          &:active {
+            opacity: 0.5;
+            transform: scale(1.1);
+          }
+        }
+
+        .list__search {
+					width: 30%;
+        }
+
+				.list__search,
+        .list__indicator {
+          outline: none;
+        }
+      }
+
+      .list__row {
+        display: flex;
+        justify-content: space-between;
+        cursor: default;
+
+        >div:first-child {
+          padding: 0 0 0 24px;
+          background-position: 0;
+          background-size: 1rem;
+          background-repeat: no-repeat;
+          width: 100%;
+        }
 
         &:hover {
-          transform: scale(1.2);
-        }
-
-        &:active {
-          opacity: 0.5;
-          transform: scale(1.1);
+        background-color: rgba($color: #ffffff, $alpha: 0.1);
         }
       }
 
-      .list__search,
-      .list__indicator {
-        outline: none;
+      .list__row_active {
+        font-weight: bold;
+        background-color: rgba($color: #ffffff, $alpha: 0.3);
+        color: white;
       }
     }
 
-    .list__row {
+    .table-wrapper {
       display: flex;
-      justify-content: space-between;
-      cursor: default;
+      flex-direction: column;
+      width: 25vw;
+      height: 30vh;
+      max-width: 1024px;
+      min-width: 300px;
+      // margin: 10px;
 
-      >div:first-child {
-        padding: 0 0 0 24px;
-        background-position: 0;
-        background-size: 1rem;
-        background-repeat: no-repeat;
-        width: 100%;
-      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.3rem;
 
-      &:hover {
-        background-color: rgba($color: #000000, $alpha: 0.1);
+        div {
+          width: 100%;
+          padding: 1rem;
+        }
+
+        button {
+          width: 40%;
+          cursor: pointer;
+          font-size: 1.3rem;
+          background: #000000;
+          color: aliceblue;
+          border: none;
+          padding: 0.7rem 1rem;
+          margin: 2px auto;
+          border-radius: 6%;
+
+          &:hover {
+            background: #00000050;
+          }
+        }
+
+        .table-deaths {
+          background: #48030310;
+        }
+
+        .table-recovered {
+          background: #6efd7b10;
+        }
+
+        .table-cases {
+          background: #cbb85410;
+        }
       }
     }
 
-    .list__row_active {
-      font-weight: bold;
-      background-color: rgba($color: #000000, $alpha: 0.5);
-      color: white;
+    .map {
+      height: 45vh;
+			width: 65vw;
+			max-width: 900px;
+    }
+
+    .graph {
+      position: relative;
+      height: 45vh;
+      max-height: 45vh;
+			width: 65vw;
+			max-width: 900px;
+      margin-top: 0.5rem;
     }
   }
+
+
 }
