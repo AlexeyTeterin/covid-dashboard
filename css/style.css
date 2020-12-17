@@ -3,113 +3,163 @@ body {
   padding: 0;
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   background: #09100d;
   color: aliceblue;
 }
-body .hidden {
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #3b393950;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00000050;
+}
+
+.content-top {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 2400px;
+}
+
+.content-bot {
+  display: flex;
+  width: 100%;
+  max-width: 2400px;
+  justify-content: center;
+}
+
+.hidden {
   opacity: 0;
   visibility: hidden;
 }
-body .content {
-  display: flex;
-  width: 100%;
-  height: 95vh;
-  justify-content: center;
-  align-items: center;
-  flex-flow: column wrap;
-  color: white;
-}
-body .content .list {
-  margin-bottom: 1rem;
-  position: relative;
-  padding: 0 0 1rem 0;
-  background-color: rgba(0, 0, 0, 0.1);
-  width: 25vw;
+
+.list {
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 19%;
   min-width: 300px;
-  max-width: 400px;
-  height: 40vh;
-  overflow: auto;
+  height: 45vh;
+  overflow: hidden scroll;
   display: flex;
   flex-direction: column;
 }
-body .content .list .list__header {
+.list .list__header {
   position: sticky;
   top: 0;
-  background-color: lightgrey;
-  height: 1.25rem;
+  padding: 0.1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   order: -1;
+  background: #351c1c;
 }
-body .content .list .list__header .keyboard-button {
+.list .list__header .keyboard-button {
   width: 1.25rem;
   height: 1.25rem;
   background-image: url(../assets/img/keyboard-button.svg);
   background-repeat: no-repeat;
   background-color: inherit;
   background-size: contain;
+  background-position: center;
   border: none;
   outline: none;
   cursor: pointer;
   transition: transform 0.075s, opacity 0.075s;
 }
-body .content .list .list__header .keyboard-button:hover {
+.list .list__header .keyboard-button:hover {
   transform: scale(1.2);
 }
-body .content .list .list__header .keyboard-button:active {
+.list .list__header .keyboard-button:active {
   opacity: 0.5;
   transform: scale(1.1);
 }
-body .content .list .list__header .list__search {
+.list .list__header .list__search {
   width: 30%;
 }
-body .content .list .list__header .list__search,
-body .content .list .list__header .list__indicator {
-  outline: none;
+.list .list__header .list__search,
+.list .list__header .list__indicator {
+  background: #1e0109;
+  color: aliceblue;
+  border: none;
+  padding: 0.3rem;
+  outline-color: #5c1010;
 }
-body .content .list .list__row {
+.list .list__row {
   display: flex;
   justify-content: space-between;
   cursor: default;
 }
-body .content .list .list__row > div:first-child {
+.list .list__row > div:first-child {
   padding: 0 0 0 24px;
   background-position: 0;
   background-size: 1rem;
   background-repeat: no-repeat;
   width: 100%;
 }
-body .content .list .list__row:hover {
+.list .list__row:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
-body .content .list .list__row_active {
+.list .list__row_active {
   font-weight: bold;
   background-color: rgba(255, 255, 255, 0.3);
   color: white;
 }
-body .content .table-wrapper {
+
+.table-wrapper {
+  width: 19%;
+  min-width: 100px;
+}
+
+.row {
   display: flex;
   flex-direction: column;
-  width: 25vw;
-  height: 30vh;
-  max-width: 1024px;
-  min-width: 300px;
-}
-body .content .table-wrapper .row {
-  display: flex;
-  justify-content: space-between;
   font-size: 1.3rem;
 }
-body .content .table-wrapper .row div {
-  width: 100%;
+.row div {
   padding: 1rem;
 }
-body .content .table-wrapper .row button {
-  width: 40%;
+
+.table-deaths {
+  background: #32020245;
+}
+
+.table-recovered {
+  background: #6efd7b10;
+}
+
+.table-cases {
+  background: #cbb85410;
+}
+
+.map {
+  width: 59%;
+  max-width: 1340px;
+  max-height: 675px;
+}
+
+.graph {
+  position: relative;
+  height: 45vh;
+  max-height: 45vh;
+  width: 59%;
+  margin-top: 0.5rem;
+}
+
+button {
+  width: 100%;
   cursor: pointer;
   font-size: 1.3rem;
   background: #000000;
@@ -119,30 +169,8 @@ body .content .table-wrapper .row button {
   margin: 2px auto;
   border-radius: 6%;
 }
-body .content .table-wrapper .row button:hover {
+button:hover {
   background: #00000050;
-}
-body .content .table-wrapper .row .table-deaths {
-  background: #48030310;
-}
-body .content .table-wrapper .row .table-recovered {
-  background: #6efd7b10;
-}
-body .content .table-wrapper .row .table-cases {
-  background: #cbb85410;
-}
-body .content .map {
-  height: 45vh;
-  width: 65vw;
-  max-width: 900px;
-}
-body .content .graph {
-  position: relative;
-  height: 45vh;
-  max-height: 45vh;
-  width: 65vw;
-  max-width: 900px;
-  margin-top: 0.5rem;
 }
 
 /*# sourceMappingURL=style.css.map */

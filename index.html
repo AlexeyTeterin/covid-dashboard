@@ -12,27 +12,8 @@
 </head>
 
 <body>
-
-  <div class="content">
-    <div class="table-wrapper">
-      <div class="row"> <button class="row-title-area">World</button>
-      </div>
-      <div class="row">
-        <button class="row-title-count">Total</button> <button class="row-title-abs">absolute</button>
-      </div>
-      <div class="row row-head">
-
-        <div>Cases</div>
-        <div>Deaths</div>
-        <div>Recovered</div>
-      </div>
-      <div class="row">
-        <div class="table-cases">100500</div>
-        <div class="table-deaths">666</div>
-        <div class="table-recovered">0</div>
-
-      </div>
-    </div>
+<header><h2>Covid dashboard</h2></header>
+  <div class="content-top">
 
     <div class="list wrapper">
       <div class="list__header">
@@ -44,19 +25,31 @@
 
     <div class="map" id="mapid"></div>
 
+    <div class="table-wrapper">
+      <div class="row">
+        <button class="row-title-area">World</button>
+        <button class="row-title-count">Total</button> <button class="row-title-abs">absolute</button>
+        <div>Cases  <div class="table-cases">100500</div></div>
+        <div>Deaths  <div class="table-deaths">666</div></div>
+        <div>Recovered <div class="table-recovered">0</div></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="content-bot">
+
     <div class="graph">
       <button class="graph__button_abs" id='graph__button'>Absolute values</button>
       <canvas class="chart" id="chart">
       </canvas>
     </div>
-	</div>
-	
+
+  </div>
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
   <script src="./js/main.js" type="module"></script>
   <script src="./js/list.js" type="module"></script>
   <script src="./js/table.js" type="module"></script>
   <script src="./js/graph.js" type="module"></script>
-
 </body>
 
 </html>

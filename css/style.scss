@@ -1,174 +1,190 @@
 body {
   margin: 0;
   padding: 0;
+  //max-width: 98vh;
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   background: #09100d;
   color: aliceblue;
+}
 
-  .wrapper {}
+::-webkit-scrollbar {
+  width: 10px;
+}
 
-  .hidden {
-    opacity: 0;
-    visibility: hidden;
-  }
+::-webkit-scrollbar-track {
+  background: #3b393950;
+}
 
-  .content {
+::-webkit-scrollbar-thumb {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00000050;
+}
+
+.content-top {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 2400px;
+}
+.content-bot {
+  display: flex;
+  width: 100%;
+  max-width: 2400px;
+  justify-content: center;
+}
+.wrapper {}
+
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+
+
+.list {
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 19%;
+  min-width: 300px;
+  height: 45vh;
+  overflow: hidden scroll;
+  display: flex;
+  flex-direction: column;
+
+  .list__header {
+    position: sticky;
+    top: 0;
+    padding: 0.1rem;
     display: flex;
-    width: 100%;
-    height: 95vh;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    flex-flow: column wrap;
-    color: white;
+    order: -1;
+    background: #351c1c;
 
-    .list {
-      margin-bottom: 1rem;
-      position: relative;
-      padding: 0 0 1rem 0;
-      background-color: rgba($color: #000000, $alpha: 0.1);
-      width: 25vw;
-      min-width: 300px;
-      max-width: 400px;
-      height: 40vh;
-      overflow: auto;
-      display: flex;
-      flex-direction: column;
+    .keyboard-button {
+      width: 1.25rem;
+      height: 1.25rem;
+      background-image: url(../assets/img/keyboard-button.svg);
+      background-repeat: no-repeat;
+      background-color: inherit;
+      background-size: contain;
+      background-position: center;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: transform 0.075s, opacity 0.075s;
 
-      .list__header {
-        position: sticky;
-        top: 0;
-        background-color: lightgrey;
-        height: 1.25rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        order: -1;
-
-        .keyboard-button {
-          width: 1.25rem;
-          height: 1.25rem;
-          background-image: url(../assets/img/keyboard-button.svg);
-          background-repeat: no-repeat;
-          background-color: inherit;
-          background-size: contain;
-          border: none;
-          outline: none;
-          cursor: pointer;
-          transition: transform 0.075s, opacity 0.075s;
-
-          &:hover {
-            transform: scale(1.2);
-          }
-
-          &:active {
-            opacity: 0.5;
-            transform: scale(1.1);
-          }
-        }
-
-        .list__search {
-                    width: 30%;
-        }
-
-                .list__search,
-        .list__indicator {
-          outline: none;
-        }
+      &:hover {
+        transform: scale(1.2);
       }
 
-      .list__row {
-        display: flex;
-        justify-content: space-between;
-        cursor: default;
-
-        >div:first-child {
-          padding: 0 0 0 24px;
-          background-position: 0;
-          background-size: 1rem;
-          background-repeat: no-repeat;
-          width: 100%;
-        }
-
-        &:hover {
-        background-color: rgba($color: #ffffff, $alpha: 0.1);
-        }
-      }
-
-      .list__row_active {
-        font-weight: bold;
-        background-color: rgba($color: #ffffff, $alpha: 0.3);
-        color: white;
+      &:active {
+        opacity: 0.5;
+        transform: scale(1.1);
       }
     }
 
-    .table-wrapper {
-      display: flex;
-      flex-direction: column;
-      width: 25vw;
-      height: 30vh;
-      max-width: 1024px;
-      min-width: 300px;
-      // margin: 10px;
-
-      .row {
-        display: flex;
-        justify-content: space-between;
-        font-size: 1.3rem;
-
-        div {
-          width: 100%;
-          padding: 1rem;
-        }
-
-        button {
-          width: 40%;
-          cursor: pointer;
-          font-size: 1.3rem;
-          background: #000000;
-          color: aliceblue;
-          border: none;
-          padding: 0.7rem 1rem;
-          margin: 2px auto;
-          border-radius: 6%;
-
-          &:hover {
-            background: #00000050;
-          }
-        }
-
-        .table-deaths {
-          background: #48030310;
-        }
-
-        .table-recovered {
-          background: #6efd7b10;
-        }
-
-        .table-cases {
-          background: #cbb85410;
-        }
-      }
+    .list__search {
+      width: 30%;
     }
 
-    .map {
-      height: 45vh;
-            width: 65vw;
-            max-width: 900px;
-    }
 
-    .graph {
-      position: relative;
-      height: 45vh;
-      max-height: 45vh;
-            width: 65vw;
-            max-width: 900px;
-      margin-top: 0.5rem;
+    .list__search,
+    .list__indicator {
+      background: #1e0109;
+      color: aliceblue;
+      border: none;
+      padding: 0.3rem;
+      outline-color: #5c1010;
     }
   }
 
+  .list__row {
+    display: flex;
+    justify-content: space-between;
+    cursor: default;
 
+    >div:first-child {
+      padding: 0 0 0 24px;
+      background-position: 0;
+      background-size: 1rem;
+      background-repeat: no-repeat;
+      width: 100%;
+    }
+
+    &:hover {
+      background-color: rgba($color: #ffffff, $alpha: 0.1);
+    }
+  }
+
+  .list__row_active {
+    font-weight: bold;
+    background-color: rgba($color: #ffffff, $alpha: 0.3);
+    color: white;
+  }
+}
+
+.table-wrapper {
+  width: 19%;
+  min-width: 100px;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.3rem;
+
+  div {
+    padding: 1rem;
+  }
+}
+
+.table-deaths {
+  background: #32020245;
+}
+.table-recovered {
+  background: #6efd7b10;
+}
+.table-cases {
+  background: #cbb85410;
+}
+
+
+
+.map {
+  width: 59%;
+  max-width: 1340px;
+  max-height: 675px;
+}
+
+.graph {
+  position: relative;
+  height: 45vh;
+  max-height: 45vh;
+  width: 59%;
+  margin-top: 0.5rem;
+}
+
+
+button {
+  width: 100%;
+  cursor: pointer;
+  font-size: 1.3rem;
+  background: #000000;
+  color: aliceblue;
+  border: none;
+  padding: 0.7rem 1rem;
+  margin: 2px auto;
+  border-radius: 6%;
+  &:hover {
+    background: #00000050;
+  }
 }
