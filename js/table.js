@@ -1,4 +1,5 @@
 import { getSummary } from './CovidData.js';
+import setMap from './map.js';
 
 const divDeaths = document.querySelector('.table-deaths');
 const divRecovered = document.querySelector('.table-recovered');
@@ -17,10 +18,17 @@ getSummary()
     let con = source.TotalConfirmed;
     let deat = source.TotalDeaths;
     let rec = source.TotalRecovered;
+
     function round(n) {
       return Math.round(n * 100) / 100;
     }
     function setStat() {
+      if (!source) {
+        divCases.innerText = 'no information';
+        divDeaths.innerText = 'no information';
+        divRecovered.innerText = 'no information';
+        return;
+      }
       let k = 1;
       if (!stat.absolute) {
         k = population / 100000;
@@ -62,6 +70,15 @@ getSummary()
       population = source.Premium.CountryStats.Population;
       setStat();
     }));
+    document.querySelector('.map').addEventListener('click', () => {
+      function setSource() {
+        source = res.Countries.find((a) => a.Country === buttonArea.innerText);
+        if (source) population = source.Premium.CountryStats.Population;
+        setStat();
+      }
+      setTimeout(setSource, 10);
+    });
 
     setStat();
+    setMap(res, setStat());
   });

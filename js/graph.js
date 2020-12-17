@@ -69,6 +69,7 @@ const removeTailFromLabels = (chart, tail) => chart.data.datasets
   });
 
 getWorldStatsByDay().then((DailyWorldStats) => {
+  Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 0.7)';
   const chart = new Chart(canvas, {
     type: 'line',
     data: {
@@ -103,6 +104,18 @@ getWorldStatsByDay().then((DailyWorldStats) => {
           boxWidth: 8,
           usePointStyle: true,
         },
+      },
+      scales: {
+        xAxes: [{
+          gridLines: {
+            color: 'rgba(255, 255, 255, 0.1)',
+          },
+        }],
+        yAxes: [{
+          gridLines: {
+            color: 'rgba(255, 255, 255, 0.1)',
+          },
+        }],
       },
     },
   });
