@@ -109,7 +109,10 @@ const listClickHandler = (event) => {
 
   if (activeElement) activeElement.classList.remove('list__row_active');
   target.classList.add('list__row_active');
-  if (activeElement === target) target.classList.remove('list__row_active');
+  if (activeElement === target) {
+    document.querySelector('.row-title-area').dispatchEvent(new Event('click'));
+    target.classList.remove('list__row_active');
+  }
   searchInput.value = '';
   listSearchHandler();
   target.scrollIntoView({ behavior: 'smooth', block: 'center' });
