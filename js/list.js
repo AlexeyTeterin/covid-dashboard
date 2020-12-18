@@ -130,6 +130,5 @@ getSummary()
     searchInput.addEventListener('input', () => listSearchHandler());
     keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
     indicator.addEventListener('change', () => sortRows(indicator.value));
-    tableCasesSwitcher.addEventListener('click', tableCasesSwitchHandler);
   })
   .catch((e) => new Error(e));

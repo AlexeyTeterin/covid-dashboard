@@ -1,7 +1,7 @@
 import { getWorldStatsByDay, getCountryStatsByDay } from './CovidData.js';
+import { buttonAbs, buttonCount } from './table.js';
 
 const canvas = document.querySelector('#chart');
-const valueTypeSwitcher = document.querySelector('.row-title-abs');
 
 const newCasesByDay = (totalCasesByDay) => {
   const cases = Object.values(totalCasesByDay);
@@ -21,7 +21,7 @@ const updateChartData = (chart, data, countryCode) => {
   const worldPopulation = 7827000000000;
   const selectedCountry = document.querySelector('.list__row_active');
   const population = countryCode ? selectedCountry.dataset.population : worldPopulation;
-  const relativeValues = valueTypeSwitcher.classList.contains('relative');
+  const relativeValues = buttonAbs.classList.contains('relative');
 
   datasets[0].data = Object.values(cases);
   datasets[1].data = Object.values(recovered);
@@ -140,12 +140,12 @@ getWorldStatsByDay().then((DailyWorldStats) => {
     if (countryIsSelected) handleCountrySelection(chart, target.dataset.CountryCode);
   });
 
-  valueTypeSwitcher.addEventListener('click', () => {
+  buttonAbs.addEventListener('click', () => {
     const activeRow = document.querySelector('.list__row_active');
     const tail = ' per 100k';
-    const tailsOn = chart.data.datasets[0].label.indexOf(tail) > 0;
+    const absoluteOn = chart.data.datasets[0].label.indexOf(tail) === -1;
 
-    if (!tailsOn) {
+    if (absoluteOn) {
       addTailToLabels(chart, tail);
     } else {
       removeTailFromLabels(chart, tail);
@@ -154,4 +154,24 @@ getWorldStatsByDay().then((DailyWorldStats) => {
     if (activeRow) handleCountrySelection(chart, activeRow.dataset.CountryCode);
     if (!activeRow) updateChartData(chart, DailyWorldStats);
   });
+
+  // buttonCount.addEventListener('click', () => {
+  //   const totalOn = buttonCount.classList.contains('total');
+
+  //   if (!totalOn) {
+  //     chart.data.datasets.forEach((el, index) => {
+  //       const dataset = el;
+  //       if (index <= 2) dataset.hidden = true;
+  //       if (index > 2) dataset.hidden = false;
+  //     });
+  //   } else {
+  //     chart.data.datasets.forEach((el, index) => {
+  //       const dataset = el;
+  //       if (index > 2) dataset.hidden = true;
+  //       if (index <= 2) dataset.hidden = false;
+  //     });
+  //   }
+
+  //   chart.update();
+  // });
 });
