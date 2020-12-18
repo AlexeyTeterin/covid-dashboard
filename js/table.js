@@ -4,8 +4,8 @@ import setMap from './map.js';
 const divDeaths = document.querySelector('.table-deaths');
 const divRecovered = document.querySelector('.table-recovered');
 const divCases = document.querySelector('.table-cases');
-const buttonCount = document.querySelector('.row-title-count');
-const buttonAbs = document.querySelector('.row-title-abs');
+export const buttonCount = document.querySelector('.row-title-count');
+export const buttonAbs = document.querySelector('.row-title-abs');
 const buttonArea = document.querySelector('.row-title-area');
 
 getSummary()
