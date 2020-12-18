@@ -22,6 +22,7 @@ getSummary()
     function round(n) {
       return Math.round(n * 100) / 100;
     }
+
     function setStat() {
       if (!source) {
         divCases.innerText = 'no information';
@@ -58,11 +59,15 @@ getSummary()
       buttonAbs.innerText = stat.absolute ? 'absolute' : 'per 100k';
       setStat();
     });
-    buttonArea.addEventListener('click', () => {
+    buttonArea.addEventListener('click', async () => {
       buttonArea.innerText = 'World';
       population = worldPopulation;
       source = res.Global;
-      setStat();
+      await setStat();
+
+      const activeListRow = document.querySelector('.list__row_active');
+      const click = new Event('click', { bubbles: true });
+      if (activeListRow) activeListRow.firstChild.dispatchEvent(click);
     });
     document.querySelectorAll('.list__row').forEach((l) => l.addEventListener('click', (e) => {
       source = res.Countries.find((a) => a.CountryCode === e.path[1].dataset.CountryCode);
