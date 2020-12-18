@@ -70,13 +70,21 @@ getSummary()
       if (activeListRow) activeListRow.firstChild.dispatchEvent(click);
     });
 
-    document.querySelector('.list').addEventListener('click', (event) => {
-      source = res.Countries.find((a) => a.CountryCode === event.target
-        .parentElement.dataset.CountryCode);
+    document.querySelector('.list').addEventListener('click', (e) => {
+      if (!e.path[1].dataset.Country) return;
+      source = res.Countries.find((a) => a.CountryCode === e.path[1].dataset.CountryCode);
       buttonArea.innerText = source.Country;
       population = source.Premium.CountryStats.Population;
       setStat();
-    }));
+
+    document.querySelector('.map').addEventListener('click', () => {
+      function setSource() {
+        source = res.Countries.find((a) => a.Country === buttonArea.innerText);
+        if (source) population = source.Premium.CountryStats.Population;
+        setStat();
+      }
+      setTimeout(setSource, 10);
+    });
 
     setStat();
     setMap(res, setStat());

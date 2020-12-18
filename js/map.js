@@ -42,8 +42,8 @@ export default function setMap(res) {
     info.addTo(map);
 
     let geoJson;
-
-    document.querySelectorAll('.list__row').forEach((l) => l.addEventListener('click', (e) => {
+    document.querySelector('.list').addEventListener('click', (e) => {
+      if (!e.path[1].dataset.Country) return;
       const clickedListName = res.Countries
         .find((a) => a.Country === e.path[1].dataset.Country).Country;
       if (clickedCountry.target) geoJson.resetStyle(clickedCountry.target);
@@ -68,7 +68,7 @@ export default function setMap(res) {
         dashArray: '',
         fillOpacity: 0.5,
       });
-    }));
+    });
 
     function handleClick(e) {
       const { name } = e.target.feature.properties;
