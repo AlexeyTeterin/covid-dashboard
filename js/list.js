@@ -5,6 +5,8 @@ const searchInput = document.querySelector('#list__search');
 const indicator = document.querySelector('#list__indicator');
 const list = document.querySelector('.list');
 const keyboardButton = document.querySelector('.keyboard-button');
+const tableValueTypeSwitcher = document.querySelector('.row-title-abs');
+const tableCasesSwitcher = document.querySelector('.row-title-count');
 
 const keyboard = new Keyboard();
 keyboard.init();
@@ -109,10 +111,49 @@ const listClickHandler = (event) => {
 
   if (activeElement) activeElement.classList.remove('list__row_active');
   target.classList.add('list__row_active');
-  if (activeElement === target) target.classList.remove('list__row_active');
+  if (activeElement === target) {
+    document.querySelector('.row-title-area').dispatchEvent(new Event('click'));
+    target.classList.remove('list__row_active');
+  }
   searchInput.value = '';
   listSearchHandler();
   target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+};
+
+const tableCasesSwitchHandler = () => {
+  const totalCasesOn = tableCasesSwitcher.classList.contains('total');
+  const absValuesOn = tableValueTypeSwitcher.classList.contains('absolute');
+  const options = Array.from(list.querySelectorAll('option'));
+  const selectedOption = options.filter((option) => option.selected)[0].value;
+  options.forEach((option) => option.setAttribute('selected', false));
+
+  const totalOrNew = totalCasesOn ? 'Total' : 'New';
+  const absOrRel = absValuesOn ? '' : 'Per100k';
+  const casesType = selectedOption.replace(/(New)|(Total)|(Per100k)/g, '');
+  indicator.value = `${totalOrNew}${casesType}${absOrRel}`;
+
+  const targetOption = options.filter((option) => option.value === indicator.value)[0];
+  targetOption.setAttribute('selected', true);
+
+  indicator.dispatchEvent(new Event('change'));
+};
+
+const tableValueTypeHandler = () => {
+  const totalCasesOn = tableCasesSwitcher.classList.contains('total');
+  const absValuesOn = tableValueTypeSwitcher.classList.contains('absolute');
+  const options = Array.from(list.querySelectorAll('option'));
+  const selectedOption = options.filter((option) => option.selected)[0].value;
+  options.forEach((option) => option.setAttribute('selected', false));
+
+  const totalOrNew = totalCasesOn ? 'Total' : 'New';
+  const absOrRel = absValuesOn ? '' : 'Per100k';
+  const casesType = selectedOption.replace(/(New)|(Total)|(Per100k)/g, '');
+  indicator.value = `${totalOrNew}${casesType}${absOrRel}`;
+
+  const targetOption = options.filter((option) => option.value === indicator.value)[0];
+  targetOption.setAttribute('selected', true);
+
+  indicator.dispatchEvent(new Event('change'));
 };
 
 getSummary()
@@ -125,5 +166,7 @@ getSummary()
     searchInput.addEventListener('input', () => listSearchHandler());
     keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
     indicator.addEventListener('change', () => sortRows(indicator.value));
+    tableCasesSwitcher.addEventListener('click', tableCasesSwitchHandler);
+    tableValueTypeSwitcher.addEventListener('click', tableValueTypeHandler);
   })
   .catch((e) => new Error(e));

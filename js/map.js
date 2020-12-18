@@ -24,13 +24,13 @@ export default function setMap(res) {
 
     const info = L.control();
 
-    info.onAdd = function () {
+    info.onAdd = function() {
       this.div = L.DomUtil.create('div', 'info');
       this.update();
       return this.div;
     };
 
-    info.update = function (e) {
+    info.update = function(e) {
       let country = false;
       if (e) country = res.Countries.find((c) => c.Country === e.name);
       const stats = country ? country.TotalConfirmed : 'no information';
@@ -42,19 +42,30 @@ export default function setMap(res) {
     info.addTo(map);
 
     let geoJson;
+
     function handleClick(e) {
       const { name } = e.target.feature.properties;
       document.querySelector('.row-title-area').innerText = name;
+      const clickEvent = new Event('click', { bubbles: true });
+      const targetRow = Array.from(document.querySelectorAll('.list__row'))
+        .filter((row) => row.firstChild.textContent === name)[0];
+      if (targetRow) {
+        if (targetRow.classList.contains('list__row_active')) return;
+        targetRow.firstChild.dispatchEvent(clickEvent);
+      }
     }
+
     function getColor(name) {
       const country = res.Countries.find((c) => c.Country === name);
       if (!country) { return ''; }
       const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
-        '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0'];
-      const k = country.TotalConfirmed;// * 100000 / country.Premium.CountryStats.Population;
+        '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
+      ];
+      const k = country.TotalConfirmed; // * 100000 / country.Premium.CountryStats.Population;
       const a = (Math.floor(k / 30000) > 7) ? 7 : Math.floor(k / 30000);
       return colors[7 - a];
     }
+
     function style(feature) {
       return {
         fillColor: getColor(feature.properties.name),
@@ -66,6 +77,7 @@ export default function setMap(res) {
         fillOpacity: 0.3,
       };
     }
+
     function highlightFeature(e) {
       const layer = e.target;
       layer.setStyle({
@@ -77,10 +89,12 @@ export default function setMap(res) {
       layer.bringToFront();
       info.update(layer.feature.properties);
     }
+
     function resetHighlight(e) {
       geoJson.resetStyle(e.target);
       info.update();
     }
+
     function onEachFeature(feature, layer) {
       layer.on({
         mouseover: highlightFeature,

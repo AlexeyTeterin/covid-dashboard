@@ -1,7 +1,7 @@
 import { getWorldStatsByDay, getCountryStatsByDay } from './CovidData.js';
 
 const canvas = document.querySelector('#chart');
-const graphButton = document.querySelector('#graph__button');
+const valueTypeSwitcher = document.querySelector('.row-title-abs');
 
 const newCasesByDay = (totalCasesByDay) => {
   const cases = Object.values(totalCasesByDay);
@@ -21,7 +21,7 @@ const updateChartData = (chart, data, countryCode) => {
   const worldPopulation = 7827000000000;
   const selectedCountry = document.querySelector('.list__row_active');
   const population = countryCode ? selectedCountry.dataset.population : worldPopulation;
-  const relativeValues = graphButton.classList.contains('graph__button_rel');
+  const relativeValues = valueTypeSwitcher.classList.contains('relative');
   datasets[0].data = Object.values(cases);
   datasets[1].data = Object.values(recovered);
   datasets[2].data = Object.values(deaths);
@@ -137,19 +137,17 @@ getWorldStatsByDay().then((DailyWorldStats) => {
     if (countryIsSelected) handleCountrySelection(chart, target.dataset.CountryCode);
   });
 
-  graphButton.addEventListener('click', () => {
-    const btn = graphButton;
+  valueTypeSwitcher.addEventListener('click', () => {
     const activeRow = document.querySelector('.list__row_active');
     const tail = ' per 100k';
-    if (btn.className === 'graph__button_abs') {
-      btn.textContent = 'Relative values';
-      btn.className = 'graph__button_rel';
+    const tailsOn = chart.data.datasets[0].label.indexOf(tail) > 0;
+
+    if (!tailsOn) {
       addTailToLabels(chart, tail);
     } else {
-      btn.textContent = 'Absolute values';
-      btn.className = 'graph__button_abs';
       removeTailFromLabels(chart, tail);
     }
+
     if (activeRow) handleCountrySelection(chart, activeRow.dataset.CountryCode);
     if (!activeRow) updateChartData(chart, DailyWorldStats);
   });
