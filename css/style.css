@@ -56,7 +56,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-
 .list .list__header {
   position: sticky;
   top: 0;
@@ -67,7 +66,6 @@ body {
   order: -1;
   background: #351c1c;
 }
-
 .list .list__header .keyboard-button {
   width: 1.25rem;
   height: 1.25rem;
@@ -81,20 +79,16 @@ body {
   cursor: pointer;
   transition: transform 0.075s, opacity 0.075s;
 }
-
 .list .list__header .keyboard-button:hover {
   transform: scale(1.2);
 }
-
 .list .list__header .keyboard-button:active {
   opacity: 0.5;
   transform: scale(1.1);
 }
-
 .list .list__header .list__search {
   width: 30%;
 }
-
 .list .list__header .list__search,
 .list .list__header .list__indicator {
   background: #1e0109;
@@ -103,13 +97,11 @@ body {
   padding: 0.3rem;
   outline-color: #5c1010;
 }
-
 .list .list__row {
   display: flex;
   justify-content: space-between;
   cursor: default;
 }
-
 .list .list__row > div:first-child {
   padding: 0 0 0 24px;
   background-position: 0;
@@ -117,11 +109,9 @@ body {
   background-repeat: no-repeat;
   width: 100%;
 }
-
 .list .list__row:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
-
 .list .list__row_active {
   font-weight: bold;
   background-color: rgba(255, 255, 255, 0.3);
@@ -138,7 +128,6 @@ body {
   flex-direction: column;
   font-size: 1.3rem;
 }
-
 .row div {
   padding: 1rem;
 }
@@ -157,7 +146,7 @@ body {
 
 .map {
   width: 59%;
-  max-width: 1340px;
+  max-width: 1024px;
   max-height: 675px;
 }
 
@@ -180,7 +169,8 @@ button {
   margin: 2px auto;
   border-radius: 6%;
 }
-
 button:hover {
   background: #00000050;
 }
+
+/*# sourceMappingURL=style.css.map */

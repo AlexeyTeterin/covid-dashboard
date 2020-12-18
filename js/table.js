@@ -10,7 +10,7 @@ const buttonArea = document.querySelector('.row-title-area');
 
 getSummary()
   .then((res) => {
-    const worldPopulation = 7827000000000; // get smwhr or const?
+    const worldPopulation = 7827000000000;
     // default settings
     let population = worldPopulation;
     let source = res.Global;
@@ -70,13 +70,12 @@ getSummary()
       if (activeListRow) activeListRow.firstChild.dispatchEvent(click);
     });
 
-    document.querySelector('.list').addEventListener('click', (event) => {
-      source = res.Countries.find((a) => a.CountryCode === event.target
-        .parentElement.dataset.CountryCode);
+    document.querySelector('.list').addEventListener('click', (e) => {
+      if (!e.path[1].dataset.Country) return;
+      source = res.Countries.find((a) => a.CountryCode === e.path[1].dataset.CountryCode);
       buttonArea.innerText = source.Country;
       population = source.Premium.CountryStats.Population;
       setStat();
-    });
 
     document.querySelector('.map').addEventListener('click', () => {
       function setSource() {
