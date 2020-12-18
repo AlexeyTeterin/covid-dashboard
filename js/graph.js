@@ -143,12 +143,12 @@ getWorldStatsByDay().then((DailyWorldStats) => {
     const tail = ' per 100k';
 
     if (btn.classList.contains('absolute')) {
-      btn.classList.remove('absolute');
-      btn.classList.add('relative');
+      // btn.classList.remove('absolute');
+      // btn.classList.add('relative');
       addTailToLabels(chart, tail);
     } else {
-      btn.classList.remove('relative');
-      btn.classList.add('absolute');
+      // btn.classList.remove('relative');
+      // btn.classList.add('absolute');
       removeTailFromLabels(chart, tail);
     }
     if (activeRow) handleCountrySelection(chart, activeRow.dataset.CountryCode);
