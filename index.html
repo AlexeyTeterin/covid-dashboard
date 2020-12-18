@@ -12,7 +12,9 @@
 </head>
 
 <body>
-<header><h2>Covid dashboard</h2></header>
+  <header>
+    <h2>Covid dashboard</h2>
+  </header>
   <div class="content-top">
 
     <div class="list wrapper">
@@ -28,10 +30,17 @@
     <div class="table-wrapper">
       <div class="row">
         <button class="row-title-area">World</button>
-        <button class="row-title-count">Total</button> <button class="row-title-abs">absolute</button>
-        <div>Cases  <div class="table-cases">100500</div></div>
-        <div>Deaths  <div class="table-deaths">666</div></div>
-        <div>Recovered <div class="table-recovered">0</div></div>
+        <button class="row-title-count">Total</button>
+        <button class="row-title-abs absolute">absolute</button>
+        <div>Cases
+          <div class="table-cases">100500</div>
+        </div>
+        <div>Deaths
+          <div class="table-deaths">666</div>
+        </div>
+        <div>Recovered
+          <div class="table-recovered">0</div>
+        </div>
       </div>
     </div>
 
@@ -39,7 +48,6 @@
   <div class="content-bot">
 
     <div class="graph">
-      <button class="graph__button_abs" id='graph__button'>Absolute values</button>
       <canvas class="chart" id="chart">
       </canvas>
     </div>
