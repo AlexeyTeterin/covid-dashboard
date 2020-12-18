@@ -48,19 +48,19 @@ getSummary()
       divRecovered.innerText = round(rec / k);
     }
 
-    buttonCount.addEventListener('click', () => { // total / last day
+    buttonCount.addEventListener('click', async () => { // total / last day
       stat.total = !stat.total;
       buttonCount.innerText = stat.total ? 'Total' : 'Last day';
-      buttonCount.classList.toggle('total', stat.total);
-      buttonCount.classList.toggle('new', !stat.total);
+      await buttonCount.classList.toggle('total', stat.total);
+      await buttonCount.classList.toggle('new', !stat.total);
       setStat();
     });
 
-    buttonAbs.addEventListener('click', () => { // absolute / per 100
+    buttonAbs.addEventListener('click', async () => { // absolute / per 100
       stat.absolute = !stat.absolute;
       buttonAbs.innerText = stat.absolute ? 'absolute' : 'per 100k';
-      buttonAbs.classList.toggle('absolute', stat.absolute);
-      buttonAbs.classList.toggle('relative', !stat.absolute);
+      await buttonAbs.classList.toggle('absolute', stat.absolute);
+      await buttonAbs.classList.toggle('relative', !stat.absolute);
       setStat();
     });
     buttonArea.addEventListener('click', async () => {
