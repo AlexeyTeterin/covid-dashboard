@@ -138,19 +138,16 @@ getWorldStatsByDay().then((DailyWorldStats) => {
   });
 
   valueTypeSwitcher.addEventListener('click', () => {
-    const btn = valueTypeSwitcher;
     const activeRow = document.querySelector('.list__row_active');
     const tail = ' per 100k';
+    const tailsOn = chart.data.datasets[0].label.indexOf(tail) > 0;
 
-    if (btn.classList.contains('absolute')) {
-      // btn.classList.remove('absolute');
-      // btn.classList.add('relative');
+    if (!tailsOn) {
       addTailToLabels(chart, tail);
     } else {
-      // btn.classList.remove('relative');
-      // btn.classList.add('absolute');
       removeTailFromLabels(chart, tail);
     }
+
     if (activeRow) handleCountrySelection(chart, activeRow.dataset.CountryCode);
     if (!activeRow) updateChartData(chart, DailyWorldStats);
   });
