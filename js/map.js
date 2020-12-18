@@ -43,6 +43,7 @@ export default function setMap(res) {
 
     let geoJson;
     document.querySelector('.list').addEventListener('click', (e) => {
+      if (!e.path[1].dataset.Country) return;
       const clickedListName = res.Countries
         .find((a) => a.Country === e.path[1].dataset.Country).Country;
       if (clickedCountry.target) geoJson.resetStyle(clickedCountry.target);
