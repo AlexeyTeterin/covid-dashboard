@@ -76,6 +76,7 @@ getSummary()
       buttonArea.innerText = source.Country;
       population = source.Premium.CountryStats.Population;
       setStat();
+    });
 
     document.querySelector('.map').addEventListener('click', () => {
       function setSource() {
