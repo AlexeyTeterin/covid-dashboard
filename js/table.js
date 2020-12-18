@@ -4,8 +4,8 @@ import setMap from './map.js';
 const divDeaths = document.querySelector('.table-deaths');
 const divRecovered = document.querySelector('.table-recovered');
 const divCases = document.querySelector('.table-cases');
-const buttonCount = document.querySelector('.row-title-count');
-const buttonAbs = document.querySelector('.row-title-abs');
+export const buttonCount = document.querySelector('.row-title-count');
+export const buttonAbs = document.querySelector('.row-title-abs');
 const buttonArea = document.querySelector('.row-title-area');
 
 getSummary()
@@ -48,19 +48,15 @@ getSummary()
       divRecovered.innerText = round(rec / k);
     }
 
-    buttonCount.addEventListener('click', async () => { // total / last day
+    buttonCount.addEventListener('click', () => { // total / last day
       stat.total = !stat.total;
       buttonCount.innerText = stat.total ? 'Total' : 'Last day';
-      await buttonCount.classList.toggle('total', stat.total);
-      await buttonCount.classList.toggle('new', !stat.total);
       setStat();
     });
 
-    buttonAbs.addEventListener('click', async () => { // absolute / per 100
+    buttonAbs.addEventListener('click', () => { // absolute / per 100
       stat.absolute = !stat.absolute;
       buttonAbs.innerText = stat.absolute ? 'absolute' : 'per 100k';
-      await buttonAbs.classList.toggle('absolute', stat.absolute);
-      await buttonAbs.classList.toggle('relative', !stat.absolute);
       setStat();
     });
     buttonArea.addEventListener('click', async () => {

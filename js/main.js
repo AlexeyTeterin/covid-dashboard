@@ -5,3 +5,48 @@ import { getSummary, getCountries } from './CovidData.js';
 
 //getCountries()
 //  .then((res) => console.log(res));
+
+import { buttonAbs, buttonCount } from './table.js';
+import { indicator, list } from './list.js';
+
+buttonAbs.addEventListener('click', () => {
+  const options = Array.from(list.querySelectorAll('option'));
+  const selectedOption = options.filter((option) => option.selected)[0].value;
+  options.forEach((option) => option.setAttribute('selected', false));
+
+  const totalCasesOn = buttonCount.classList.contains('total');
+  const absValuesOn = buttonAbs.classList.contains('absolute');
+  const totalOrNew = totalCasesOn ? 'Total' : 'New';
+  const absOrRel = absValuesOn ? 'Per100k' : '';
+  const casesType = selectedOption.replace(/(New)|(Total)|(Per100k)/g, '');
+  indicator.value = `${totalOrNew}${casesType}${absOrRel}`;
+
+  const targetOption = options.filter((option) => option.value === indicator.value)[0];
+  targetOption.setAttribute('selected', true);
+
+  indicator.dispatchEvent(new Event('change'));
+
+  buttonAbs.classList.toggle('absolute');
+  buttonAbs.classList.toggle('relative');
+});
+
+buttonCount.addEventListener('click', () => {
+  const totalCasesOn = buttonCount.classList.contains('total');
+  const absValuesOn = buttonAbs.classList.contains('absolute');
+  const options = Array.from(list.querySelectorAll('option'));
+  const selectedOption = options.filter((option) => option.selected)[0].value;
+  options.forEach((option) => option.setAttribute('selected', false));
+
+  const totalOrNew = totalCasesOn ? 'New' : 'Total';
+  const absOrRel = absValuesOn ? '' : 'Per100k';
+  const casesType = selectedOption.replace(/(New)|(Total)|(Per100k)/g, '');
+  indicator.value = `${totalOrNew}${casesType}${absOrRel}`;
+
+  const targetOption = options.filter((option) => option.value === indicator.value)[0];
+  targetOption.setAttribute('selected', true);
+
+  indicator.dispatchEvent(new Event('change'));
+
+  buttonCount.classList.toggle('total');
+  buttonCount.classList.toggle('new');
+});

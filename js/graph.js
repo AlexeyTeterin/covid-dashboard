@@ -22,6 +22,7 @@ const updateChartData = (chart, data, countryCode) => {
   const selectedCountry = document.querySelector('.list__row_active');
   const population = countryCode ? selectedCountry.dataset.population : worldPopulation;
   const relativeValues = valueTypeSwitcher.classList.contains('relative');
+
   datasets[0].data = Object.values(cases);
   datasets[1].data = Object.values(recovered);
   datasets[2].data = Object.values(deaths);
@@ -39,20 +40,22 @@ const updateChartData = (chart, data, countryCode) => {
 };
 
 const handleCountrySelection = (graph, countryCode) => {
-  getCountryStatsByDay(countryCode).then((res) => {
-    const chart = graph;
-    const activeRow = document.querySelector('.list__row_active');
-    const countryName = activeRow.dataset.Country;
-    chart.options.title.text = countryName;
-    if (!res.timeline) {
-      chart.data.datasets.forEach((el) => {
-        const dataset = el;
-        dataset.data = [];
-      });
-      chart.update();
-    }
-    if (res.timeline) updateChartData(chart, res.timeline, countryCode);
-  });
+  getCountryStatsByDay(countryCode)
+    .then((res) => {
+      const chart = graph;
+      const activeRow = document.querySelector('.list__row_active');
+      const countryName = activeRow.dataset.Country;
+      chart.options.title.text = countryName;
+      if (!res.timeline) {
+        chart.data.datasets.forEach((el) => {
+          const dataset = el;
+          dataset.data = [];
+        });
+        chart.update();
+      }
+      if (res.timeline) updateChartData(chart, res.timeline, countryCode);
+    })
+    .catch((e) => console.log(e));
 };
 
 const addTailToLabels = (chart, tail) => chart.data.datasets
