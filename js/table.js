@@ -69,12 +69,15 @@ getSummary()
       const click = new Event('click', { bubbles: true });
       if (activeListRow) activeListRow.firstChild.dispatchEvent(click);
     });
-    document.querySelectorAll('.list__row').forEach((l) => l.addEventListener('click', (e) => {
-      source = res.Countries.find((a) => a.CountryCode === e.path[1].dataset.CountryCode);
+
+    document.querySelector('.list').addEventListener('click', (event) => {
+      source = res.Countries.find((a) => a.CountryCode === event.target
+        .parentElement.dataset.CountryCode);
       buttonArea.innerText = source.Country;
       population = source.Premium.CountryStats.Population;
       setStat();
-    }));
+    });
+
     document.querySelector('.map').addEventListener('click', () => {
       function setSource() {
         source = res.Countries.find((a) => a.Country === buttonArea.innerText);
