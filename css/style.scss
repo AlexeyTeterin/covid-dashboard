@@ -159,7 +159,23 @@ body {
   max-width: 1024px;
   max-height: 675px;
 }
-
+.leaflet-top, .legend {
+  line-height: 18px;
+  background: #351c1c90;
+}
+.info {
+  width: 140px;
+}
+.leaflet-top .leaflet-control {
+  margin: 0px;
+}
+.legend i {
+  width: 10px;
+  height: 10px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
 .graph {
   position: relative;
   height: 45vh;
