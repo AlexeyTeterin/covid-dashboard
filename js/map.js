@@ -113,7 +113,9 @@ export default function setMap(res) {
       const per100 = infoType.absolute ? 1 : country.Premium.CountryStats.Population / 100000;
       const stat = infoType.absolute ? maxStat[infoType.type] : maxStat[`${infoType.type}Per100`];
       const k = country[infoType.type] / per100;
-      const level = stat / 8;
+      let level = stat / 8;
+      if (level > 1000) level = Math.round(level / 1000) * 1000;
+      else level = level.toFixed(3);
       let a = Math.floor((stat - k) / level);
       a = a > 7 ? 7 : a;
       return colors[a < 0 ? 0 : a];
@@ -139,13 +141,15 @@ export default function setMap(res) {
 
       const label = document.querySelector('#mapid > div.leaflet-control-container > div.leaflet-bottom.leaflet-right > div.info.legend.leaflet-control');
       label.innerHTML = '';
-      const level = Math.round(maxStat[`${infoType.type}${infoType.absolute ? '' : 'Per100'}`] / 8);
+      let level = maxStat[`${infoType.type}${infoType.absolute ? '' : 'Per100'}`] / 8;
+      if (level > 1000) level = Math.round(level / 1000) * 1000;
+      else level = level.toFixed(3);
       const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
         '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
       ];
       colors.reverse().forEach((color, i) => {
         label.innerHTML
-          += `<i style="background:${color}"></i> ${level * i}${colors[i + 1] ? `&ndash;${level * (i + 1)}<br>` : '+'}`;
+          += `<i style="background:${color}"></i> ${Math.round(level * i * 1000) / 1000}${colors[i + 1] ? `&ndash;${Math.round(level * (i + 1) * 1000) / 1000}<br>` : '+'}`;
       });
     }
     function highlightFeature(e) {
@@ -183,7 +187,8 @@ export default function setMap(res) {
     legend.onAdd = function (map) {
       const key = 'TotalConfirmed';
       const div = L.DomUtil.create('div', 'info legend');
-      const level = Math.round(maxStat[key] / 8);
+      let level = Math.round(maxStat[key] / 8);
+      if (level > 1000) level = Math.round(level / 1000) * 1000;
       const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
         '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
       ];
