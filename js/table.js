@@ -47,18 +47,19 @@ getSummary()
       divDeaths.innerText = round(deat / k);
       divRecovered.innerText = round(rec / k);
     }
-
-    buttonCount.addEventListener('click', () => { // total / last day
+    function toggleTotal() {
       stat.total = !stat.total;
-      buttonCount.innerText = stat.total ? 'Total' : 'Last day';
+      buttonCount.innerText = stat.total ? 'Total' : 'New';
       setStat();
-    });
-
-    buttonAbs.addEventListener('click', () => { // absolute / per 100
+    }
+    function toggleAbs() {
       stat.absolute = !stat.absolute;
-      buttonAbs.innerText = stat.absolute ? 'absolute' : 'per 100k';
+      buttonAbs.innerText = stat.absolute ? 'Absolute' : 'Per 100k';
       setStat();
-    });
+    }
+    buttonCount.addEventListener('click', () => toggleTotal());
+
+    buttonAbs.addEventListener('click', () => toggleAbs());
     buttonArea.addEventListener('click', async () => {
       buttonArea.innerText = 'World';
       population = worldPopulation;
@@ -71,6 +72,12 @@ getSummary()
     });
 
     document.querySelector('.list').addEventListener('click', (e) => {
+      if (e.target.value) {
+        if (stat.absolute === (e.target.value[e.target.value.length - 1] === 'k')) toggleAbs();
+        if (stat.total === (e.target.value.slice(0, 3) !== 'Tot')) toggleTotal();
+        setStat();
+      }
+
       if (!e.path[1].dataset.Country) return;
       source = res.Countries.find((a) => a.CountryCode === e.path[1].dataset.CountryCode);
       buttonArea.innerText = source.Country;

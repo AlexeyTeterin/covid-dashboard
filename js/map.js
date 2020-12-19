@@ -23,7 +23,25 @@ export default function setMap(res) {
 
     const info = L.control();
     const clickedCountry = { target: null, name: '' };
+    const maxStat = {};
+    const infoType = { type: 'TotalConfirmed', absolute: true };
 
+    function setMaxStat(key) {
+      let max = 0;
+      let maxPer100 = 0;
+
+      for (const i of res.Countries) {
+        const pop = i.Premium.CountryStats.Population / 100000;
+        if (max < i[key]) max = i[key];
+        if (maxPer100 < (i[key] / pop)) maxPer100 = i[key] / pop;
+      }
+      maxStat[key] = max / 5;
+      maxStat[`${key}Per100`] = maxPer100 / 5;
+      // mediumStat[key] = res.Countries.reduce((a, b) => a[key] + b[key], 0) / res.Countries.length;
+    }
+    const keysArr = ['NewConfirmed', 'TotalConfirmed', 'NewDeaths', 'TotalDeaths', 'NewRecovered', 'TotalRecovered'];
+    const labelsArr = ['New Confirmed', 'Total Confirmed', 'New Deaths', 'Total Deaths', 'New Recovered', 'Total Recovered'];
+    keysArr.forEach((a) => setMaxStat(a));
     info.onAdd = function () {
       this.div = L.DomUtil.create('div', 'info');
       this.update();
@@ -33,15 +51,24 @@ export default function setMap(res) {
     info.update = function (e) {
       let country = false;
       if (e) country = res.Countries.find((c) => c.Country === e.name);
-      const stats = country ? country.TotalConfirmed : 'no information';
-      this.div.innerHTML = `<h4>Covid statistics</h4>${e
-        ? `<b>${e.name}</b><br/>${stats}`
+      const stats = country ? country[infoType.type] : 'no information';
+      this.div.innerHTML = `<b>Covid statistics</b><br/>${e
+        ? `<b>${e.name}</b><br/>${labelsArr[keysArr.indexOf(infoType.type)]} ${infoType.absolute ? '' : 'per 100k'}:<br/> ${stats}`
         : 'Hover over a country'}`;
     };
 
     info.addTo(map);
 
     let geoJson;
+    document.querySelector('#list__indicator').addEventListener('click', (e) => {
+      if (e.target.value) {
+        if (infoType === e.target.value.replace('Per100k', '') && (!infoType.absolute === e.target.value.includes('Per100k'))) return;
+        infoType.absolute = !e.target.value.includes('Per100k');
+        infoType.type = e.target.value.replace('Per100k', '');
+        setColors();
+      }
+    });
+
     document.querySelector('.list').addEventListener('click', (e) => {
       if (!e.path[1].dataset.Country) return;
       const clickedListName = res.Countries
@@ -52,13 +79,8 @@ export default function setMap(res) {
         clickedCountry.target = null;
         return;
       }
-      let target;
-      for (const key in geoJson._layers) {
-        if (geoJson._layers[key].feature.properties.name === clickedListName) {
-          target = geoJson._layers[key];
-          break;
-        }
-      }
+      const target = geoJson._layers[Object.keys(geoJson._layers)
+        .find((key) => geoJson._layers[key].feature.properties.name === clickedListName)];
       if (!target) return;
       clickedCountry.name = clickedListName;
       clickedCountry.target = target;
@@ -77,7 +99,6 @@ export default function setMap(res) {
         const targetRow = Array.from(document.querySelectorAll('.list__row'))
           .filter((row) => row.firstChild.textContent === name)[0];
         if (targetRow) {
-          // if (targetRow.classList.contains('list__row_active')) return;
           targetRow.firstChild.dispatchEvent(clickEvent);
         }
       }
@@ -89,9 +110,13 @@ export default function setMap(res) {
       const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
         '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
       ];
-      const k = country.TotalConfirmed; // * 100000 / country.Premium.CountryStats.Population;
-      const a = (Math.floor(k / 30000) > 7) ? 7 : Math.floor(k / 30000);
-      return colors[7 - a];
+      const per100 = infoType.absolute ? 1 : country.Premium.CountryStats.Population / 100000;
+      const stat = infoType.absolute ? maxStat[infoType.type] : maxStat[`${infoType.type}Per100`];
+      const k = country[infoType.type] / per100;
+      const level = stat / 8;
+      let a = Math.floor((stat - k) / level);
+      a = a > 7 ? 7 : a;
+      return colors[a < 0 ? 0 : a];
     }
 
     function style(feature) {
@@ -105,7 +130,24 @@ export default function setMap(res) {
         fillOpacity: 0.3,
       };
     }
+    function setColors() {
+      Object.keys(geoJson._layers).forEach((key) => {
+        geoJson._layers[key].options.fillColor = getColor(geoJson._layers[key].feature.properties.name);
+        geoJson._layers[key].setStyle({
+        });
+      });
 
+      const label = document.querySelector('#mapid > div.leaflet-control-container > div.leaflet-bottom.leaflet-right > div.info.legend.leaflet-control');
+      label.innerHTML = '';
+      const level = Math.round(maxStat[`${infoType.type}${infoType.absolute ? '' : 'Per100'}`] / 8);
+      const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
+        '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
+      ];
+      colors.reverse().forEach((color, i) => {
+        label.innerHTML
+          += `<i style="background:${color}"></i> ${level * i}${colors[i + 1] ? `&ndash;${level * (i + 1)}<br>` : '+'}`;
+      });
+    }
     function highlightFeature(e) {
       const layer = e.target;
       layer.setStyle({
@@ -114,7 +156,6 @@ export default function setMap(res) {
         dashArray: '',
         fillOpacity: 0.5,
       });
-      layer.bringToFront();
       info.update(layer.feature.properties);
     }
 
@@ -136,6 +177,24 @@ export default function setMap(res) {
       style,
       onEachFeature,
     }).addTo(map);
+    // legend
+
+    const legend = L.control({ position: 'bottomright' });
+    legend.onAdd = function (map) {
+      const key = 'TotalConfirmed';
+      const div = L.DomUtil.create('div', 'info legend');
+      const level = Math.round(maxStat[key] / 8);
+      const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
+        '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
+      ];
+      colors.reverse().forEach((color, i) => {
+        div.innerHTML
+          += `<i style="background:${color}"></i> ${level * i}${colors[i + 1] ? `&ndash;${level * (i + 1)}<br>` : '+'}`;
+      });
+      return div;
+    };
+
+    legend.addTo(map);
   };
 
   request.send();
