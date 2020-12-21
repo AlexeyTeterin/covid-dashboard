@@ -14,22 +14,23 @@
 </head>
 
 <body>
-  <header>
-    <h2>Covid dashboard</h2>
-  </header>
   <div class="content-top">
-
-    <div class="list">
-      <div class="max-min-btn"></div>
-      <div class="list__container">
-        <div class="list__header">
-          <input type="text" id="list__search" placeholder="Search..." class="list__search">
-          <button class="keyboard-button"></button>
-          <select class="list__indicator" id="list__indicator"></select>
+    <div class="list-wrapper">
+      <h2>Covid dashboard</h2>
+      <span>Last time updated: </span><span class="day-updated">updating in progress</span>
+      <div class="list">
+        <div class="max-min-btn"></div>
+        <div class="list__container">
+          <div class="list__header">
+            <input type="text" id="list__search" placeholder="Search..." class="list__search">
+            <button class="keyboard-button"></button>
+            <select class="list__indicator" id="list__indicator"></select>
+          </div>
         </div>
-      </div>
 
+      </div>
     </div>
+
 
     <div class="map-wrapper">
       <div class="max-min-btn"></div>
@@ -43,11 +44,13 @@
         <button class="row-title-area">World</button>
         <button class="row-title-count total">Total</button>
         <button class="row-title-abs absolute">Absolute</button>
+      </div>
+        <div class="row">
         <div>Cases
-          <div class="table-cases">100500</div>
+          <div class="table-cases">0</div>
         </div>
         <div>Deaths
-          <div class="table-deaths">666</div>
+          <div class="table-deaths">0</div>
         </div>
         <div>Recovered
           <div class="table-recovered">0</div>
