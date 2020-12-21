@@ -423,6 +423,7 @@ footer a {
 
 footer img {
   width: 50px;
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.75));
 }
 
 @media screen and (max-width: 1023px) {
