@@ -11,6 +11,13 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+body .hidden {
+  height: 0;
+  width: 0;
+  min-width: 0;
+  opacity: 0;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -49,6 +56,10 @@ body {
   right: -0.625rem;
 }
 
+.max-min-btn.min {
+  background-image: url(../assets/img/minimize.svg);
+}
+
 .content-top {
   display: flex;
   justify-content: space-between;
@@ -81,7 +92,8 @@ body {
   width: 19%;
   min-width: 300px;
   height: 45vh;
-  transition: box-shadow 0.2s;
+  min-height: 0;
+  transition: opacity 0.5s, width 0.5s, height 0.5s, box-shadow 0.2s;
 }
 
 .list:hover {
@@ -91,6 +103,14 @@ body {
 .list:hover .max-min-btn {
   opacity: 1;
   z-index: 9000;
+}
+
+.list.fit-window {
+  margin: 0 auto;
+  width: auto;
+  max-width: 400px;
+  min-height: 60vh;
+  max-height: 80vh;
 }
 
 .list .list__container {
@@ -181,7 +201,8 @@ body {
   position: relative;
   width: 19%;
   min-width: 100px;
-  transition: box-shadow 0.2s;
+  min-height: 0;
+  transition: opacity 0.5s, width 0.5s, height 0.5s, box-shadow 0.2s;
 }
 
 .table-wrapper:hover {
@@ -191,6 +212,11 @@ body {
 .table-wrapper:hover .max-min-btn {
   opacity: 1;
   z-index: 9000;
+}
+
+.table-wrapper.fit-window {
+  width: 40%;
+  margin: 0 auto;
 }
 
 .row {
@@ -218,9 +244,11 @@ body {
 .map-wrapper {
   position: relative;
   width: 59%;
+  min-height: 300px;
   max-width: 1024px;
   max-height: 675px;
-  transition: box-shadow 0.2s;
+  min-height: 0;
+  transition: opacity 0.5s, width 0.5s, height 0.5s, box-shadow 0.2s;
 }
 
 .map-wrapper:hover {
@@ -230,6 +258,13 @@ body {
 .map-wrapper:hover .max-min-btn {
   opacity: 1;
   z-index: 9000;
+}
+
+.map-wrapper.fit-window {
+  margin: 0 auto;
+  width: 90%;
+  max-width: 1530px;
+  height: 60vh;
 }
 
 .map {
@@ -259,12 +294,13 @@ body {
 .graph {
   position: relative;
   width: 59%;
-  max-width: 1004px;
+  max-width: 700px;
   min-width: 500px;
   background-color: rgba(255, 255, 255, 0);
   margin-top: 0.5rem;
   transition: background 0.2s;
-  transition: box-shadow 0.2s;
+  min-height: 0;
+  transition: opacity 0.5s, width 0.5s, height 0.5s, box-shadow 0.2s;
 }
 
 .graph:hover {
@@ -276,8 +312,21 @@ body {
   z-index: 9000;
 }
 
+.graph.fit-window {
+  width: 80%;
+  max-width: unset;
+}
+
+.graph.fit-window canvas {
+  max-height: unset;
+}
+
 .graph:hover {
   background-color: rgba(255, 255, 255, 0.05);
+}
+
+.graph canvas {
+  max-height: 350px;
 }
 
 button {

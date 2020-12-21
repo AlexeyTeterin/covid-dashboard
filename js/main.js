@@ -9,6 +9,8 @@ import { getSummary, getCountries } from './CovidData.js';
 import { buttonAbs, buttonCount } from './table.js';
 import { indicator, list } from './list.js';
 
+const resizeBtns = document.querySelectorAll('.max-min-btn');
+
 buttonAbs.addEventListener('click', () => {
   const options = Array.from(list.querySelectorAll('option'));
   const selectedOption = options.filter((option) => option.selected)[0].value;
@@ -49,4 +51,15 @@ buttonCount.addEventListener('click', () => {
 
   buttonCount.classList.toggle('total');
   buttonCount.classList.toggle('new');
+});
+
+resizeBtns.forEach((btn) => {
+  btn.addEventListener('click', (event) => {
+    const target = event.target.parentElement;
+    btn.classList.toggle('min');
+    Array.from(document.querySelectorAll('.resizable'))
+      .filter((div) => div !== target)
+      .forEach((div) => div.classList.toggle('hidden'));
+    target.classList.toggle('fit-window');
+  });
 });
