@@ -1,4 +1,5 @@
 import { getSummary } from './CovidData.js';
+import { list } from './list.js';
 import setMap from './map.js';
 
 const divDeaths = document.querySelector('.table-deaths');
@@ -71,7 +72,7 @@ getSummary()
       if (activeListRow) activeListRow.firstChild.dispatchEvent(click);
     });
 
-    document.querySelector('.list').addEventListener('click', (e) => {
+    list.addEventListener('click', (e) => {
       if (e.target.value) {
         if (stat.absolute === (e.target.value[e.target.value.length - 1] === 'k')) toggleAbs();
         if (stat.total === (e.target.value.slice(0, 3) !== 'Tot')) toggleTotal();
