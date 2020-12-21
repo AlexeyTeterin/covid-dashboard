@@ -1,9 +1,9 @@
 import { getSummary, getCountries } from './CovidData.js';
 
-//getSummary()
+// getSummary()
 //  .then((res) => console.log(res));
 
-//getCountries()
+// getCountries()
 //  .then((res) => console.log(res));
 
 import { buttonAbs, buttonCount } from './table.js';
@@ -55,6 +55,7 @@ buttonCount.addEventListener('click', () => {
 
 resizeBtns.forEach((btn) => {
   btn.addEventListener('click', (event) => {
+    document.querySelector('.content-top').classList.toggle('flex');
     const target = event.target.parentElement;
     btn.classList.toggle('min');
     Array.from(document.querySelectorAll('.resizable'))
