@@ -6,7 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
   <link rel="stylesheet" href="./css/style.css">
-  <link rel="stylesheet" href="./css/keyboard.css">
+	<link rel="stylesheet" href="./css/keyboard.css">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js" integrity="sha512-hZf9Qhp3rlDJBvAKvmiG+goaaKRZA6LKUO35oK6EsM0/kjPK32Yw7URqrq3Q+Nvbbt8Usss+IekL7CRn83dYmw==" crossorigin="anonymous"></script>
   <title>Covid-19 Dashboard</title>
 </head>
@@ -17,17 +19,26 @@
   </header>
   <div class="content-top">
 
-    <div class="list wrapper">
-      <div class="list__header">
-        <input type="text" id="list__search" placeholder="Search..." class="list__search">
-        <button class="keyboard-button"></button>
-        <select class="list__indicator" id="list__indicator"></select>
+    <div class="list">
+      <div class="max-min-btn"></div>
+      <div class="list__container">
+        <div class="list__header">
+          <input type="text" id="list__search" placeholder="Search..." class="list__search">
+          <button class="keyboard-button"></button>
+          <select class="list__indicator" id="list__indicator"></select>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="map-wrapper">
+      <div class="max-min-btn"></div>
+      <div class="map" id="mapid">
       </div>
     </div>
 
-    <div class="map" id="mapid"></div>
-
     <div class="table-wrapper">
+      <div class="max-min-btn"></div>
       <div class="row">
         <button class="row-title-area">World</button>
         <button class="row-title-count total">Total</button>
@@ -48,6 +59,7 @@
   <div class="content-bot">
 
     <div class="graph">
+      <div class="max-min-btn"></div>
       <canvas class="chart" id="chart">
       </canvas>
     </div>

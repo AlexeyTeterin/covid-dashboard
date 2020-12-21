@@ -7,7 +7,8 @@ strong {
 }
 
 .keyboard {
-  position: fixed;
+	position: fixed;
+	z-index: 9000;
   margin: 0 auto;
   left: 0;
   height: fit-content;
@@ -15,7 +16,7 @@ strong {
   width: 100vw;
   min-width: 500px;
   padding: 5px 0;
-  background: linear-gradient(180deg, rgba(55, 72, 97, 1) 0%, rgba(84, 144, 152, 1) 95%);
+	background: linear-gradient(180deg, rgba(39, 46, 43) 0%, rgba(29, 36, 33) 100%);
   user-select: none;
   transition: bottom 0.5s ease-in-out, height 0.5s;
   box-shadow: 0px 0px 5px 0px rgba(55, 72, 97, 0.4);
