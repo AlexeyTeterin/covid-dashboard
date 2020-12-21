@@ -17,17 +17,24 @@
   </header>
   <div class="content-top">
 
-    <div class="list wrapper">
-      <div class="list__header">
-        <input type="text" id="list__search" placeholder="Search..." class="list__search">
-        <button class="keyboard-button"></button>
-        <select class="list__indicator" id="list__indicator"></select>
+    <div class="list">
+      <div class="max-min-btn"></div>
+      <div class="list__container">
+        <div class="list__header">
+          <input type="text" id="list__search" placeholder="Search..." class="list__search">
+          <button class="keyboard-button"></button>
+          <select class="list__indicator" id="list__indicator"></select>
+        </div>
       </div>
+
     </div>
 
-    <div class="map" id="mapid"></div>
+    <div class="map" id="mapid">
+      <div class="max-min-btn"></div>
+    </div>
 
     <div class="table-wrapper">
+      <div class="max-min-btn"></div>
       <div class="row">
         <button class="row-title-area">World</button>
         <button class="row-title-count total">Total</button>
@@ -48,6 +55,7 @@
   <div class="content-bot">
 
     <div class="graph">
+      <div class="max-min-btn"></div>
       <canvas class="chart" id="chart">
       </canvas>
     </div>
