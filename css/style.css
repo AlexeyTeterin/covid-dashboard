@@ -151,14 +151,20 @@ body {
   display: flex;
   justify-content: space-between;
   cursor: default;
+  line-height: 1.5rem;
 }
 
 .list .list__container .list__row > div:first-child {
   padding: 0 0 0 24px;
   background-position: 0;
-  background-size: 1rem;
+  background-size: 24px;
   background-repeat: no-repeat;
   width: 100%;
+}
+
+.list .list__container .list__row > div:last-child {
+  display: flex;
+  align-items: center;
 }
 
 .list .list__container .list__row:hover {

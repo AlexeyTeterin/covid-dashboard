@@ -5,8 +5,6 @@ const searchInput = document.querySelector('#list__search');
 export const indicator = document.querySelector('#list__indicator');
 export const list = document.querySelector('.list__container');
 const keyboardButton = document.querySelector('.keyboard-button');
-const tableValueTypeSwitcher = document.querySelector('.row-title-abs');
-const tableCasesSwitcher = document.querySelector('.row-title-count');
 
 const keyboard = new Keyboard();
 keyboard.init();
@@ -38,7 +36,7 @@ const loadRows = (data, option) => {
     row.classList.add('list__row');
 
     name.textContent = country.Country;
-    name.style.setProperty('background-image', `url(https://www.countryflags.io/${country.CountryCode}/shiny/16.png)`);
+    name.style.setProperty('background-image', `url(https://www.countryflags.io/${country.CountryCode}/shiny/24.png)`);
 
     value.textContent = country[option];
 
