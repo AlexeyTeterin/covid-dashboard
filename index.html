@@ -6,67 +6,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
   <link rel="stylesheet" href="./css/style.css">
-	<link rel="stylesheet" href="./css/keyboard.css">
-	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/keyboard.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js" integrity="sha512-hZf9Qhp3rlDJBvAKvmiG+goaaKRZA6LKUO35oK6EsM0/kjPK32Yw7URqrq3Q+Nvbbt8Usss+IekL7CRn83dYmw==" crossorigin="anonymous"></script>
-  <title>Covid-19 Dashboard</title>
+  <title>COVID-19 Dashboard</title>
 </head>
 
 <body>
-<main>
-  <div class="content-top flex">
+  <main>
+    <div class="title">
+      <h2>COVID-19 Dashboard</h2>
+      <span>Last time updated: <span class="day-updated">updating in progress</span></span>
+    </div>
 
-    <div class="list resizable">
-      <div class="max-min-btn"></div>
-      <div class="title"><h2>Covid dashboard</h2>
-        <span>Last time updated: </span><span class="day-updated">updating in progress</span></div>
-      <div class="list__container">
-        <div class="list__header">
-          <input type="text" id="list__search" placeholder="Search..." class="list__search">
-          <button class="keyboard-button"></button>
-          <select class="list__indicator" id="list__indicator"></select>
+    <div class="content-top flex">
+
+      <div class="list resizable">
+        <div class="max-min-btn"></div>
+        <div class="list__container">
+          <div class="list__header">
+            <input type="text" id="list__search" placeholder="Search..." class="list__search">
+            <button class="keyboard-button"></button>
+            <select class="list__indicator" id="list__indicator"></select>
+          </div>
+
         </div>
-
       </div>
-    </div>
 
-
-    <div class="map-wrapper resizable">
-      <div class="max-min-btn"></div>
-      <div class="map" id="mapid">
+      <div class="map-wrapper resizable">
+        <div class="max-min-btn"></div>
+        <div class="map" id="mapid">
+        </div>
       </div>
-    </div>
 
-    <div class="table-wrapper resizable">
-      <div class="max-min-btn"></div>
-      <div class="row">
-        <button class="row-title-area">World</button>
-        <button class="row-title-count total">Total</button>
-        <button class="row-title-abs absolute">Absolute</button>
-      </div>
+      <div class="table-wrapper resizable">
+        <div class="max-min-btn"></div>
         <div class="row">
-        <div>Cases
-          <div class="table-cases">0</div>
+          <button class="row-title-area">World</button>
+          <button class="row-title-count total">Total</button>
+          <button class="row-title-abs absolute">Absolute</button>
         </div>
-        <div>Deaths
-          <div class="table-deaths">0</div>
-        </div>
-        <div>Recovered
-          <div class="table-recovered">0</div>
+        <div class="row">
+          <div>
+						<div>Cases:</div>
+            <div class="table-cases">0</div>
+          </div>
+          <div>
+						<div>Deaths:</div>
+            <div class="table-deaths">0</div>
+          </div>
+          <div>
+						<div>Recovered:</div>
+            <div class="table-recovered">0</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="content-bot">
-    <div class="graph resizable">
-      <div class="max-min-btn"></div>
-      <canvas class="chart" id="chart">
-      </canvas>
+    <div class="content-bot">
+      <div class="graph resizable">
+        <div class="max-min-btn"></div>
+        <canvas class="chart" id="chart">
+        </canvas>
+      </div>
     </div>
-  </div>
-</main>
+  </main>
   <footer>
     <div><a href="https://rs.school/js/"><img class='logo' src="assets/img/rs_school.svg" alt="rs school"></a> &copy; 2020</div>
     <div>Made by <a href="https://github.com/AlexeyTeterin">Alexey Teterin</a> and <a href="https://github.com/Alisa-Pavlova">Alisa Pavlova</a></div>
