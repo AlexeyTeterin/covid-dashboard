@@ -74,6 +74,7 @@ const removeTailFromLabels = (chart, tail) => chart.data.datasets
 
 getWorldStatsByDay().then((DailyWorldStats) => {
   Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 0.7)';
+  Chart.defaults.global.defaultFontFamily = 'Roboto';
   const chart = new Chart(canvas, {
     type: 'line',
     data: {
@@ -86,7 +87,7 @@ getWorldStatsByDay().then((DailyWorldStats) => {
         pointBackgroundColor: '#588c7e',
       }, {
         label: 'Total deaths',
-        pointBackgroundColor: 'black',
+        pointBackgroundColor: 'rgba(255, 255, 255, 0.4)',
       }, {
         label: 'New confirmed',
         pointBackgroundColor: '#f2ae72',
@@ -95,29 +96,37 @@ getWorldStatsByDay().then((DailyWorldStats) => {
         pointBackgroundColor: '#b0cfc5',
       }, {
         label: 'New deaths',
-        pointBackgroundColor: 'rgba(0, 0, 0, 0.6)',
+        pointBackgroundColor: 'rgba(255, 255, 255, 0.9)',
       }],
     },
     options: {
       title: {
         display: true,
         text: 'World',
+        fontSize: '20',
       },
       legend: {
         labels: {
           boxWidth: 8,
           usePointStyle: true,
         },
+        position: 'bottom',
       },
       scales: {
         xAxes: [{
           gridLines: {
             color: 'rgba(255, 255, 255, 0.1)',
           },
+          ticks: {
+            fontColor: 'rgba(255, 255, 255, 0.5)',
+          },
         }],
         yAxes: [{
           gridLines: {
             color: 'rgba(255, 255, 255, 0.1)',
+          },
+          ticks: {
+            fontColor: 'rgba(255, 255, 255, 0.5)',
           },
         }],
       },
@@ -125,8 +134,11 @@ getWorldStatsByDay().then((DailyWorldStats) => {
   });
   chart.data.datasets.forEach((el, index) => {
     const dataset = el;
-    dataset.pointRadius = 1;
-    dataset.pointHoverRadius = 2.5;
+    dataset.pointBorderColor = 'rgba(0, 0, 0, 0)';
+    dataset.borderColor = dataset.pointBackgroundColor;
+    dataset.borderWidth = 1;
+    dataset.pointRadius = 2;
+    dataset.pointHoverRadius = 5;
     dataset.backgroundColor = 'rgba(0, 0, 0, 0)';
     if (index > 2) dataset.hidden = true;
   });
