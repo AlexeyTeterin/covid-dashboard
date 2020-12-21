@@ -1,5 +1,6 @@
 import { getWorldStatsByDay, getCountryStatsByDay } from './CovidData.js';
-import { buttonAbs, buttonCount } from './table.js';
+import { buttonAbs } from './table.js';
+import { list } from './list.js';
 
 const canvas = document.querySelector('#chart');
 
@@ -132,7 +133,7 @@ getWorldStatsByDay().then((DailyWorldStats) => {
   updateChartData(chart, DailyWorldStats);
   chart.update();
 
-  document.querySelector('.list').addEventListener('click', (event) => {
+  list.addEventListener('click', (event) => {
     const target = event.target.parentElement;
     if (!target.classList.contains('list__row')) return;
     const countryIsSelected = !target.classList.contains('list__row_active');
@@ -154,24 +155,4 @@ getWorldStatsByDay().then((DailyWorldStats) => {
     if (activeRow) handleCountrySelection(chart, activeRow.dataset.CountryCode);
     if (!activeRow) updateChartData(chart, DailyWorldStats);
   });
-
-  // buttonCount.addEventListener('click', () => {
-  //   const totalOn = buttonCount.classList.contains('total');
-
-  //   if (!totalOn) {
-  //     chart.data.datasets.forEach((el, index) => {
-  //       const dataset = el;
-  //       if (index <= 2) dataset.hidden = true;
-  //       if (index > 2) dataset.hidden = false;
-  //     });
-  //   } else {
-  //     chart.data.datasets.forEach((el, index) => {
-  //       const dataset = el;
-  //       if (index > 2) dataset.hidden = true;
-  //       if (index <= 2) dataset.hidden = false;
-  //     });
-  //   }
-
-  //   chart.update();
-  // });
 });

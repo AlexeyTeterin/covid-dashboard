@@ -3,7 +3,7 @@ import Keyboard from './keyboard.js';
 
 const searchInput = document.querySelector('#list__search');
 export const indicator = document.querySelector('#list__indicator');
-export const list = document.querySelector('.list');
+export const list = document.querySelector('.list__container');
 const keyboardButton = document.querySelector('.keyboard-button');
 const tableValueTypeSwitcher = document.querySelector('.row-title-abs');
 const tableCasesSwitcher = document.querySelector('.row-title-count');
@@ -46,7 +46,7 @@ const loadRows = (data, option) => {
     ['Slug', 'Premium', 'Date'].forEach((prop) => delete row.dataset[prop]);
 
     row.append(name, value);
-    document.querySelector('.list').append(row);
+    list.append(row);
   });
 };
 
