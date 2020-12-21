@@ -8,6 +8,7 @@ body {
   align-items: center;
   background: #09100d;
   color: aliceblue;
+  font-family: 'Roboto', sans-serif;
 }
 
 ::-webkit-scrollbar {

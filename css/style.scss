@@ -5,8 +5,8 @@
     box-shadow: 0 0 4px 0 rgba(255, 255, 255, 0.4);
 
     & .max-min-btn {
-			opacity: 1;
-			z-index: 9000;
+      opacity: 1;
+      z-index: 9000;
     }
   }
 }
@@ -21,6 +21,8 @@ body {
   align-items: center;
   background: #09100d;
   color: aliceblue;
+  font-family: 'Roboto',
+    sans-serif;
 }
 
 ::-webkit-scrollbar {
@@ -210,7 +212,7 @@ body {
   position: relative;
   width: 59%;
   max-width: 1024px;
-	max-height: 675px;
+  max-height: 675px;
   @include block-border();
 }
 
@@ -241,8 +243,8 @@ body {
 .graph {
   position: relative;
   width: 59%;
-	max-width: 1004px;
-	min-width: 500px;
+  max-width: 1004px;
+  min-width: 500px;
   background-color: rgba(255, 255, 255, 0);
   margin-top: 0.5rem;
   transition: background 0.2s;
