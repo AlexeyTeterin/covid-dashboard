@@ -16,30 +16,29 @@
 <body>
 <main>
   <div class="content-top">
-    <div class="list-wrapper">
+
+ <div class="list-wrapper">
       <h2>Covid dashboard</h2>
       <span>Last time updated: </span><span class="day-updated">updating in progress</span>
-      <div class="list">
-        <div class="max-min-btn"></div>
-        <div class="list__container">
-          <div class="list__header">
-            <input type="text" id="list__search" placeholder="Search..." class="list__search">
-            <button class="keyboard-button"></button>
-            <select class="list__indicator" id="list__indicator"></select>
-          </div>
+    <div class="list resizable">
+      <div class="max-min-btn"></div>
+      <div class="list__container">
+        <div class="list__header">
+          <input type="text" id="list__search" placeholder="Search..." class="list__search">
+          <button class="keyboard-button"></button>
+          <select class="list__indicator" id="list__indicator"></select>
         </div>
 
       </div>
     </div>
 
-
-    <div class="map-wrapper">
+    <div class="map-wrapper resizable">
       <div class="max-min-btn"></div>
       <div class="map" id="mapid">
       </div>
     </div>
 
-    <div class="table-wrapper">
+    <div class="table-wrapper resizable">
       <div class="max-min-btn"></div>
       <div class="row">
         <button class="row-title-area">World</button>
@@ -62,7 +61,7 @@
   </div>
   <div class="content-bot">
 
-    <div class="graph">
+    <div class="graph resizable">
       <div class="max-min-btn"></div>
       <canvas class="chart" id="chart">
       </canvas>
