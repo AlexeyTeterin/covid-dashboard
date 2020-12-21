@@ -13,6 +13,7 @@ getSummary()
   .then((res) => {
     const worldPopulation = 7827000000000;
     // default settings
+    document.querySelector('.day-updated').innerText = `${res.Date.slice(11, 16)} ${res.Date.slice(0, 10)}`;
     let population = worldPopulation;
     let source = res.Global;
     const stat = { world: true, total: true, absolute: true };

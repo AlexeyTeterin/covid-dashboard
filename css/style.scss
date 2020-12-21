@@ -12,18 +12,29 @@
     }
   }
 }
-
+@mixin flex-column {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   background: #09100d;
   color: aliceblue;
   font-family: 'Roboto',
+  sans-serif;
+}
+main {
+  @include flex-column;
+  width: 99vw;
+  box-sizing: border-box;
+
     sans-serif;
 
   .hidden {
@@ -32,6 +43,7 @@ body {
     min-width: 0;
 		opacity: 0;
   }
+
 }
 
 ::-webkit-scrollbar {
@@ -49,7 +61,9 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #00000050;
 }
-
+h2 {
+  margin: 0 0 1rem;
+}
 .max-min-btn {
   position: absolute;
   z-index: 9;
@@ -82,10 +96,12 @@ body {
   padding: 5px;
   box-sizing: border-box;
   width: 100%;
-	max-width: 2400px;
+  height: 49vh;
+  max-width: 2400px;
+
 
   >div {
-    margin: 0 5px;
+   // margin: 0 5px;
   }
 }
 
@@ -107,7 +123,8 @@ body {
   background-color: rgba(0, 0, 0, 0.2);
   width: 19%;
   min-width: 300px;
-  height: 45vh;
+  height: 39vh;
+  margin-top: 10px;
   @include block-border();
 
   &.fit-window {
@@ -205,9 +222,11 @@ body {
 }
 
 .table-wrapper {
+  margin: 0 0 0 10px;
   position: relative;
   width: 19%;
   min-width: 100px;
+  height: 50vh;
   @include block-border();
 
   &.fit-window {
@@ -217,12 +236,12 @@ body {
 }
 
 .row {
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   font-size: 1.3rem;
 
   div {
     padding: 1rem;
+    width: 80%;
   }
 }
 
@@ -319,5 +338,57 @@ button {
 
   &:hover {
     background: #00000050;
+  }
+}
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 35px;
+  background: #2b2a2a50;
+  margin-top: auto;
+  align-self: flex-end;
+  div {
+    margin: 0 10px;
+  }
+  a {
+    color: white;
+  }
+  img {
+    width: 50px;
+  }
+}
+@media screen and (max-width: 1023px) {
+  main {
+    width: 98vw;
+    height: auto;
+  }
+  .content-top {
+    @include flex-column;
+    height: auto;
+  }
+  .map-wrapper {
+    width: 100%;
+    height: 412px;
+  }
+  .list-wrapper {
+    @include flex-column;
+    padding: 0 10px 10px;
+    width: 100%;
+  }
+  .list {
+    width: 100%;
+    height: 280px;
+  }
+  .table-wrapper {
+    margin: 10px 0 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-around;
+  }
+  .row {
+    width: 40%;
   }
 }

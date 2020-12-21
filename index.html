@@ -14,11 +14,12 @@
 </head>
 
 <body>
-  <header>
-    <h2>Covid dashboard</h2>
-  </header>
+<main>
   <div class="content-top">
 
+ <div class="list-wrapper">
+      <h2>Covid dashboard</h2>
+      <span>Last time updated: </span><span class="day-updated">updating in progress</span>
     <div class="list resizable">
       <div class="max-min-btn"></div>
       <div class="list__container">
@@ -27,8 +28,8 @@
           <button class="keyboard-button"></button>
           <select class="list__indicator" id="list__indicator"></select>
         </div>
-      </div>
 
+      </div>
     </div>
 
     <div class="map-wrapper resizable">
@@ -43,11 +44,13 @@
         <button class="row-title-area">World</button>
         <button class="row-title-count total">Total</button>
         <button class="row-title-abs absolute">Absolute</button>
+      </div>
+        <div class="row">
         <div>Cases
-          <div class="table-cases">100500</div>
+          <div class="table-cases">0</div>
         </div>
         <div>Deaths
-          <div class="table-deaths">666</div>
+          <div class="table-deaths">0</div>
         </div>
         <div>Recovered
           <div class="table-recovered">0</div>
@@ -65,11 +68,18 @@
     </div>
 
   </div>
+</main>
+  <footer>
+    <div><a href="https://rs.school/js/"><img class='logo' src="assets/img/rs_school.svg" alt="rs school"></a> &copy; 2020</div>
+    <div>Made by <a href="https://github.com/AlexeyTeterin">Alexey Teterin</a> and <a href="https://github.com/Alisa-Pavlova">Alisa Pavlova</a></div>
+  </footer>
+
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
   <script src="./js/main.js" type="module"></script>
   <script src="./js/list.js" type="module"></script>
   <script src="./js/table.js" type="module"></script>
   <script src="./js/graph.js" type="module"></script>
+
 </body>
 
 </html>
