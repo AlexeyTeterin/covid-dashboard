@@ -471,6 +471,10 @@ footer img {
     max-width: 600px;
     order: 3;
   }
+  .map-wrapper.fit-window {
+    width: 100%;
+    height: 84vh;
+  }
   .list {
     margin: 8px 0 0;
     width: 100%;
@@ -492,7 +496,11 @@ footer img {
     order: 0;
   }
   .table-wrapper.fit-window {
+    width: 100%;
     max-width: unset;
+  }
+  .table-wrapper.fit-window .row {
+    width: 100%;
   }
   .content-bot {
     box-sizing: border-box;

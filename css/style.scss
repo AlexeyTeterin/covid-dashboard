@@ -448,6 +448,11 @@ footer {
     margin-top: 8px;
     max-width: 600px;
     order: 3;
+    
+    &.fit-window {
+      width: 100%;
+      height: 84vh;
+    }
   }
 
   .list {
@@ -473,7 +478,12 @@ footer {
     order: 0;
     
     &.fit-window {
+      width: 100%;
       max-width: unset;
+      
+      & .row {
+        width: 100%;
+      }
     }
   }
 
