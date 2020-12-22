@@ -38,6 +38,7 @@ main .hidden {
 
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -49,10 +50,25 @@ main .hidden {
   flex-direction: column;
   align-items: center;
   margin-top: 0.5rem;
+  margin-bottom: 8px;
+  width: 100%;
 }
 
 .title h2 {
   margin: 0;
+}
+
+.title h2 a {
+  color: unset;
+  text-decoration: unset;
+}
+
+.title h2 a:hover {
+  opacity: 0.8;
+}
+
+.title h2 a:active {
+  opacity: 0.6;
 }
 
 .title > span {
@@ -140,7 +156,7 @@ main .hidden {
   width: auto;
   max-width: 600px;
   min-height: 60vh;
-  height: 90vh;
+  height: 84vh;
 }
 
 .list .list__container {
@@ -352,6 +368,7 @@ main .hidden {
   transition: background 0.2s;
   min-height: 0;
   transition: opacity 0.5s, width 0.5s, height 0.5s, box-shadow 0.2s;
+  border-radius: 4px;
   min-width: 440px;
 }
 
@@ -460,7 +477,6 @@ footer img {
     width: 100%;
   }
   .table-wrapper {
-    margin: 8px 0 0;
     width: 100%;
     max-width: 600px;
     height: auto;
