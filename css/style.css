@@ -109,7 +109,7 @@ main .hidden {
 }
 
 .content-top {
-  justify-content: space-between;
+  justify-content: center;
   padding: 5px;
   box-sizing: border-box;
   width: 100%;
