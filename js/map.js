@@ -42,13 +42,13 @@ export default function setMap(res) {
     const keysArr = ['NewConfirmed', 'TotalConfirmed', 'NewDeaths', 'TotalDeaths', 'NewRecovered', 'TotalRecovered'];
     const labelsArr = ['New Confirmed', 'Total Confirmed', 'New Deaths', 'Total Deaths', 'New Recovered', 'Total Recovered'];
     keysArr.forEach((a) => setMaxStat(a));
-    info.onAdd = function () {
+    info.onAdd = function() {
       this.div = L.DomUtil.create('div', 'info');
       this.update();
       return this.div;
     };
 
-    info.update = function (e) {
+    info.update = function(e) {
       let country = false;
       if (e) country = res.Countries.find((c) => c.Country === e.name);
       const stats = country ? country[infoType.type] : 'no information';
@@ -92,6 +92,8 @@ export default function setMap(res) {
       });
     });
 
+    document.querySelector('.map-wrapper > .max-min-btn').addEventListener('click', () => setTimeout(() => map.invalidateSize(true), 250));
+
     function handleClick(e) {
       const { name } = e.target.feature.properties;
       if (res.Countries.find((a) => a.Country === name)) {
@@ -132,11 +134,11 @@ export default function setMap(res) {
         fillOpacity: 0.3,
       };
     }
+
     function setColors() {
       Object.keys(geoJson._layers).forEach((key) => {
         geoJson._layers[key].options.fillColor = getColor(geoJson._layers[key].feature.properties.name);
-        geoJson._layers[key].setStyle({
-        });
+        geoJson._layers[key].setStyle({});
       });
 
       const label = document.querySelector('#mapid > div.leaflet-control-container > div.leaflet-bottom.leaflet-right > div.info.legend.leaflet-control');
@@ -148,10 +150,10 @@ export default function setMap(res) {
         '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
       ];
       colors.reverse().forEach((color, i) => {
-        label.innerHTML
-          += `<i style="background:${color}"></i> ${Math.round(level * i * 1000) / 1000}${colors[i + 1] ? `&ndash;${Math.round(level * (i + 1) * 1000) / 1000}<br>` : '+'}`;
+        label.innerHTML += `<i style="background:${color}"></i> ${Math.round(level * i * 1000) / 1000}${colors[i + 1] ? `&ndash;${Math.round(level * (i + 1) * 1000) / 1000}<br>` : '+'}`;
       });
     }
+
     function highlightFeature(e) {
       const layer = e.target;
       layer.setStyle({
@@ -184,7 +186,7 @@ export default function setMap(res) {
     // legend
 
     const legend = L.control({ position: 'bottomright' });
-    legend.onAdd = function (map) {
+    legend.onAdd = function(map) {
       const key = 'TotalConfirmed';
       const div = L.DomUtil.create('div', 'info legend');
       let level = Math.round(maxStat[key] / 8);
@@ -193,8 +195,7 @@ export default function setMap(res) {
         '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
       ];
       colors.reverse().forEach((color, i) => {
-        div.innerHTML
-          += `<i style="background:${color}"></i> ${level * i}${colors[i + 1] ? `&ndash;${level * (i + 1)}<br>` : '+'}`;
+        div.innerHTML += `<i style="background:${color}"></i> ${level * i}${colors[i + 1] ? `&ndash;${level * (i + 1)}<br>` : '+'}`;
       });
       return div;
     };

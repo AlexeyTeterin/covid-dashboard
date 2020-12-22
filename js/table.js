@@ -27,9 +27,9 @@ getSummary()
 
     function setStat() {
       if (!source) {
-        divCases.innerText = 'no information';
-        divDeaths.innerText = 'no information';
-        divRecovered.innerText = 'no information';
+        divCases.innerText = 'no info';
+        divDeaths.innerText = 'no info';
+        divRecovered.innerText = 'no info';
         return;
       }
       let k = 1;
@@ -59,7 +59,7 @@ getSummary()
       buttonAbs.innerText = stat.absolute ? 'Absolute' : 'Per 100k';
       setStat();
     }
-    buttonCount.addEventListener('click', () => toggleTotal());
+    buttonCount.addEventListener('click', toggleTotal);
 
     buttonAbs.addEventListener('click', () => toggleAbs());
     buttonArea.addEventListener('click', async () => {
