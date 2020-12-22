@@ -279,6 +279,11 @@ main {
   &.fit-window {
     width: 85%;
     margin: auto;
+    
+    & .row {
+      width: 40%;
+      margin: auto;
+    }
   }
 
   &:hover {
@@ -466,6 +471,10 @@ footer {
     align-items: center;
     box-sizing: border-box;
     order: 0;
+    
+    &.fit-window {
+      max-width: unset;
+    }
   }
 
   .content-bot {
@@ -484,7 +493,7 @@ footer {
   }
 
   .row {
-    width: 40%;
+    width: 100%;
 
     &:last-child {
       width: 100%;

@@ -281,6 +281,11 @@ main .hidden {
   margin: auto;
 }
 
+.table-wrapper.fit-window .row {
+  width: 40%;
+  margin: auto;
+}
+
 .table-wrapper:hover {
   background-color: rgba(255, 255, 255, 0.05);
 }
@@ -486,6 +491,9 @@ footer img {
     box-sizing: border-box;
     order: 0;
   }
+  .table-wrapper.fit-window {
+    max-width: unset;
+  }
   .content-bot {
     box-sizing: border-box;
     padding: 5px;
@@ -499,7 +507,7 @@ footer img {
     width: 100%;
   }
   .row {
-    width: 40%;
+    width: 100%;
   }
   .row:last-child {
     width: 100%;
