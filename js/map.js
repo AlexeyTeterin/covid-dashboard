@@ -92,7 +92,7 @@ export default function setMap(res) {
       });
     });
 
-    document.querySelector('.map-wrapper > .max-min-btn').addEventListener('click', () => setTimeout(() => map.invalidateSize(true), 50));
+    document.querySelector('.map-wrapper > .max-min-btn').addEventListener('click', () => setTimeout(() => map.invalidateSize(true), 250));
 
     function handleClick(e) {
       const { name } = e.target.feature.properties;
