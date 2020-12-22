@@ -68,8 +68,8 @@ export default function setMap(res) {
       }
     }
     document.querySelector('#list__indicator').addEventListener('click', (e) => setLabel(e.target));
-   // document.querySelector('.row-title-count').addEventListener('click', () => setLabel(document.querySelector('#list__indicator')));
-   // document.querySelector('.row-title-abs').addEventListener('click', () => setLabel(document.querySelector('#list__indicator')));
+    document.querySelector('.row-title-count').addEventListener('click', () => setLabel(document.querySelector('#list__indicator')));
+    document.querySelector('.row-title-abs').addEventListener('click', () => setLabel(document.querySelector('#list__indicator')));
 
     document.querySelector('.list').addEventListener('click', (e) => {
       if (!e.path[1].dataset.Country) return;
