@@ -27,9 +27,9 @@ getSummary()
 
     function setStat() {
       if (!source) {
-        divCases.innerText = 'no information';
-        divDeaths.innerText = 'no information';
-        divRecovered.innerText = 'no information';
+        divCases.innerText = 'no info';
+        divDeaths.innerText = 'no info';
+        divRecovered.innerText = 'no info';
         return;
       }
       let k = 1;

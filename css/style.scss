@@ -53,7 +53,7 @@ main {
 }
 
 ::-webkit-scrollbar-track {
-	background: rgba(255, 255, 255, 0.0);
+  background: rgba(255, 255, 255, 0.0);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -69,25 +69,25 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-	margin-top: 0.5rem;
-	margin-bottom: 8px;
-	width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 8px;
+  width: 100%;
 
   h2 {
-		margin: 0;
-		
-		a {
-			color: unset;
-			text-decoration: unset;
-			
-			&:hover {
-				opacity: 0.8;
-			}
-			
-			&:active {
-				opacity: 0.6;
-			}
-		}
+    margin: 0;
+
+    a {
+      color: unset;
+      text-decoration: unset;
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &:active {
+        opacity: 0.6;
+      }
+    }
   }
 
   >span {
@@ -300,6 +300,8 @@ main {
 
     &:last-child {
       justify-content: flex-start;
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
 }
@@ -354,8 +356,8 @@ main {
   background-color: rgba(255, 255, 255, 0.05);
   margin-top: 0.5rem;
   transition: background 0.2s;
-	@include block-border();
-	border-radius: 4px;
+  @include block-border();
+  border-radius: 4px;
   min-width: 440px;
 
   &.fit-window {
@@ -408,13 +410,13 @@ footer {
   color: rgba(255, 255, 255, 0.4);
 
   a {
-		color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.5);
   }
 
   img {
-		margin-right: 5px;
+    margin-right: 5px;
     width: 50px;
-		filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.75));
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.75));
   }
 }
 
@@ -453,7 +455,7 @@ footer {
 
     &.fit-window {
       max-width: 600px;
-			width: 100%;
+      width: 100%;
     }
   }
 

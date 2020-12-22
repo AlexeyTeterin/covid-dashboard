@@ -304,6 +304,8 @@ main .hidden {
 
 .row div:last-child {
   justify-content: flex-start;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .map-wrapper {
