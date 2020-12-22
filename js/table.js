@@ -59,7 +59,7 @@ getSummary()
       buttonAbs.innerText = stat.absolute ? 'Absolute' : 'Per 100k';
       setStat();
     }
-    buttonCount.addEventListener('click', () => toggleTotal());
+    buttonCount.addEventListener('click', toggleTotal);
 
     buttonAbs.addEventListener('click', () => toggleAbs());
     buttonArea.addEventListener('click', async () => {
