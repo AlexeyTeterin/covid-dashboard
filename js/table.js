@@ -91,6 +91,10 @@ getSummary()
       function setSource() {
         source = res.Countries.find((a) => a.Country === buttonArea.innerText);
         if (source) population = source.Premium.CountryStats.Population;
+        if (!source) {
+          source = res.Global;
+          population = worldPopulation;
+        }
         setStat();
       }
       setTimeout(setSource, 10);

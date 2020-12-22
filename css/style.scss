@@ -279,7 +279,7 @@ main {
   &.fit-window {
     width: 85%;
     margin: auto;
-    
+
     & .row {
       width: 40%;
       margin: auto;
@@ -334,6 +334,7 @@ main {
   width: 100%;
   height: 100%;
   border-radius: 4px;
+  background: transparent;
 }
 
 .leaflet-top,
@@ -449,7 +450,7 @@ footer {
     margin-top: 8px;
     max-width: 600px;
     order: 3;
-    
+
     &.fit-window {
       width: 100%;
       height: 84vh;
@@ -477,11 +478,11 @@ footer {
     align-items: center;
     box-sizing: border-box;
     order: 0;
-    
+
     &.fit-window {
       width: 100%;
       max-width: unset;
-      
+
       & .row {
         width: 100%;
       }

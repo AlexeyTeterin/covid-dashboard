@@ -37,18 +37,17 @@ export default function setMap(res) {
       }
       maxStat[key] = max / 5;
       maxStat[`${key}Per100`] = maxPer100 / 5;
-      // mediumStat[key] = res.Countries.reduce((a, b) => a[key] + b[key], 0) / res.Countries.length;
     }
     const keysArr = ['NewConfirmed', 'TotalConfirmed', 'NewDeaths', 'TotalDeaths', 'NewRecovered', 'TotalRecovered'];
     const labelsArr = ['New Confirmed', 'Total Confirmed', 'New Deaths', 'Total Deaths', 'New Recovered', 'Total Recovered'];
     keysArr.forEach((a) => setMaxStat(a));
-    info.onAdd = function() {
+    info.onAdd = function () {
       this.div = L.DomUtil.create('div', 'info');
       this.update();
       return this.div;
     };
 
-    info.update = function(e) {
+    info.update = function (e) {
       let country = false;
       if (e) country = res.Countries.find((c) => c.Country === e.name);
       const stats = country ? country[infoType.type] : 'no information';
@@ -60,14 +59,17 @@ export default function setMap(res) {
     info.addTo(map);
 
     let geoJson;
-    document.querySelector('#list__indicator').addEventListener('click', (e) => {
-      if (e.target.value) {
-        if (infoType === e.target.value.replace('Per100k', '') && (!infoType.absolute === e.target.value.includes('Per100k'))) return;
-        infoType.absolute = !e.target.value.includes('Per100k');
-        infoType.type = e.target.value.replace('Per100k', '');
+    function setLabel(e) {
+      if (e.value) {
+        if (infoType === e.value.replace('Per100k', '') && (!infoType.absolute === e.value.includes('Per100k'))) return;
+        infoType.absolute = !e.value.includes('Per100k');
+        infoType.type = e.value.replace('Per100k', '');
         setColors();
       }
-    });
+    }
+    document.querySelector('#list__indicator').addEventListener('click', (e) => setLabel(e.target));
+   // document.querySelector('.row-title-count').addEventListener('click', () => setLabel(document.querySelector('#list__indicator')));
+   // document.querySelector('.row-title-abs').addEventListener('click', () => setLabel(document.querySelector('#list__indicator')));
 
     document.querySelector('.list').addEventListener('click', (e) => {
       if (!e.path[1].dataset.Country) return;
@@ -186,7 +188,7 @@ export default function setMap(res) {
     // legend
 
     const legend = L.control({ position: 'bottomright' });
-    legend.onAdd = function(map) {
+    legend.onAdd = function (map) {
       const key = 'TotalConfirmed';
       const div = L.DomUtil.create('div', 'info legend');
       let level = Math.round(maxStat[key] / 8);

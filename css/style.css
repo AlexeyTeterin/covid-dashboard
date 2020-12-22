@@ -8,7 +8,7 @@ body {
   box-sizing: border-box;
   background: #09100d;
   color: aliceblue;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 main {
@@ -19,7 +19,6 @@ main {
   width: 99vw;
   box-sizing: border-box;
 }
-
 main .hidden {
   height: 0;
   width: 0;
@@ -53,24 +52,19 @@ main .hidden {
   margin-bottom: 8px;
   width: 100%;
 }
-
 .title h2 {
   margin: 0;
 }
-
 .title h2 a {
   color: unset;
   text-decoration: unset;
 }
-
 .title h2 a:hover {
   opacity: 0.8;
 }
-
 .title h2 a:active {
   opacity: 0.6;
 }
-
 .title > span {
   color: rgba(255, 255, 255, 0.5);
   font-size: 14px;
@@ -89,7 +83,6 @@ main .hidden {
   opacity: 0;
   transition: opacity 0.2s, filter 0.2s;
 }
-
 .max-min-btn:hover {
   filter: invert(0.8) drop-shadow(0 0 2px white);
   width: 1.25rem;
@@ -97,7 +90,6 @@ main .hidden {
   top: -0.625rem;
   right: -0.625rem;
 }
-
 .max-min-btn.min {
   background-image: url(../assets/img/minimize.svg);
 }
@@ -141,16 +133,13 @@ main .hidden {
   min-height: 0;
   transition: opacity 0.5s, width 0.5s, height 0.5s, box-shadow 0.2s;
 }
-
 .list:hover {
   box-shadow: 0 0 4px 0 rgba(255, 255, 255, 0.4);
 }
-
 .list:hover .max-min-btn {
   opacity: 1;
   z-index: 9000;
 }
-
 .list.fit-window {
   margin: auto;
   width: auto;
@@ -158,7 +147,6 @@ main .hidden {
   min-height: 60vh;
   height: 84vh;
 }
-
 .list .list__container {
   display: flex;
   height: 100%;
@@ -168,7 +156,6 @@ main .hidden {
   border-radius: 4px;
   color: rgba(255, 255, 255, 0.75);
 }
-
 .list .list__container .list__header {
   position: sticky;
   top: 0;
@@ -182,7 +169,6 @@ main .hidden {
   box-shadow: 0px 4px 6px 0px #161c19;
   order: -1;
 }
-
 .list .list__container .list__header .keyboard-button {
   margin: 0;
   width: 1rem;
@@ -199,35 +185,29 @@ main .hidden {
   opacity: 0.85;
   transition: transform 0.075s, opacity 0.075s;
 }
-
 .list .list__container .list__header .keyboard-button:active {
   opacity: 0.5;
 }
-
 .list .list__container .list__header .list__search {
   width: 30%;
 }
-
 .list .list__container .list__header .list__search,
 .list .list__container .list__header .list__indicator {
   background: inherit;
   color: rgba(255, 255, 255, 0.85);
   border: none;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
-
 .list .list__container .list__header .list__search:focus,
 .list .list__container .list__header .list__indicator:focus {
   outline: none;
 }
-
 .list .list__container .list__row {
   display: flex;
   justify-content: space-between;
   cursor: default;
   line-height: 1.5rem;
 }
-
 .list .list__container .list__row > div:first-child {
   padding: 0 0 0 24px;
   background-position: 0;
@@ -235,16 +215,13 @@ main .hidden {
   background-repeat: no-repeat;
   width: 100%;
 }
-
 .list .list__container .list__row > div:last-child {
   display: flex;
   align-items: center;
 }
-
 .list .list__container .list__row:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
-
 .list .list__container .list__row_active {
   font-weight: bold;
   background-color: rgba(255, 255, 255, 0.3);
@@ -266,26 +243,21 @@ main .hidden {
   min-height: 0;
   transition: opacity 0.5s, width 0.5s, height 0.5s, box-shadow 0.2s;
 }
-
 .table-wrapper:hover {
   box-shadow: 0 0 4px 0 rgba(255, 255, 255, 0.4);
 }
-
 .table-wrapper:hover .max-min-btn {
   opacity: 1;
   z-index: 9000;
 }
-
 .table-wrapper.fit-window {
   width: 85%;
   margin: auto;
 }
-
 .table-wrapper.fit-window .row {
   width: 40%;
   margin: auto;
 }
-
 .table-wrapper:hover {
   background-color: rgba(255, 255, 255, 0.05);
 }
@@ -297,7 +269,6 @@ main .hidden {
   justify-content: center;
   font-size: 1.3rem;
 }
-
 .row div {
   padding: 0.5rem 0.5rem;
   width: 100%;
@@ -306,7 +277,6 @@ main .hidden {
   justify-content: flex-end;
   align-items: center;
 }
-
 .row div:last-child {
   justify-content: flex-start;
   white-space: nowrap;
@@ -325,16 +295,13 @@ main .hidden {
   min-height: 0;
   transition: opacity 0.5s, width 0.5s, height 0.5s, box-shadow 0.2s;
 }
-
 .map-wrapper:hover {
   box-shadow: 0 0 4px 0 rgba(255, 255, 255, 0.4);
 }
-
 .map-wrapper:hover .max-min-btn {
   opacity: 1;
   z-index: 9000;
 }
-
 .map-wrapper.fit-window {
   margin: 0 auto;
   width: 90%;
@@ -346,6 +313,7 @@ main .hidden {
   width: 100%;
   height: 100%;
   border-radius: 4px;
+  background: transparent;
 }
 
 .leaflet-top,
@@ -379,25 +347,20 @@ main .hidden {
   border-radius: 4px;
   min-width: 440px;
 }
-
 .graph:hover {
   box-shadow: 0 0 4px 0 rgba(255, 255, 255, 0.4);
 }
-
 .graph:hover .max-min-btn {
   opacity: 1;
   z-index: 9000;
 }
-
 .graph.fit-window {
   width: 80%;
   max-width: unset;
 }
-
 .graph.fit-window canvas {
   max-height: unset;
 }
-
 .graph canvas {
   max-height: 350px;
 }
@@ -416,11 +379,9 @@ button {
   color: rgba(255, 255, 255, 0.85);
   transition: background 0.1s;
 }
-
 button:hover {
   background: rgba(255, 255, 255, 0.15);
 }
-
 button:active {
   background: rgba(255, 255, 255, 0.1);
 }
@@ -437,11 +398,9 @@ footer {
   font-size: 14px;
   color: rgba(255, 255, 255, 0.4);
 }
-
 footer a {
   color: rgba(255, 255, 255, 0.5);
 }
-
 footer img {
   margin-right: 5px;
   width: 50px;
@@ -453,11 +412,13 @@ footer img {
     width: 98vw;
     height: auto;
   }
+
   .flex {
     display: flex;
     max-height: unset;
     min-height: unset;
   }
+
   .content-top {
     display: flex;
     align-items: center;
@@ -465,6 +426,7 @@ footer img {
     justify-content: center;
     height: auto;
   }
+
   .map-wrapper {
     width: 100%;
     height: 412px;
@@ -476,6 +438,7 @@ footer img {
     width: 100%;
     height: 84vh;
   }
+
   .list {
     margin: 8px 0 0;
     width: 100%;
@@ -488,6 +451,7 @@ footer img {
     max-width: 600px;
     width: 100%;
   }
+
   .table-wrapper {
     width: 100%;
     max-width: 600px;
@@ -503,10 +467,12 @@ footer img {
   .table-wrapper.fit-window .row {
     width: 100%;
   }
+
   .content-bot {
     box-sizing: border-box;
     padding: 5px;
   }
+
   .graph {
     max-width: 600px;
     width: 100%;
@@ -515,6 +481,7 @@ footer img {
   .graph.fit-window {
     width: 100%;
   }
+
   .row {
     width: 100%;
   }
@@ -522,3 +489,5 @@ footer img {
     width: 100%;
   }
 }
+
+/*# sourceMappingURL=style.css.map */
