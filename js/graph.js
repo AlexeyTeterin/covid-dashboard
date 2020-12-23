@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import { getWorldStatsByDay, getCountryStatsByDay } from './CovidData.js';
 import { buttonAbs } from './table.js';
-import { list } from './list.js';
+import { list, indicator } from './list.js';
 
 const canvas = document.querySelector('#chart');
 
@@ -167,5 +167,10 @@ getWorldStatsByDay().then((DailyWorldStats) => {
 
     if (activeRow) handleCountrySelection(chart, activeRow.dataset.CountryCode);
     if (!activeRow) updateChartData(chart, DailyWorldStats);
+  });
+
+  indicator.addEventListener('change', () => {
+    const countryIsSelected = document.querySelector('.list__row_active');
+    if (!countryIsSelected) setTimeout(() => updateChartData(chart, DailyWorldStats), 0);
   });
 });
