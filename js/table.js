@@ -11,7 +11,7 @@ const buttonArea = document.querySelector('.row-title-area');
 
 getSummary()
   .then((res) => {
-    const worldPopulation = 7827000000000;
+    const worldPopulation = 7827000000;
     // default settings
     document.querySelector('.day-updated').innerText = `${res.Date.slice(11, 16)} ${res.Date.slice(0, 10)}`;
     let population = worldPopulation;
