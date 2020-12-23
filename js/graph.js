@@ -172,5 +172,8 @@ getWorldStatsByDay().then((DailyWorldStats) => {
   indicator.addEventListener('change', () => {
     const countryIsSelected = document.querySelector('.list__row_active');
     if (!countryIsSelected) setTimeout(() => updateChartData(chart, DailyWorldStats), 0);
+    if (countryIsSelected) {
+      setTimeout(() => handleCountrySelection(chart, countryIsSelected.dataset.CountryCode), 0);
+    }
   });
 });
