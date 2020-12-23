@@ -63,7 +63,7 @@ const handleCountrySelection = (graph, countryCode) => {
 const addTailToLabels = (chart, tail) => chart.data.datasets
   .forEach((el) => {
     const dataset = el;
-    dataset.label += tail;
+    if (!dataset.label.includes(tail)) dataset.label += tail;
   });
 
 const removeTailFromLabels = (chart, tail) => chart.data.datasets
@@ -156,14 +156,6 @@ getWorldStatsByDay().then((DailyWorldStats) => {
 
   buttonAbs.addEventListener('click', () => {
     const activeRow = document.querySelector('.list__row_active');
-    const tail = ' per 100k';
-    const absoluteOn = chart.data.datasets[0].label.indexOf(tail) === -1;
-
-    if (absoluteOn) {
-      addTailToLabels(chart, tail);
-    } else {
-      removeTailFromLabels(chart, tail);
-    }
 
     if (activeRow) handleCountrySelection(chart, activeRow.dataset.CountryCode);
     if (!activeRow) updateChartData(chart, DailyWorldStats);
@@ -175,5 +167,9 @@ getWorldStatsByDay().then((DailyWorldStats) => {
     if (countryIsSelected) {
       setTimeout(() => handleCountrySelection(chart, countryIsSelected.dataset.CountryCode), 0);
     }
+
+    const absoluteOn = !indicator.value.includes('100k');
+    if (!absoluteOn) addTailToLabels(chart, ' per 100k');
+    else removeTailFromLabels(chart, ' per 100k');
   });
 });
