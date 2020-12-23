@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { getWorldStatsByDay, getCountryStatsByDay } from './CovidData.js';
 import { buttonAbs } from './table.js';
 import { list } from './list.js';
@@ -56,7 +57,7 @@ const handleCountrySelection = (graph, countryCode) => {
       }
       if (res.timeline) updateChartData(chart, res.timeline, countryCode);
     })
-    .catch((e) => console.log(e));
+    .catch((e) => new Error(e.message));
 };
 
 const addTailToLabels = (chart, tail) => chart.data.datasets

@@ -1,4 +1,4 @@
-import { layouts as layoutsImported } from './keyboardLayouts.js';
+import layouts from './keyboardLayouts.js';
 
 const textarea = document.querySelector('#list__search');
 
@@ -19,7 +19,7 @@ export default class KEYBOARD {
       main: null,
       keysContainer: null,
       keys: [],
-      layouts: layoutsImported,
+      layouts,
     };
   }
 

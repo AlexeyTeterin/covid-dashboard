@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-undef */
 export default function setMap(res) {
   const request = new XMLHttpRequest();
   request.open('GET', './assets/json/countries.json');
@@ -30,24 +32,25 @@ export default function setMap(res) {
       let max = 0;
       let maxPer100 = 0;
 
-      for (const i of res.Countries) {
-        const pop = i.Premium.CountryStats.Population / 100000;
-        if (max < i[key]) max = i[key];
-        if (maxPer100 < (i[key] / pop)) maxPer100 = i[key] / pop;
-      }
+      res.Countries.forEach((country) => {
+        const pop = country.Premium.CountryStats.Population / 100000;
+        if (max < country[key]) max = country[key];
+        if (maxPer100 < (country[key] / pop)) maxPer100 = country[key] / pop;
+      });
+
       maxStat[key] = max / 5;
       maxStat[`${key}Per100`] = maxPer100 / 5;
     }
     const keysArr = ['NewConfirmed', 'TotalConfirmed', 'NewDeaths', 'TotalDeaths', 'NewRecovered', 'TotalRecovered'];
     const labelsArr = ['New Confirmed', 'Total Confirmed', 'New Deaths', 'Total Deaths', 'New Recovered', 'Total Recovered'];
     keysArr.forEach((a) => setMaxStat(a));
-    info.onAdd = function () {
+    info.onAdd = function add() {
       this.div = L.DomUtil.create('div', 'info');
       this.update();
       return this.div;
     };
 
-    info.update = function (e) {
+    info.update = function update(e) {
       let country = false;
       if (e) country = res.Countries.find((c) => c.Country === e.name);
       const stats = country ? country[infoType.type] : 'no information';
@@ -59,6 +62,44 @@ export default function setMap(res) {
     info.addTo(map);
 
     let geoJson;
+
+    function getColor(name) {
+      const country = res.Countries.find((c) => c.Country === name);
+      if (!country) { return ''; }
+      const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
+        '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
+      ];
+      const per100 = infoType.absolute ? 1 : country.Premium.CountryStats.Population / 100000;
+      const stat = infoType.absolute ? maxStat[infoType.type] : maxStat[`${infoType.type}Per100`];
+      const k = country[infoType.type] / per100;
+      let level = stat / 8;
+      if (level > 1000) level = Math.round(level / 1000) * 1000;
+      else level = level.toFixed(3);
+      let a = Math.floor((stat - k) / level);
+      a = a > 7 ? 7 : a;
+      return colors[a < 0 ? 0 : a];
+    }
+
+    function setColors() {
+      Object.keys(geoJson._layers).forEach((key) => {
+        geoJson._layers[key].options
+          .fillColor = getColor(geoJson._layers[key].feature.properties.name);
+        geoJson._layers[key].setStyle({});
+      });
+
+      const label = document.querySelector('#mapid > div.leaflet-control-container > div.leaflet-bottom.leaflet-right > div.info.legend.leaflet-control');
+      label.innerHTML = '';
+      let level = maxStat[`${infoType.type}${infoType.absolute ? '' : 'Per100'}`] / 8;
+      if (level > 1000) level = Math.round(level / 1000) * 1000;
+      else level = level.toFixed(3);
+      const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
+        '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
+      ];
+      colors.reverse().forEach((color, i) => {
+        label.innerHTML += `<i style="background:${color}"></i> ${Math.round(level * i * 1000) / 1000}${colors[i + 1] ? `&ndash;${Math.round(level * (i + 1) * 1000) / 1000}<br>` : '+'}`;
+      });
+    }
+
     function setLabel(e) {
       if (e.value) {
         if (infoType === e.value.replace('Per100k', '') && (!infoType.absolute === e.value.includes('Per100k'))) return;
@@ -108,23 +149,6 @@ export default function setMap(res) {
       }
     }
 
-    function getColor(name) {
-      const country = res.Countries.find((c) => c.Country === name);
-      if (!country) { return ''; }
-      const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
-        '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
-      ];
-      const per100 = infoType.absolute ? 1 : country.Premium.CountryStats.Population / 100000;
-      const stat = infoType.absolute ? maxStat[infoType.type] : maxStat[`${infoType.type}Per100`];
-      const k = country[infoType.type] / per100;
-      let level = stat / 8;
-      if (level > 1000) level = Math.round(level / 1000) * 1000;
-      else level = level.toFixed(3);
-      let a = Math.floor((stat - k) / level);
-      a = a > 7 ? 7 : a;
-      return colors[a < 0 ? 0 : a];
-    }
-
     function style(feature) {
       return {
         fillColor: getColor(feature.properties.name),
@@ -135,25 +159,6 @@ export default function setMap(res) {
         dashOpacity: 0.1,
         fillOpacity: 0.3,
       };
-    }
-
-    function setColors() {
-      Object.keys(geoJson._layers).forEach((key) => {
-        geoJson._layers[key].options.fillColor = getColor(geoJson._layers[key].feature.properties.name);
-        geoJson._layers[key].setStyle({});
-      });
-
-      const label = document.querySelector('#mapid > div.leaflet-control-container > div.leaflet-bottom.leaflet-right > div.info.legend.leaflet-control');
-      label.innerHTML = '';
-      let level = maxStat[`${infoType.type}${infoType.absolute ? '' : 'Per100'}`] / 8;
-      if (level > 1000) level = Math.round(level / 1000) * 1000;
-      else level = level.toFixed(3);
-      const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
-        '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
-      ];
-      colors.reverse().forEach((color, i) => {
-        label.innerHTML += `<i style="background:${color}"></i> ${Math.round(level * i * 1000) / 1000}${colors[i + 1] ? `&ndash;${Math.round(level * (i + 1) * 1000) / 1000}<br>` : '+'}`;
-      });
     }
 
     function highlightFeature(e) {
@@ -188,7 +193,7 @@ export default function setMap(res) {
     // legend
 
     const legend = L.control({ position: 'bottomright' });
-    legend.onAdd = function (map) {
+    legend.onAdd = function add() {
       const key = 'TotalConfirmed';
       const div = L.DomUtil.create('div', 'info legend');
       let level = Math.round(maxStat[key] / 8);

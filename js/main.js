@@ -1,15 +1,19 @@
-import { getSummary, getCountries } from './CovidData.js';
-
-// getSummary()
-//  .then((res) => console.log(res));
-
-// getCountries()
-//  .then((res) => console.log(res));
-
 import { buttonAbs, buttonCount } from './table.js';
 import { indicator, list } from './list.js';
 
 const resizeBtns = document.querySelectorAll('.max-min-btn');
+
+resizeBtns.forEach((btn) => {
+  btn.addEventListener('click', (event) => {
+    document.querySelector('.content-top').classList.toggle('flex');
+    const target = event.target.parentElement;
+    btn.classList.toggle('min');
+    Array.from(document.querySelectorAll('.resizable'))
+      .filter((div) => div !== target)
+      .forEach((div) => div.classList.toggle('hidden'));
+    target.classList.toggle('fit-window');
+  });
+});
 
 buttonAbs.addEventListener('click', () => {
   const options = Array.from(list.querySelectorAll('option'));
@@ -51,16 +55,4 @@ buttonCount.addEventListener('click', () => {
 
   buttonCount.classList.toggle('total');
   buttonCount.classList.toggle('new');
-});
-
-resizeBtns.forEach((btn) => {
-  btn.addEventListener('click', (event) => {
-    document.querySelector('.content-top').classList.toggle('flex');
-    const target = event.target.parentElement;
-    btn.classList.toggle('min');
-    Array.from(document.querySelectorAll('.resizable'))
-      .filter((div) => div !== target)
-      .forEach((div) => div.classList.toggle('hidden'));
-    target.classList.toggle('fit-window');
-  });
 });
