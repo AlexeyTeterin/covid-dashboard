@@ -20,7 +20,7 @@ const updateChartData = (chart, data, countryCode) => {
   const { cases, recovered, deaths } = data;
   const { datasets } = chart.data;
   const { options } = chart;
-  const worldPopulation = 7827000000000;
+  const worldPopulation = 7827000000;
   const selectedCountry = document.querySelector('.list__row_active');
   const population = countryCode ? selectedCountry.dataset.population : worldPopulation;
   const relativeValues = buttonAbs.classList.contains('relative');
