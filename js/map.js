@@ -53,7 +53,10 @@ export default function setMap(res) {
     info.update = function update(e) {
       let country = false;
       if (e) country = res.Countries.find((c) => c.Country === e.name);
-      const stats = country ? country[infoType.type] : 'no information';
+      let stats = country ? country[infoType.type] : 'no information';
+      if (!infoType.absolute && country) {
+        stats = (stats / (country.Premium.CountryStats.Population / 100000)).toFixed(2);
+      }
       this.div.innerHTML = `<b>Covid statistics</b><br/>${e
         ? `<b>${e.name}</b><br/>${labelsArr[keysArr.indexOf(infoType.type)]} ${infoType.absolute ? '' : 'per 100k'}:<br/> ${stats}`
         : 'Hover over a country'}`;

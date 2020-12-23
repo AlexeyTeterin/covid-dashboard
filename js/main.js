@@ -31,9 +31,6 @@ buttonAbs.addEventListener('click', () => {
   targetOption.setAttribute('selected', true);
 
   indicator.dispatchEvent(new Event('change'));
-
-  buttonAbs.classList.toggle('absolute');
-  buttonAbs.classList.toggle('relative');
 });
 
 buttonCount.addEventListener('click', () => {
@@ -52,7 +49,4 @@ buttonCount.addEventListener('click', () => {
   targetOption.setAttribute('selected', true);
 
   indicator.dispatchEvent(new Event('change'));
-
-  buttonCount.classList.toggle('total');
-  buttonCount.classList.toggle('new');
 });

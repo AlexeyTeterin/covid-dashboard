@@ -52,16 +52,20 @@ getSummary()
     function toggleTotal() {
       stat.total = !stat.total;
       buttonCount.innerText = stat.total ? 'Total' : 'New';
+      buttonCount.classList.toggle('total');
+      buttonCount.classList.toggle('new');
       setStat();
     }
     function toggleAbs() {
       stat.absolute = !stat.absolute;
       buttonAbs.innerText = stat.absolute ? 'Absolute' : 'Per 100k';
+      buttonAbs.classList.toggle('absolute');
+      buttonAbs.classList.toggle('relative');
       setStat();
     }
-    buttonCount.addEventListener('click', toggleTotal);
-
+    buttonCount.addEventListener('click', () => toggleTotal());
     buttonAbs.addEventListener('click', () => toggleAbs());
+
     buttonArea.addEventListener('click', async () => {
       buttonArea.innerText = 'World';
       population = worldPopulation;
