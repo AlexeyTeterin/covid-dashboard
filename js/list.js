@@ -120,7 +120,14 @@ const listClickHandler = (event) => {
 
 setTimeout(() => {
   document.querySelector('.loading').textContent = 'API performs caching at the moment, please try to reload page 5 minutes later.';
+  document.querySelector('.loading').classList.remove('pulsate');
 }, 7000);
+
+const hideLoadingText = () => {
+  document.querySelector('.loading').classList.add('hidden');
+  document.querySelector('.content-top').classList.remove('hidden');
+  document.querySelector('.content-bot').classList.remove('hidden');
+};
 
 getSummary()
   .then((data) => {
@@ -128,13 +135,11 @@ getSummary()
     loadRows(data, 'TotalConfirmed');
     sortRows('TotalConfirmed');
 
-    document.querySelector('.loading').classList.add('hidden');
-    document.querySelector('.content-top').classList.remove('hidden');
-    document.querySelector('.content-bot').classList.remove('hidden');
-
     list.addEventListener('click', (event) => listClickHandler(event));
     searchInput.addEventListener('input', () => listSearchHandler());
     keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
     indicator.addEventListener('change', () => sortRows(indicator.value));
+
+    hideLoadingText();
   })
   .catch((e) => new Error(e));
