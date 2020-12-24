@@ -18,8 +18,10 @@
       <h2><a href=".">COVID-19 Dashboard</a></h2>
       <span>Last update time: <span class="day-updated">update in progress...</span></span>
     </div>
+    
+    <div class="loading pulsate">Loading...</div>
 
-    <div class="content-top flex">
+    <div class="content-top flex hidden">
 
       <div class="list resizable">
         <div class="max-min-btn"></div>
@@ -63,7 +65,7 @@
       </div>
     </div>
 
-    <div class="content-bot">
+    <div class="content-bot hidden">
       <div class="graph resizable">
         <div class="max-min-btn"></div>
         <canvas class="chart" id="chart">

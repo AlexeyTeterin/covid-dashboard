@@ -118,11 +118,19 @@ const listClickHandler = (event) => {
   target.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
 
+setTimeout(() => {
+  document.querySelector('.loading').textContent = 'API performs caching at the moment, please try to reload page 5 minutes later.';
+}, 7000);
+
 getSummary()
   .then((data) => {
     createSelector(createOptions(data));
     loadRows(data, 'TotalConfirmed');
     sortRows('TotalConfirmed');
+
+    document.querySelector('.loading').classList.add('hidden');
+    document.querySelector('.content-top').classList.remove('hidden');
+    document.querySelector('.content-bot').classList.remove('hidden');
 
     list.addEventListener('click', (event) => listClickHandler(event));
     searchInput.addEventListener('input', () => listSearchHandler());

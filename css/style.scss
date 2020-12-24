@@ -65,6 +65,36 @@ main {
   background: rgba(255, 255, 255, 0.3);
 }
 
+.loading {
+  display: flex;
+  height: 60vh;
+  min-height: 50px;
+  margin: auto;
+  align-items: center;
+  text-align: center;
+}
+
+.pulsate {
+  animation: pulsate 1s ease-out;
+  animation-iteration-count: infinite;
+  opacity: 0.1;
+  font-weight: bold;
+}
+
+@keyframes pulsate {
+  0% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 1.0;
+  }
+
+  100% {
+    opacity: 0.2;
+  }
+}
+
 .title {
   display: flex;
   flex-direction: column;
