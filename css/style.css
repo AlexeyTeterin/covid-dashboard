@@ -83,12 +83,15 @@ main .hidden {
 }
 
 .title h2 {
+  position: relative;
   margin: 0;
 }
 
 .title h2 a {
+  position: relative;
   color: unset;
   text-decoration: unset;
+  transition: opacity 0.1s;
 }
 
 .title h2 a:hover {
@@ -97,6 +100,22 @@ main .hidden {
 
 .title h2 a:active {
   opacity: 0.6;
+}
+
+.title h2 a span.title__icon {
+  position: absolute;
+  left: -1.7rem;
+  background-image: url(../assets/img/favicon.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 1.5rem;
+  height: 100%;
+  transition: opacity 0.1s, transform 0.5s ease;
+}
+
+.title h2 a:hover span.title__icon {
+  transform: rotate(80deg);
 }
 
 .title > span {

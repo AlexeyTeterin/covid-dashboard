@@ -104,11 +104,14 @@ main {
   width: 100%;
 
   h2 {
+    position: relative;
     margin: 0;
 
     a {
+      position: relative;
       color: unset;
       text-decoration: unset;
+      transition: opacity 0.1s;
 
       &:hover {
         opacity: 0.8;
@@ -117,7 +120,24 @@ main {
       &:active {
         opacity: 0.6;
       }
+
+      span.title__icon {
+        position: absolute;
+        left: -1.7rem;
+        background-image: url(../assets/img/favicon.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 1.5rem;
+        height: 100%;
+        transition: opacity 0.1s, transform 0.5s ease;
+      }
+
+      &:hover span.title__icon {
+        transform: rotate(80deg);
+      }
     }
+
   }
 
   >span {
