@@ -111,11 +111,17 @@ main .hidden {
   background-position: center;
   width: 1.5rem;
   height: 100%;
-  transition: opacity 0.1s, transform 0.5s ease;
+  transition: opacity 0.1s;
+  animation: spin 8s linear infinite;
 }
 
-.title h2 a:hover span.title__icon {
-  transform: rotate(80deg);
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .title > span {
