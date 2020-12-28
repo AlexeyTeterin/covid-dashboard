@@ -1,5 +1,5 @@
 import { getSummary } from './CovidData.js';
-import { list } from './list.js';
+import { list, indicator } from './list.js';
 import setMap from './map.js';
 
 const divDeaths = document.querySelector('.table-deaths');
@@ -49,14 +49,44 @@ getSummary()
       divDeaths.innerText = round(deat / k);
       divRecovered.innerText = round(rec / k);
     }
+
     function toggleTotal() {
+      const options = Array.from(list.querySelectorAll('option'));
+      const selectedOption = options.filter((option) => option.selected)[0].value;
+      options.forEach((option) => option.setAttribute('selected', false));
+
+      const totalOrNew = stat.total ? 'New' : 'Total';
+      const absOrRel = stat.absolute ? '' : 'Per100k';
+      const casesType = selectedOption.replace(/(New)|(Total)|(Per100k)/g, '');
+      indicator.value = `${totalOrNew}${casesType}${absOrRel}`;
+
+      const targetOption = options.filter((option) => option.value === indicator.value)[0];
+      targetOption.setAttribute('selected', true);
+
+      indicator.dispatchEvent(new Event('change'));
+
       stat.total = !stat.total;
       buttonCount.innerText = stat.total ? 'Total' : 'New';
       buttonCount.classList.toggle('total');
       buttonCount.classList.toggle('new');
       setStat();
     }
+
     function toggleAbs() {
+      const options = Array.from(list.querySelectorAll('option'));
+      const selectedOption = options.filter((option) => option.selected)[0].value;
+      options.forEach((option) => option.setAttribute('selected', false));
+
+      const totalOrNew = stat.total ? 'Total' : 'New';
+      const absOrRel = stat.absolute ? 'Per100k' : '';
+      const casesType = selectedOption.replace(/(New)|(Total)|(Per100k)/g, '');
+      indicator.value = `${totalOrNew}${casesType}${absOrRel}`;
+
+      const targetOption = options.filter((option) => option.value === indicator.value)[0];
+      targetOption.setAttribute('selected', true);
+
+      indicator.dispatchEvent(new Event('change'));
+
       stat.absolute = !stat.absolute;
       buttonAbs.innerText = stat.absolute ? 'Absolute' : 'Per 100k';
       buttonAbs.classList.toggle('absolute');
@@ -78,14 +108,19 @@ getSummary()
     });
 
     list.addEventListener('click', (e) => {
-      if (e.target.value) {
-        if (stat.absolute === (e.target.value[e.target.value.length - 1] === 'k')) toggleAbs();
-        if (stat.total === (e.target.value.slice(0, 3) !== 'Tot')) toggleTotal();
+      const clickedRow = e.target.parentElement;
+      const clickedCountryCode = clickedRow.dataset.CountryCode;
+      const { value } = e.target;
+
+      if (value) {
+        if (value.includes('Total') !== buttonCount.classList.contains('total')) toggleTotal();
+        if (value.includes('100k') === buttonAbs.classList.contains('absolute')) toggleAbs();
         setStat();
       }
 
-      if (!e.path[1].dataset.Country) return;
-      source = res.Countries.find((a) => a.CountryCode === e.path[1].dataset.CountryCode);
+      if (!clickedCountryCode) return;
+
+      source = res.Countries.find((a) => a.CountryCode === clickedCountryCode);
       buttonArea.innerText = source.Country;
       population = source.Premium.CountryStats.Population;
       setStat();

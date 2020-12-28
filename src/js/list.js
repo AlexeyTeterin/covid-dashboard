@@ -48,7 +48,9 @@ const loadRows = (data, option) => {
   });
 };
 
-const sortRows = (option) => {
+const sortRows = () => {
+  const option = indicator.value;
+
   const activeElement = document.querySelector('.list__row_active');
   const rows = document.querySelectorAll('.list__row');
   const rowsSorted = Array.from(rows).sort((a, b) => {
@@ -138,8 +140,7 @@ getSummary()
     list.addEventListener('click', (event) => listClickHandler(event));
     searchInput.addEventListener('input', () => listSearchHandler());
     keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
-    indicator.addEventListener('change', () => sortRows(indicator.value));
-
+    indicator.addEventListener('change', () => setTimeout(() => sortRows(), 0));
     hideLoadingText();
   })
   .catch((e) => new Error(e));
