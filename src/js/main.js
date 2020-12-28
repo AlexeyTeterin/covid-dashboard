@@ -1,3 +1,8 @@
+import './graph.js';
+import './map.js';
+import '../css/style.css';
+import '../css/keyboard.css';
+
 import { buttonAbs, buttonCount } from './table.js';
 import { indicator, list } from './list.js';
 
