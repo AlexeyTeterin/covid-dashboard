@@ -1,3 +1,4 @@
+import Chart from 'chart.js';
 import { getWorldStatsByDay, getCountryStatsByDay } from './CovidData.js';
 import { buttonAbs } from './table.js';
 import { list, indicator } from './list.js';
