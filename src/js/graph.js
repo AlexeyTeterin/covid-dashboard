@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { getWorldStatsByDay, getCountryStatsByDay } from './CovidData.js';
 import { buttonAbs } from './table.js';
 import { list, indicator } from './list.js';

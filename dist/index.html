@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/keyboard.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="./assets/img/favicon.svg" type="image/svg">
+  <title>COVID-19 Dashboard</title>
+</head>
+
+<body>
+  <main>
+    <div class="title">
+      <h2></span><a href="."><span class="title__icon"></span>COVID-19 Dashboard</a></h2>
+      <span>Last update time: <span class="day-updated">update in progress...</span></span>
+    </div>
+    
+    <div class="loading pulsate">Loading...</div>
+
+    <div class="content-top flex hidden">
+
+      <div class="list resizable">
+        <div class="max-min-btn"></div>
+        <div class="list__container">
+          <div class="list__header">
+            <input type="text" id="list__search" placeholder="Search..." class="list__search">
+            <button class="keyboard-button"></button>
+            <select class="list__indicator" id="list__indicator"></select>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="map-wrapper resizable">
+        <div class="max-min-btn"></div>
+        <div class="map" id="mapid">
+        </div>
+      </div>
+
+      <div class="table-wrapper resizable">
+        <div class="max-min-btn"></div>
+        <div class="row">
+          <button class="row-title-area">World</button>
+          <button class="row-title-count total">Total</button>
+          <button class="row-title-abs absolute">Absolute</button>
+        </div>
+        <div class="row">
+          <div>
+            <div>Cases:</div>
+            <div class="table-cases">0</div>
+          </div>
+          <div>
+            <div>Deaths:</div>
+            <div class="table-deaths">0</div>
+          </div>
+          <div>
+            <div>Recovered:</div>
+            <div class="table-recovered">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-bot hidden">
+      <div class="graph resizable">
+        <div class="max-min-btn"></div>
+        <canvas class="chart" id="chart">
+        </canvas>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div><a href="https://rs.school/js/" target="_blank"><img class='logo' src="assets/img/rs_school.svg" alt="rs school"></a></div>
+    <div> &copy; 2020, Made by <a href="https://github.com/AlexeyTeterin" target="_blank">Alexey Teterin</a> and <a href="https://github.com/Alisa-Pavlova" target="_blank">Alisa Pavlova</a></div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js" integrity="sha512-hZf9Qhp3rlDJBvAKvmiG+goaaKRZA6LKUO35oK6EsM0/kjPK32Yw7URqrq3Q+Nvbbt8Usss+IekL7CRn83dYmw==" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+  <script src='./js/main.js' type="module"></script>
+  <script src='./js/graph.js' type="module"></script>
+
+<script src="bundle.js"></script></body>
+
+</html>
