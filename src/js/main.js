@@ -1,7 +1,5 @@
 import './graph.js';
 import './map.js';
-import '../css/style.css';
-import '../css/keyboard.css';
 
 const resizeBtns = document.querySelectorAll('.max-min-btn');
 

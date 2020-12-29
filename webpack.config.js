@@ -23,17 +23,17 @@ module.exports = {
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [{
-        from: path.resolve(__dirname, 'src/assets'),
+        from: path.resolve(__dirname, 'src/assets/'),
         to: path.resolve(__dirname, 'dist/assets/'),
+      },
+      {
+        from: 'css/*.css',
+        to: path.resolve(__dirname, 'dist/'),
       }],
     }),
   ],
   module: {
     rules: [
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-      },
       {
         test: /\.(png|svg|jpg|gif)$/,
         use: ['file-loader'],
