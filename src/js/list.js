@@ -9,12 +9,6 @@ const keyboardButton = document.querySelector('.keyboard-button');
 const keyboard = new Keyboard();
 keyboard.init();
 
-const createOptions = (data) => {
-  const options = Object.keys(data);
-  options.forEach((opt) => options.push(`${opt}Per100k`));
-  return options;
-};
-
 const calcPer100k = (value, population) => +((value / population) * 100000).toFixed(2);
 
 const loadRows = (data) => {
@@ -85,7 +79,16 @@ const splitWords = (string) => {
   return result;
 };
 
-const createSelector = (options) => {
+const createListIndicator = () => {
+  const options = [
+    'TotalConfirmed',
+    'TotalRecovered',
+    'TotalDeaths',
+    'NewConfirmed',
+    'NewRecovered',
+    'NewDeaths',
+  ];
+  options.forEach((option) => options.push(`${option}Per100k`));
   options.forEach((option) => {
     const selectorOption = document.createElement('option');
     selectorOption.value = option;
@@ -138,17 +141,7 @@ const hideLoadingText = () => {
 };
 
 getWorldStats()
-  .then((WorldStats) => {
-    const global = {
-      NewConfirmed: WorldStats.todayCases,
-      TotalConfirmed: WorldStats.cases,
-      NewDeaths: WorldStats.todayDeaths,
-      TotalDeaths: WorldStats.deaths,
-      NewRecovered: WorldStats.todayRecovered,
-      TotalRecovered: WorldStats.recovered,
-    };
-    createSelector(createOptions(global));
-  })
+  .then(() => createListIndicator())
   .then(() => getAllCountriesStats())
   .then((allCountriesStats) => {
     // console.log(allCountriesStats);

@@ -134,9 +134,6 @@ getWorldStats()
       TotalDeaths: res.deaths,
       NewRecovered: res.todayRecovered,
       TotalRecovered: res.recovered,
-      TotalConfirmedPer100k: res.casesPerOneMillion / 10,
-      TotalRecoveredPer100k: res.recoveredPerOneMillion / 10,
-      TotalDeathsPer100k: res.deathsPerOneMillion / 10,
     };
     source = globalStats;
     con = source.TotalConfirmed;
