@@ -5,9 +5,9 @@ import setMap from './map.js';
 const divDeaths = document.querySelector('.table-deaths');
 const divRecovered = document.querySelector('.table-recovered');
 const divCases = document.querySelector('.table-cases');
+const buttonArea = document.querySelector('.row-title-area');
 export const buttonCount = document.querySelector('.row-title-count');
 export const buttonAbs = document.querySelector('.row-title-abs');
-const buttonArea = document.querySelector('.row-title-area');
 
 const stat = { world: true, total: true, absolute: true };
 let source;
@@ -16,11 +16,8 @@ let con;
 let deat;
 let rec;
 
-function round(n) {
-  return Math.round(n * 100) / 100;
-}
-
-function setStat() {
+const round = (n) => Math.round(n * 100) / 100;
+const setStats = () => {
   if (!source) {
     divCases.innerText = 'no info';
     divDeaths.innerText = 'no info';
@@ -43,9 +40,8 @@ function setStat() {
   divCases.innerText = round(con / k);
   divDeaths.innerText = round(deat / k);
   divRecovered.innerText = round(rec / k);
-}
-
-function toggleTotal() {
+};
+const toggleTotal = () => {
   const options = Array.from(list.querySelectorAll('option'));
   const selectedOption = options.filter((option) => option.selected)[0].value;
   options.forEach((option) => option.setAttribute('selected', false));
@@ -64,10 +60,9 @@ function toggleTotal() {
   buttonCount.innerText = stat.total ? 'Total' : 'New';
   buttonCount.classList.toggle('total');
   buttonCount.classList.toggle('new');
-  setStat();
-}
-
-function toggleAbs() {
+  setStats();
+};
+const toggleAbs = () => {
   const options = Array.from(list.querySelectorAll('option'));
   const selectedOption = options.filter((option) => option.selected)[0].value;
   options.forEach((option) => option.setAttribute('selected', false));
@@ -86,10 +81,9 @@ function toggleAbs() {
   buttonAbs.innerText = stat.absolute ? 'Absolute' : 'Per 100k';
   buttonAbs.classList.toggle('absolute');
   buttonAbs.classList.toggle('relative');
-  setStat();
-}
-
-function handleListClick(event) {
+  setStats();
+};
+const handleListClick = (event) => {
   const listRows = Array.from(list.querySelectorAll('.list__row'));
   const clickedRow = event.target.parentElement;
   const clickedCountryCode = clickedRow.dataset.CountryCode;
@@ -98,7 +92,7 @@ function handleListClick(event) {
   if (value) {
     if (value.includes('Total') !== buttonCount.classList.contains('total')) toggleTotal();
     if (value.includes('100k') === buttonAbs.classList.contains('absolute')) toggleAbs();
-    setStat();
+    setStats();
   }
 
   if (!clickedCountryCode) return;
@@ -106,58 +100,48 @@ function handleListClick(event) {
   source = listRows
     .find((row) => row.dataset.CountryCode === clickedCountryCode).dataset || globalStats;
   buttonArea.innerText = source.Country;
-  setStat(source);
-}
-
-function resetToWorldStats() {
+  setStats(source);
+};
+const resetToWorldStats = () => {
   buttonArea.innerText = 'World';
   source = globalStats;
-  setStat();
+  setStats();
 
   const activeListRow = document.querySelector('.list__row_active');
   const click = new Event('click', { bubbles: true });
   if (activeListRow) activeListRow.firstChild.dispatchEvent(click);
-}
+};
+const setUpdateTime = (updated) => {
+  const date = new Date(updated);
+  document.querySelector('.day-updated')
+    .innerText = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+};
+const setGlobalStats = (worldStats) => {
+  globalStats = {
+    population: worldStats.population,
+    NewConfirmed: worldStats.todayCases,
+    TotalConfirmed: worldStats.cases,
+    NewDeaths: worldStats.todayDeaths,
+    TotalDeaths: worldStats.deaths,
+    NewRecovered: worldStats.todayRecovered,
+    TotalRecovered: worldStats.recovered,
+  };
+  source = globalStats;
+  con = source.TotalConfirmed;
+  deat = source.TotalDeaths;
+  rec = source.TotalRecovered;
+};
 
 getWorldStats()
   .then((res) => {
-    const date = new Date(res.updated);
-
-    document.querySelector('.day-updated')
-      .innerText = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-
-    globalStats = {
-      population: res.population,
-      NewConfirmed: res.todayCases,
-      TotalConfirmed: res.cases,
-      NewDeaths: res.todayDeaths,
-      TotalDeaths: res.deaths,
-      NewRecovered: res.todayRecovered,
-      TotalRecovered: res.recovered,
-    };
-    source = globalStats;
-    con = source.TotalConfirmed;
-    deat = source.TotalDeaths;
-    rec = source.TotalRecovered;
-
-    buttonCount.addEventListener('click', () => toggleTotal());
-    buttonAbs.addEventListener('click', () => toggleAbs());
-    buttonArea.addEventListener('click', () => resetToWorldStats());
-
-    setStat();
+    setUpdateTime(res.updated);
+    setGlobalStats(res);
+    setStats();
   })
   .then(() => getAllCountriesStats())
-  .then((allCountriesStats) => {
-    list.addEventListener('click', (event) => handleListClick(event));
+  .then((allCountriesStats) => setMap(allCountriesStats, setStats()));
 
-    setMap(allCountriesStats, setStat());
-
-    // document.querySelector('.map').addEventListener('click', () => {
-    //   function setSource() {
-    //     source = allCountriesStats.find((a) => a.countryName === buttonArea.innerText);
-    //     if (!source) source = globalStats;
-    //     setStat();
-    //   }
-    //   setTimeout(setSource, 10);
-    // });
-  });
+buttonCount.addEventListener('click', () => toggleTotal());
+buttonAbs.addEventListener('click', () => toggleAbs());
+buttonArea.addEventListener('click', () => resetToWorldStats());
+list.addEventListener('click', (event) => handleListClick(event));
