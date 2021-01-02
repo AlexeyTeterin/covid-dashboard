@@ -100,10 +100,11 @@ const handleIndicatorChange = (chart, DailyWorldStats) => {
   else removeTailFromLabels(chart, ' per 100k');
 };
 
+Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 0.7)';
+Chart.defaults.global.defaultFontFamily = 'Roboto';
+
 getWorldStatsByDay()
   .then((DailyWorldStats) => {
-    Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 0.7)';
-    Chart.defaults.global.defaultFontFamily = 'Roboto';
     const chart = new Chart(canvas, {
       type: 'line',
       data: {
