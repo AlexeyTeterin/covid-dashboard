@@ -160,6 +160,16 @@ const handleIndicatorChange = (DailyWorldStats) => {
 
 Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 0.7)';
 Chart.defaults.global.defaultFontFamily = 'Roboto';
+chart.data.datasets.forEach((el, index) => {
+  const dataset = el;
+  dataset.pointBorderColor = 'rgba(0, 0, 0, 0)';
+  dataset.borderColor = dataset.pointBackgroundColor;
+  dataset.borderWidth = 1;
+  dataset.pointRadius = 2;
+  dataset.pointHoverRadius = 5;
+  dataset.backgroundColor = 'rgba(0, 0, 0, 0)';
+  if (index > 2) dataset.hidden = true;
+});
 
 list.addEventListener('click', (event) => handleListClick(event, dailyStats));
 buttonAbs.addEventListener('click', () => handleButtonAbsClick(dailyStats));
@@ -169,15 +179,5 @@ getWorldStatsByDay()
   .then((result) => {
     dailyStats = result;
     chart.data.labels = Object.keys(dailyStats.cases);
-    chart.data.datasets.forEach((el, index) => {
-      const dataset = el;
-      dataset.pointBorderColor = 'rgba(0, 0, 0, 0)';
-      dataset.borderColor = dataset.pointBackgroundColor;
-      dataset.borderWidth = 1;
-      dataset.pointRadius = 2;
-      dataset.pointHoverRadius = 5;
-      dataset.backgroundColor = 'rgba(0, 0, 0, 0)';
-      if (index > 2) dataset.hidden = true;
-    });
     updateChartData(dailyStats);
   });
