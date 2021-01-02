@@ -129,29 +129,28 @@ const listClickHandler = (event) => {
   target.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
 
-setTimeout(() => {
-  document.querySelector('.loading').textContent = 'API performs caching at the moment, please try to reload page 5 minutes later.';
-  document.querySelector('.loading').classList.remove('pulsate');
-}, 7000);
-
 const hideLoadingText = () => {
   document.querySelector('.loading').classList.add('hidden');
   document.querySelector('.content-top').classList.remove('hidden');
   document.querySelector('.content-bot').classList.remove('hidden');
 };
 
+setTimeout(() => {
+  document.querySelector('.loading').textContent = 'API performs caching at the moment, please try to reload page 5 minutes later.';
+  document.querySelector('.loading').classList.remove('pulsate');
+}, 7000);
+
+searchInput.addEventListener('input', () => listSearchHandler());
+indicator.addEventListener('change', () => setTimeout(() => sortRows(), 0));
+keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
+
 getWorldStats()
   .then(() => createListIndicator())
   .then(() => getAllCountriesStats())
   .then((allCountriesStats) => {
-    // console.log(allCountriesStats);
-    hideLoadingText();
     loadRows(allCountriesStats);
     sortRows('TotalConfirmed');
-
     list.addEventListener('click', (event) => listClickHandler(event));
-    searchInput.addEventListener('input', () => listSearchHandler());
-    keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
-    indicator.addEventListener('change', () => setTimeout(() => sortRows(), 0));
+    hideLoadingText();
   })
   .catch((e) => new Error(e));

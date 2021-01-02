@@ -132,6 +132,11 @@ const setGlobalStats = (worldStats) => {
   rec = source.TotalRecovered;
 };
 
+buttonCount.addEventListener('click', () => toggleTotal());
+buttonAbs.addEventListener('click', () => toggleAbs());
+buttonArea.addEventListener('click', () => resetToWorldStats());
+list.addEventListener('click', (event) => handleListClick(event));
+
 getWorldStats()
   .then((res) => {
     setUpdateTime(res.updated);
@@ -140,8 +145,3 @@ getWorldStats()
   })
   .then(() => getAllCountriesStats())
   .then((allCountriesStats) => setMap(allCountriesStats, setStats()));
-
-buttonCount.addEventListener('click', () => toggleTotal());
-buttonAbs.addEventListener('click', () => toggleAbs());
-buttonArea.addEventListener('click', () => resetToWorldStats());
-list.addEventListener('click', (event) => handleListClick(event));

@@ -73,103 +73,108 @@ const removeTailFromLabels = (chart, tail) => chart.data.datasets
     if (tailIndex > 0) dataset.label = dataset.label.substring(0, tailIndex);
   });
 
-getWorldStatsByDay().then((DailyWorldStats) => {
-  Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 0.7)';
-  Chart.defaults.global.defaultFontFamily = 'Roboto';
-  const chart = new Chart(canvas, {
-    type: 'line',
-    data: {
-      labels: Object.keys(DailyWorldStats.cases),
-      datasets: [{
-        label: 'Total confirmed',
-        pointBackgroundColor: '#d96459',
-      }, {
-        label: 'Total recovered',
-        pointBackgroundColor: '#588c7e',
-      }, {
-        label: 'Total deaths',
-        pointBackgroundColor: 'rgba(255, 255, 255, 0.4)',
-      }, {
-        label: 'New confirmed',
-        pointBackgroundColor: '#f2ae72',
-      }, {
-        label: 'New recovered',
-        pointBackgroundColor: '#b0cfc5',
-      }, {
-        label: 'New deaths',
-        pointBackgroundColor: 'rgba(255, 255, 255, 0.9)',
-      }],
-    },
-    options: {
-      title: {
-        display: true,
-        text: 'World',
-        fontSize: '20',
+const handleListClick = (event, chart, DailyWorldStats) => {
+  const target = event.target.parentElement;
+  if (!target.classList.contains('list__row')) return;
+  const countryIsSelected = !target.classList.contains('list__row_active');
+  if (!countryIsSelected) updateChartData(chart, DailyWorldStats);
+  if (countryIsSelected) handleCountrySelection(chart, target.dataset.CountryCode);
+};
+
+const handleButtonAbsClick = (chart, DailyWorldStats) => {
+  const activeRow = document.querySelector('.list__row_active');
+
+  if (activeRow) handleCountrySelection(chart, activeRow.dataset.CountryCode);
+  if (!activeRow) updateChartData(chart, DailyWorldStats);
+};
+
+const handleIndicatorChange = (chart, DailyWorldStats) => {
+  const countryIsSelected = document.querySelector('.list__row_active');
+  if (!countryIsSelected) setTimeout(() => updateChartData(chart, DailyWorldStats), 0);
+  if (countryIsSelected) {
+    setTimeout(() => handleCountrySelection(chart, countryIsSelected.dataset.CountryCode), 0);
+  }
+
+  const absoluteOn = !indicator.value.includes('100k');
+  if (!absoluteOn) addTailToLabels(chart, ' per 100k');
+  else removeTailFromLabels(chart, ' per 100k');
+};
+
+getWorldStatsByDay()
+  .then((DailyWorldStats) => {
+    Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 0.7)';
+    Chart.defaults.global.defaultFontFamily = 'Roboto';
+    const chart = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: Object.keys(DailyWorldStats.cases),
+        datasets: [{
+          label: 'Total confirmed',
+          pointBackgroundColor: '#d96459',
+        }, {
+          label: 'Total recovered',
+          pointBackgroundColor: '#588c7e',
+        }, {
+          label: 'Total deaths',
+          pointBackgroundColor: 'rgba(255, 255, 255, 0.4)',
+        }, {
+          label: 'New confirmed',
+          pointBackgroundColor: '#f2ae72',
+        }, {
+          label: 'New recovered',
+          pointBackgroundColor: '#b0cfc5',
+        }, {
+          label: 'New deaths',
+          pointBackgroundColor: 'rgba(255, 255, 255, 0.9)',
+        }],
       },
-      legend: {
-        labels: {
-          boxWidth: 8,
-          usePointStyle: true,
+      options: {
+        title: {
+          display: true,
+          text: 'World',
+          fontSize: '20',
         },
-        position: 'bottom',
+        legend: {
+          labels: {
+            boxWidth: 8,
+            usePointStyle: true,
+          },
+          position: 'bottom',
+        },
+        scales: {
+          xAxes: [{
+            gridLines: {
+              color: 'rgba(255, 255, 255, 0.1)',
+            },
+            ticks: {
+              fontColor: 'rgba(255, 255, 255, 0.5)',
+            },
+          }],
+          yAxes: [{
+            gridLines: {
+              color: 'rgba(255, 255, 255, 0.1)',
+            },
+            ticks: {
+              fontColor: 'rgba(255, 255, 255, 0.5)',
+            },
+          }],
+        },
       },
-      scales: {
-        xAxes: [{
-          gridLines: {
-            color: 'rgba(255, 255, 255, 0.1)',
-          },
-          ticks: {
-            fontColor: 'rgba(255, 255, 255, 0.5)',
-          },
-        }],
-        yAxes: [{
-          gridLines: {
-            color: 'rgba(255, 255, 255, 0.1)',
-          },
-          ticks: {
-            fontColor: 'rgba(255, 255, 255, 0.5)',
-          },
-        }],
-      },
-    },
-  });
-  chart.data.datasets.forEach((el, index) => {
-    const dataset = el;
-    dataset.pointBorderColor = 'rgba(0, 0, 0, 0)';
-    dataset.borderColor = dataset.pointBackgroundColor;
-    dataset.borderWidth = 1;
-    dataset.pointRadius = 2;
-    dataset.pointHoverRadius = 5;
-    dataset.backgroundColor = 'rgba(0, 0, 0, 0)';
-    if (index > 2) dataset.hidden = true;
-  });
-  updateChartData(chart, DailyWorldStats);
-  chart.update();
+    });
+    chart.data.datasets.forEach((el, index) => {
+      const dataset = el;
+      dataset.pointBorderColor = 'rgba(0, 0, 0, 0)';
+      dataset.borderColor = dataset.pointBackgroundColor;
+      dataset.borderWidth = 1;
+      dataset.pointRadius = 2;
+      dataset.pointHoverRadius = 5;
+      dataset.backgroundColor = 'rgba(0, 0, 0, 0)';
+      if (index > 2) dataset.hidden = true;
+    });
+    updateChartData(chart, DailyWorldStats);
+    chart.update();
 
-  list.addEventListener('click', (event) => {
-    const target = event.target.parentElement;
-    if (!target.classList.contains('list__row')) return;
-    const countryIsSelected = !target.classList.contains('list__row_active');
-    if (!countryIsSelected) updateChartData(chart, DailyWorldStats);
-    if (countryIsSelected) handleCountrySelection(chart, target.dataset.CountryCode);
+    list.addEventListener('click', (event) => handleListClick(event, chart, DailyWorldStats));
+    buttonAbs.addEventListener('click', () => handleButtonAbsClick(chart, DailyWorldStats));
+    indicator.addEventListener('change', () => handleIndicatorChange(chart, DailyWorldStats));
   });
-
-  buttonAbs.addEventListener('click', () => {
-    const activeRow = document.querySelector('.list__row_active');
-
-    if (activeRow) handleCountrySelection(chart, activeRow.dataset.CountryCode);
-    if (!activeRow) updateChartData(chart, DailyWorldStats);
-  });
-
-  indicator.addEventListener('change', () => {
-    const countryIsSelected = document.querySelector('.list__row_active');
-    if (!countryIsSelected) setTimeout(() => updateChartData(chart, DailyWorldStats), 0);
-    if (countryIsSelected) {
-      setTimeout(() => handleCountrySelection(chart, countryIsSelected.dataset.CountryCode), 0);
-    }
-
-    const absoluteOn = !indicator.value.includes('100k');
-    if (!absoluteOn) addTailToLabels(chart, ' per 100k');
-    else removeTailFromLabels(chart, ' per 100k');
-  });
-});
