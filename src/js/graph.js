@@ -61,6 +61,8 @@ const chart = new Chart(canvas, {
   },
 });
 
+let dailyStats;
+
 const newCasesByDay = (totalCasesByDay) => {
   const cases = Object.values(totalCasesByDay);
   return cases.map((el, index) => {
@@ -159,9 +161,14 @@ const handleIndicatorChange = (DailyWorldStats) => {
 Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 0.7)';
 Chart.defaults.global.defaultFontFamily = 'Roboto';
 
+list.addEventListener('click', (event) => handleListClick(event, dailyStats));
+buttonAbs.addEventListener('click', () => handleButtonAbsClick(dailyStats));
+indicator.addEventListener('change', () => handleIndicatorChange(dailyStats));
+
 getWorldStatsByDay()
-  .then((DailyWorldStats) => {
-    chart.data.labels = Object.keys(DailyWorldStats.cases);
+  .then((result) => {
+    dailyStats = result;
+    chart.data.labels = Object.keys(dailyStats.cases);
     chart.data.datasets.forEach((el, index) => {
       const dataset = el;
       dataset.pointBorderColor = 'rgba(0, 0, 0, 0)';
@@ -172,10 +179,5 @@ getWorldStatsByDay()
       dataset.backgroundColor = 'rgba(0, 0, 0, 0)';
       if (index > 2) dataset.hidden = true;
     });
-    updateChartData(DailyWorldStats);
-    // chart.update();
-
-    list.addEventListener('click', (event) => handleListClick(event, DailyWorldStats));
-    buttonAbs.addEventListener('click', () => handleButtonAbsClick(DailyWorldStats));
-    indicator.addEventListener('change', () => handleIndicatorChange(DailyWorldStats));
+    updateChartData(dailyStats);
   });
