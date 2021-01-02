@@ -1,4 +1,4 @@
-import { getSummary } from './CovidData.js';
+import { getAllCountriesStats, getWorldStats } from './CovidData.js';
 import Keyboard from './keyboard.js';
 
 const searchInput = document.querySelector('#list__search');
@@ -10,42 +10,48 @@ const keyboard = new Keyboard();
 keyboard.init();
 
 const createOptions = (data) => {
-  const options = Object.keys(data.Global);
+  const options = Object.keys(data);
   options.forEach((opt) => options.push(`${opt}Per100k`));
   return options;
 };
 
-const calcValuesPer100k = (data, country) => {
-  const result = {};
-  Object.keys(data.Global).forEach((opt) => {
-    const population = country.Premium.CountryStats.Population;
-    let valuePer100k = ((country[opt] / population) * 100000);
-    if (Number.isNaN(valuePer100k)) valuePer100k = 0;
-    result[`${opt}Per100k`] = valuePer100k.toFixed(2);
-  });
-  return result;
-};
+const calcPer100k = (value, population) => +((value / population) * 100000).toFixed(2);
 
-const loadRows = (data, option) => {
-  data.Countries.forEach((country) => {
-    const row = document.createElement('div');
-    const name = document.createElement('div');
-    const value = document.createElement('div');
-    const population = { population: country.Premium.CountryStats.Population };
+const loadRows = (data) => {
+  data
+    .filter((country) => country.countryInfo.iso2 !== null)
+    .forEach((country) => {
+      const row = document.createElement('div');
+      const name = document.createElement('div');
+      const value = document.createElement('div');
 
-    row.classList.add('list__row');
+      row.classList.add('list__row');
+      name.textContent = country.country;
+      name.style.setProperty('background-image', `url(https://www.countryflags.io/${country.countryInfo.iso2}/shiny/24.png)`);
+      const countryDataset = {
+        CountryCode: country.countryInfo.iso2,
+        Country: country.country,
+        population: country.population,
+        TotalConfirmed: country.cases,
+        TotalRecovered: country.recovered,
+        TotalDeaths: country.deaths,
+        NewConfirmed: country.todayCases,
+        NewRecovered: country.todayRecovered,
+        NewDeaths: country.todayDeaths,
+        TotalConfirmedPer100k: country.casesPerOneMillion / 10,
+        TotalRecoveredPer100k: country.recoveredPerOneMillion / 10,
+        TotalDeathsPer100k: country.deathsPerOneMillion / 10,
+        NewConfirmedPer100k: calcPer100k(country.todayCases, country.population),
+        NewRecoveredPer100k: calcPer100k(country.todayRecovered, country.population),
+        NewDeathsPer100k: calcPer100k(country.todayDeaths, country.population),
+      };
 
-    name.textContent = country.Country;
-    name.style.setProperty('background-image', `url(https://www.countryflags.io/${country.CountryCode}/shiny/24.png)`);
+      // value.textContent = country.cases;
+      Object.assign(row.dataset, countryDataset);
 
-    value.textContent = country[option];
-
-    Object.assign(row.dataset, country, calcValuesPer100k(data, country), population);
-    ['Slug', 'Premium', 'Date'].forEach((prop) => delete row.dataset[prop]);
-
-    row.append(name, value);
-    list.append(row);
-  });
+      row.append(name, value);
+      list.append(row);
+    });
 };
 
 const sortRows = () => {
@@ -131,16 +137,28 @@ const hideLoadingText = () => {
   document.querySelector('.content-bot').classList.remove('hidden');
 };
 
-getSummary()
-  .then((data) => {
-    createSelector(createOptions(data));
-    loadRows(data, 'TotalConfirmed');
+getWorldStats()
+  .then((WorldStats) => {
+    const global = {
+      NewConfirmed: WorldStats.todayCases,
+      TotalConfirmed: WorldStats.cases,
+      NewDeaths: WorldStats.todayDeaths,
+      TotalDeaths: WorldStats.deaths,
+      NewRecovered: WorldStats.todayRecovered,
+      TotalRecovered: WorldStats.recovered,
+    };
+    createSelector(createOptions(global));
+  })
+  .then(() => getAllCountriesStats())
+  .then((allCountriesStats) => {
+    // console.log(allCountriesStats);
+    hideLoadingText();
+    loadRows(allCountriesStats);
     sortRows('TotalConfirmed');
 
     list.addEventListener('click', (event) => listClickHandler(event));
     searchInput.addEventListener('input', () => listSearchHandler());
     keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
     indicator.addEventListener('change', () => setTimeout(() => sortRows(), 0));
-    hideLoadingText();
   })
   .catch((e) => new Error(e));

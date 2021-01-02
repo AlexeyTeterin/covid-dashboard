@@ -32,10 +32,10 @@ export default function setMap(res) {
       let max = 0;
       let maxPer100 = 0;
 
-      res.Countries.forEach((country) => {
-        const pop = country.Premium.CountryStats.Population / 100000;
-        if (max < country[key]) max = country[key];
-        if (maxPer100 < (country[key] / pop)) maxPer100 = country[key] / pop;
+      document.querySelectorAll('.list__row').forEach((country) => {
+        const pop = country.dataset.population / 100000;
+        if (max < country.dataset[key]) max = country.dataset[key];
+        if (maxPer100 < (country.dataset[key] / pop)) maxPer100 = country.dataset[key] / pop;
       });
 
       maxStat[key] = max / 5;
@@ -52,10 +52,11 @@ export default function setMap(res) {
 
     info.update = function update(e) {
       let country = false;
-      if (e) country = res.Countries.find((c) => c.Country === e.name);
-      let stats = country ? country[infoType.type] : 'no information';
+
+      if (e) country = Array.from(document.querySelectorAll('.list__row')).find((row) => row.dataset.Country === e.name) || null;
+      let stats = country ? country.dataset[infoType.type] : 'no information';
       if (!infoType.absolute && country) {
-        stats = (stats / (country.Premium.CountryStats.Population / 100000)).toFixed(2);
+        stats = (stats / (country.dataset.population / 100000)).toFixed(2);
       }
       this.div.innerHTML = `<b>Covid statistics</b><br/>${e
         ? `<b>${e.name}</b><br/>${labelsArr[keysArr.indexOf(infoType.type)]} ${infoType.absolute ? '' : 'per 100k'}:<br/> ${stats}`
@@ -67,12 +68,13 @@ export default function setMap(res) {
     let geoJson;
 
     function getColor(name) {
-      const country = res.Countries.find((c) => c.Country === name);
+      const country = res.find((c) => c.country === name);
       if (!country) { return ''; }
       const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
         '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
       ];
-      const per100 = infoType.absolute ? 1 : country.Premium.CountryStats.Population / 100000;
+      const per100 = infoType.absolute ? 1 : country.population / 100000;
+      // console.log(maxStat);
       const stat = infoType.absolute ? maxStat[infoType.type] : maxStat[`${infoType.type}Per100`];
       const k = country[infoType.type] / per100;
       let level = stat / 8;
@@ -116,9 +118,10 @@ export default function setMap(res) {
     document.querySelector('.row-title-abs').addEventListener('click', () => setLabel(document.querySelector('#list__indicator')));
 
     document.querySelector('.list').addEventListener('click', (e) => {
-      if (!e.path[1].dataset.Country) return;
-      const clickedListName = res.Countries
-        .find((a) => a.Country === e.path[1].dataset.Country).Country;
+      const targetRow = e.target.parentElement;
+      if (!targetRow.dataset.Country) return;
+      const clickedListName = res
+        .find((a) => a.country === targetRow.dataset.Country).country;
       if (clickedCountry.target) geoJson.resetStyle(clickedCountry.target);
       if (clickedListName === clickedCountry.name) {
         clickedCountry.name = '';
@@ -142,7 +145,7 @@ export default function setMap(res) {
 
     function handleClick(e) {
       const { name } = e.target.feature.properties;
-      if (res.Countries.find((a) => a.Country === name)) {
+      if (res.find((a) => a.country === name)) {
         const clickEvent = new Event('click', { bubbles: true });
         const targetRow = Array.from(document.querySelectorAll('.list__row'))
           .filter((row) => row.firstChild.textContent === name)[0];
