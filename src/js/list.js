@@ -76,19 +76,16 @@ const sortRows = () => {
   if (activeElement) activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
 
-const splitWords = (string) => {
-  let result = string;
-  const words = ['Confirmed', 'Deaths', 'Recovered', 'Per', '100k'];
-  words.forEach((word) => {
-    const index = result.indexOf(word);
-    if (index < 0) return;
-    result = `${result.slice(0, index)} ${result.slice(index, result.length)}`;
-  });
-  return result;
-};
-
 const createListIndicator = () => {
+  const splitWords = (string) => {
+    let result = string;
+    ['Total', 'Confirmed', 'Deaths', 'Recovered', 'Per', 'New'].forEach((word) => {
+      result = result.replace(word, `${word} `);
+    });
+    return result;
+  };
   const options = basicIndicators.slice();
+
   options.forEach((option) => options.push(`${option}Per100k`));
   options.forEach((option) => {
     const selectorOption = document.createElement('option');
