@@ -1,8 +1,9 @@
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable no-undef */
 
+import { geoJson } from 'leaflet';
 import { list, indicator, basicIndicators } from './list.js';
 
-/* eslint-disable no-undef */
 const mapURL = 'https://api.mapbox.com/styles/v1/pavlovalisa/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
 const mapOptions = {
   attribution: '',
@@ -34,10 +35,10 @@ const clickedCountry = { target: null, name: '' };
 const infoType = { type: 'TotalConfirmed', absolute: true };
 
 export default function setMap(res) {
-  let geoJson;
   const listRows = Array.from(list.querySelectorAll('.list__row'));
   const map = L.map('mapid').setView([40, 20], 2);
-  const info = L.control();
+  const mapInfo = L.control();
+  const mapLegend = L.control({ position: 'bottomright' });
   const southWest = L.latLng(-60, -180);
   const northEast = L.latLng(85, 180);
   const bounds = L.latLngBounds(southWest, northEast);
@@ -62,13 +63,13 @@ export default function setMap(res) {
         dashArray: '',
         fillOpacity: 0.5,
       });
-      info.update(layer.feature.properties);
+      mapInfo.update(layer.feature.properties);
     },
     countryMouseOut(e) {
       if (clickedCountry.target !== e.target) {
         geoJson.resetStyle(e.target);
       }
-      info.update();
+      mapInfo.update();
     },
     listClick(e) {
       const targetRow = e.target.parentElement;
@@ -94,6 +95,118 @@ export default function setMap(res) {
       });
     },
   };
+  const getColor = (name) => {
+    const rows = Array.from(list.querySelectorAll('.list__row'));
+    const country = res.find((c) => c.country === name);
+    if (!country) { return ''; }
+    const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
+      '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
+    ];
+    const per100 = infoType.absolute ? 1 : country.population / 100000;
+    const stat = infoType.absolute ? maxStat[infoType.type] : maxStat[`${infoType.type}Per100`];
+    const k = rows
+      .find((row) => row.dataset.Country === country.country)
+      .dataset[infoType.type] / per100;
+    let level = stat / 8;
+    if (level > 1000) level = Math.round(level / 1000) * 1000;
+    else level = level.toFixed(3);
+    let a = Math.floor((stat - k) / level);
+    a = a > 7 ? 7 : a;
+    return colors[a < 0 ? 0 : a];
+  };
+  const setColors = () => {
+    const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
+      '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
+    ].reverse();
+    const label = document.querySelector('div.info.legend.leaflet-control');
+    const { _layers } = geoJson;
+    let level = maxStat[`${infoType.type}${infoType.absolute ? '' : 'Per100'}`] / 8;
+
+    Object.keys(_layers).forEach((key) => {
+      _layers[key].options
+        .fillColor = getColor(_layers[key].feature.properties.name);
+      _layers[key].setStyle({});
+    });
+
+    label.innerHTML = '';
+    if (level > 1000) level = Math.round(level / 1000) * 1000;
+    else level = level.toFixed(0);
+    colors.forEach((color, i) => {
+      const value = (num) => Math.round(level * num * 1000) / 1000;
+      label.innerHTML += `<i style="background:${color}"></i> ${value(i)}${colors[i + 1] ? `&ndash;${value(i + 1)}<br>` : '+'}`;
+    });
+  };
+  const setLabel = (e) => {
+    if (e.value) {
+      if (infoType === e.value.replace('Per100k', '') && (!infoType.absolute === e.value.includes('Per100k'))) return;
+      infoType.absolute = !e.value.includes('Per100k');
+      infoType.type = e.value.replace('Per100k', '');
+      setColors();
+    }
+  };
+  const style = (feature) => ({
+    fillColor: getColor(feature.properties.name),
+    weight: 1,
+    opacity: 0.5,
+    color: '',
+    dashArray: '3',
+    dashOpacity: 0.1,
+    fillOpacity: 0.3,
+  });
+  const onEachFeature = (feature, layer) => {
+    layer.on({
+      mouseover: handleMapEvents.countryMouseOver,
+      mouseout: handleMapEvents.countryMouseOut,
+      click: handleMapEvents.countryClick,
+    });
+  };
+  const runEventListeners = () => {
+    indicator.addEventListener('click', (event) => setLabel(event.target));
+    list.addEventListener('click', handleMapEvents.listClick);
+    document.querySelector('.row-title-count').addEventListener('click', () => setLabel(indicator));
+    document.querySelector('.row-title-abs').addEventListener('click', () => setLabel(indicator));
+    document.querySelector('.map-wrapper > .max-min-btn').addEventListener('click', () => setTimeout(() => map.invalidateSize(true), 250));
+  };
+
+  mapInfo.onAdd = function add() {
+    this.div = L.DomUtil.create('div', 'info');
+    this.update();
+    return this.div;
+  };
+  mapInfo.update = function update(event) {
+    if (!event) {
+      this.div.innerHTML = 'Hover over a country';
+    }
+    if (event) {
+      const targetRow = listRows
+        .find((row) => row.dataset.Country === event.name) || null;
+      const targetData = targetRow ? targetRow.dataset : {};
+      const typeOfValue = labelsArr[keysArr.indexOf(infoType.type)];
+      const absoluteOrRelative = infoType.absolute ? '' : 'per 100k';
+
+      let stats = targetData[infoType.type] || 'no information';
+      if (!infoType.absolute && targetRow) {
+        stats = (stats / (targetData.population / 100000)).toFixed(2);
+      }
+
+      this.div.innerHTML = `<b>${event.name}</b><br/>
+        ${typeOfValue} ${absoluteOrRelative}:<br/>
+        ${stats}`;
+    }
+  };
+  mapLegend.onAdd = function add() {
+    const key = 'TotalConfirmed';
+    const div = L.DomUtil.create('div', 'info legend');
+    let level = Math.round(maxStat[key] / 8);
+    if (level > 1000) level = Math.round(level / 1000) * 1000;
+    const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
+      '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
+    ];
+    colors.reverse().forEach((color, i) => {
+      div.innerHTML += `<i style="background:${color}"></i> ${level * i}${colors[i + 1] ? `&ndash;${level * (i + 1)}<br>` : '+'}`;
+    });
+    return div;
+  };
 
   request.open('GET', './assets/json/countries.json');
   request.onload = () => {
@@ -102,126 +215,14 @@ export default function setMap(res) {
     L.tileLayer(mapURL, mapOptions).addTo(map);
     map.setMaxBounds(bounds);
     basicIndicators.forEach((key) => setMaxStat(key));
+    mapInfo.addTo(map);
+    mapLegend.addTo(map);
+    runEventListeners();
 
-    info.onAdd = function add() {
-      this.div = L.DomUtil.create('div', 'info');
-      this.update();
-      return this.div;
-    };
-
-    info.update = function update(e) {
-      let country = false;
-      if (e) country = Array.from(document.querySelectorAll('.list__row')).find((row) => row.dataset.Country === e.name) || null;
-      let stats = country ? country.dataset[infoType.type] : 'no information';
-      if (!infoType.absolute && country) {
-        stats = (stats / (country.dataset.population / 100000)).toFixed(2);
-      }
-      this.div.innerHTML = `<b>Covid statistics</b><br/>${e
-        ? `<b>${e.name}</b><br/>${labelsArr[keysArr.indexOf(infoType.type)]} ${infoType.absolute ? '' : 'per 100k'}:<br/> ${stats}`
-        : 'Hover over a country'}`;
-    };
-
-    info.addTo(map);
-
-    function getColor(name) {
-      const rows = Array.from(list.querySelectorAll('.list__row'));
-      const country = res.find((c) => c.country === name);
-      if (!country) { return ''; }
-      const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
-        '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
-      ];
-      const per100 = infoType.absolute ? 1 : country.population / 100000;
-      // console.log(per100);
-      const stat = infoType.absolute ? maxStat[infoType.type] : maxStat[`${infoType.type}Per100`];
-      // console.log(stat);
-      const k = rows
-        .find((row) => row.dataset.Country === country.country)
-        .dataset[infoType.type] / per100;
-      // console.log(k, country);
-      let level = stat / 8;
-      if (level > 1000) level = Math.round(level / 1000) * 1000;
-      else level = level.toFixed(3);
-      let a = Math.floor((stat - k) / level);
-      a = a > 7 ? 7 : a;
-      return colors[a < 0 ? 0 : a];
-    }
-
-    function setColors() {
-      Object.keys(geoJson._layers).forEach((key) => {
-        geoJson._layers[key].options
-          .fillColor = getColor(geoJson._layers[key].feature.properties.name);
-        geoJson._layers[key].setStyle({});
-      });
-
-      const label = document.querySelector('div.info.legend.leaflet-control');
-      label.innerHTML = '';
-      let level = maxStat[`${infoType.type}${infoType.absolute ? '' : 'Per100'}`] / 8;
-      if (level > 1000) level = Math.round(level / 1000) * 1000;
-      else level = level.toFixed(0);
-      const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
-        '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
-      ].reverse();
-      colors.forEach((color, i) => {
-        const value = (num) => Math.round(level * num * 1000) / 1000;
-        label.innerHTML += `<i style="background:${color}"></i> ${value(i)}${colors[i + 1] ? `&ndash;${value(i + 1)}<br>` : '+'}`;
-      });
-    }
-
-    function setLabel(e) {
-      if (e.value) {
-        if (infoType === e.value.replace('Per100k', '') && (!infoType.absolute === e.value.includes('Per100k'))) return;
-        infoType.absolute = !e.value.includes('Per100k');
-        infoType.type = e.value.replace('Per100k', '');
-        setColors();
-      }
-    }
-    indicator.addEventListener('click', (e) => setLabel(e.target));
-    list.addEventListener('click', handleMapEvents.listClick);
-    document.querySelector('.row-title-count').addEventListener('click', () => setLabel(document.querySelector('#list__indicator')));
-    document.querySelector('.row-title-abs').addEventListener('click', () => setLabel(document.querySelector('#list__indicator')));
-    document.querySelector('.map-wrapper > .max-min-btn').addEventListener('click', () => setTimeout(() => map.invalidateSize(true), 250));
-
-    function style(feature) {
-      return {
-        fillColor: getColor(feature.properties.name),
-        weight: 1,
-        opacity: 1,
-        color: '',
-        dashArray: '3',
-        dashOpacity: 0.1,
-        fillOpacity: 0.3,
-      };
-    }
-
-    function onEachFeature(feature, layer) {
-      layer.on({
-        mouseover: handleMapEvents.countryMouseOver,
-        mouseout: handleMapEvents.countryMouseOut,
-        click: handleMapEvents.countryClick,
-      });
-    }
     geoJson = L.geoJson(collection, {
       style,
       onEachFeature,
     }).addTo(map);
-
-    // legend
-    const legend = L.control({ position: 'bottomright' });
-    legend.onAdd = function add() {
-      const key = 'TotalConfirmed';
-      const div = L.DomUtil.create('div', 'info legend');
-      let level = Math.round(maxStat[key] / 8);
-      if (level > 1000) level = Math.round(level / 1000) * 1000;
-      const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
-        '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
-      ];
-      colors.reverse().forEach((color, i) => {
-        div.innerHTML += `<i style="background:${color}"></i> ${level * i}${colors[i + 1] ? `&ndash;${level * (i + 1)}<br>` : '+'}`;
-      });
-      return div;
-    };
-
-    legend.addTo(map);
   };
 
   request.send();
