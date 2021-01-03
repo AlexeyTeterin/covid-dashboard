@@ -5,6 +5,14 @@ const searchInput = document.querySelector('#list__search');
 export const indicator = document.querySelector('#list__indicator');
 export const list = document.querySelector('.list__container');
 const keyboardButton = document.querySelector('.keyboard-button');
+export const basicIndicators = [
+  'TotalConfirmed',
+  'TotalRecovered',
+  'TotalDeaths',
+  'NewConfirmed',
+  'NewRecovered',
+  'NewDeaths',
+];
 
 const keyboard = new Keyboard();
 keyboard.init();
@@ -80,14 +88,7 @@ const splitWords = (string) => {
 };
 
 const createListIndicator = () => {
-  const options = [
-    'TotalConfirmed',
-    'TotalRecovered',
-    'TotalDeaths',
-    'NewConfirmed',
-    'NewRecovered',
-    'NewDeaths',
-  ];
+  const options = basicIndicators.slice();
   options.forEach((option) => options.push(`${option}Per100k`));
   options.forEach((option) => {
     const selectorOption = document.createElement('option');
