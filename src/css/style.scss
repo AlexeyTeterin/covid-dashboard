@@ -227,7 +227,8 @@ main {
   .list__container {
     display: flex;
     // height: 100%;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     padding: 0 4px 4px;
@@ -238,6 +239,7 @@ main {
       position: sticky;
       top: 0;
       padding: 0.3rem 0.1rem;
+      width: 100%;
       height: 1.5rem;
       background-color: #1A2830;
       display: flex;
@@ -288,6 +290,7 @@ main {
     .list__row {
       display: flex;
       justify-content: space-between;
+      width: 100%;
       height: 1.5rem;
       line-height: 1.5rem;
       cursor: default;
