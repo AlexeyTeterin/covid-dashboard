@@ -212,7 +212,7 @@ main .hidden {
   display: flex;
   height: 100%;
   flex-direction: column;
-  overflow: hidden scroll;
+  overflow: auto;
   padding: 0 4px 4px;
   border-radius: 4px;
   color: rgba(255, 255, 255, 0.75);
