@@ -8,7 +8,7 @@ const mapURL = 'https://api.mapbox.com/styles/v1/pavlovalisa/{id}/tiles/{z}/{x}/
 const mapOptions = {
   attribution: '',
   maxZoom: 6,
-  minZoom: 2,
+  minZoom: 1,
   id: 'ckipuyrx61npy17nqq9rtqsd7',
   tileSize: 512,
   zoomOffset: -1,
@@ -39,8 +39,8 @@ export default function setMap(res) {
   const map = L.map('mapid').setView([40, 20], 2);
   const mapInfo = L.control();
   const mapLegend = L.control({ position: 'bottomright' });
-  const southWest = L.latLng(-60, -180);
-  const northEast = L.latLng(85, 180);
+  const southWest = L.latLng(-90, -220);
+  const northEast = L.latLng(90, 220);
   const bounds = L.latLngBounds(southWest, northEast);
   const request = new XMLHttpRequest();
   const handleMapEvents = {
