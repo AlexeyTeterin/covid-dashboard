@@ -45,14 +45,11 @@ export default function setMap(res) {
   const request = new XMLHttpRequest();
   const handleMapEvents = {
     countryClick(e) {
-      const { name } = e.target.feature.properties;
-      if (res.find((a) => a.country === name)) {
+      const { id } = e.target.feature;
+      if (res.find((country) => country.countryInfo.iso3 === id)) {
         const clickEvent = new Event('click', { bubbles: true });
-        const targetRow = listRows
-          .filter((row) => row.firstChild.textContent === name)[0];
-        if (targetRow) {
-          targetRow.firstChild.dispatchEvent(clickEvent);
-        }
+        const targetRow = listRows.find((row) => row.dataset.id === id);
+        if (targetRow) targetRow.firstChild.dispatchEvent(clickEvent);
       }
     },
     countryMouseOver(e) {
@@ -63,7 +60,7 @@ export default function setMap(res) {
         dashArray: '',
         fillOpacity: 0.5,
       });
-      mapInfo.update(layer.feature.properties);
+      mapInfo.update(layer.feature.properties.name);
     },
     countryMouseOut(e) {
       if (clickedCountry.target !== e.target) {
@@ -74,6 +71,7 @@ export default function setMap(res) {
     listClick(e) {
       const targetRow = e.target.parentElement;
       if (!targetRow.dataset.Country) return;
+      const targetId = targetRow.dataset.id;
       const clickedListName = res
         .find((a) => a.country === targetRow.dataset.Country).country;
       if (clickedCountry.target) geoJson.resetStyle(clickedCountry.target);
@@ -83,7 +81,7 @@ export default function setMap(res) {
         return;
       }
       const target = geoJson._layers[Object.keys(geoJson._layers)
-        .find((key) => geoJson._layers[key].feature.properties.name === clickedListName)];
+        .find((key) => geoJson._layers[key].feature.id === targetId)];
       if (!target) return;
       clickedCountry.name = clickedListName;
       clickedCountry.target = target;
@@ -173,23 +171,24 @@ export default function setMap(res) {
     this.update();
     return this.div;
   };
-  mapInfo.update = function update(event) {
-    if (!event) {
+  mapInfo.update = function update(countryName) {
+    if (!countryName) {
       this.div.innerHTML = 'Hover over a country';
     }
-    if (event) {
+    if (countryName) {
       const targetRow = listRows
-        .find((row) => row.dataset.Country === event.name) || null;
+        .find((row) => row.dataset.Country === countryName) || null;
       const targetData = targetRow ? targetRow.dataset : {};
       const typeOfValue = labelsArr[keysArr.indexOf(infoType.type)];
       const absoluteOrRelative = infoType.absolute ? '' : 'per 100k';
+      const targetCountry = targetData.Country || countryName;
 
       let stats = targetData[infoType.type] || 'no information';
       if (!infoType.absolute && targetRow) {
         stats = (stats / (targetData.population / 100000)).toFixed(2);
       }
 
-      this.div.innerHTML = `<b>${event.name}</b><br/>
+      this.div.innerHTML = `<b>${targetCountry}</b><br/>
         ${typeOfValue} ${absoluteOrRelative}:<br/>
         ${stats}`;
     }

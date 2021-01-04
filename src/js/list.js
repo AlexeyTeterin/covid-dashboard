@@ -32,6 +32,7 @@ const loadRows = (data) => {
       name.style.setProperty('background-image', `url(https://www.countryflags.io/${country.countryInfo.iso2}/shiny/24.png)`);
       const countryDataset = {
         CountryCode: country.countryInfo.iso2,
+        id: country.countryInfo.iso3,
         Country: country.country,
         population: country.population,
         TotalConfirmed: country.cases,
