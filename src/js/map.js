@@ -33,8 +33,8 @@ const labelsArr = keysArr
   .map((el) => el.replace('New', 'New ').replace('Total', 'Total '));
 const clickedCountry = { target: null, name: '' };
 const infoType = { type: 'TotalConfirmed', absolute: true };
-const touchSupported = 'ontouchstart' in window
-|| (window.DocumentTouch && document instanceof DocumentTouch);
+const touchSupported = 'ontouchstart' in window ||
+  (window.DocumentTouch && document instanceof DocumentTouch);
 
 export default function setMap(res) {
   const listRows = Array.from(list.querySelectorAll('.list__row'));
@@ -57,7 +57,10 @@ export default function setMap(res) {
       }
     },
     countryMouseOver(e) {
-      if (touchSupported) return;
+      if (touchSupported) {
+        alert('touch supported');
+        return;
+      }
       const layer = e.target;
       layer.setStyle({
         weight: 1,
