@@ -30,26 +30,35 @@ const loadRows = (data) => {
       row.classList.add('list__row');
       name.textContent = country.country;
       name.style.setProperty('background-image', `url(https://www.countryflags.io/${country.countryInfo.iso2}/shiny/24.png)`);
+      const {
+        countryInfo,
+        population,
+        cases,
+        recovered,
+        deaths,
+        todayCases,
+        todayDeaths,
+        todayRecovered,
+      } = country;
       const countryDataset = {
-        CountryCode: country.countryInfo.iso2,
-        id: country.countryInfo.iso3,
+        CountryCode: countryInfo.iso2,
+        id: countryInfo.iso3,
         Country: country.country,
-        population: country.population,
-        TotalConfirmed: country.cases,
-        TotalRecovered: country.recovered,
-        TotalDeaths: country.deaths,
-        NewConfirmed: country.todayCases,
-        NewRecovered: country.todayRecovered,
-        NewDeaths: country.todayDeaths,
-        TotalConfirmedPer100k: country.casesPerOneMillion / 10,
-        TotalRecoveredPer100k: country.recoveredPerOneMillion / 10,
-        TotalDeathsPer100k: country.deathsPerOneMillion / 10,
-        NewConfirmedPer100k: calcPer100k(country.todayCases, country.population),
-        NewRecoveredPer100k: calcPer100k(country.todayRecovered, country.population),
-        NewDeathsPer100k: calcPer100k(country.todayDeaths, country.population),
+        population,
+        TotalConfirmed: cases,
+        TotalRecovered: recovered,
+        TotalDeaths: deaths,
+        NewConfirmed: todayCases,
+        NewRecovered: todayRecovered,
+        NewDeaths: todayDeaths,
+        TotalConfirmedPer100k: calcPer100k(cases, population),
+        TotalRecoveredPer100k: calcPer100k(recovered, population),
+        TotalDeathsPer100k: calcPer100k(deaths, population),
+        NewConfirmedPer100k: calcPer100k(todayCases, population),
+        NewRecoveredPer100k: calcPer100k(todayRecovered, population),
+        NewDeathsPer100k: calcPer100k(todayDeaths, population),
       };
 
-      // value.textContent = country.cases;
       Object.assign(row.dataset, countryDataset);
 
       row.append(name, value);

@@ -182,7 +182,6 @@ main .hidden {
 .list {
   display: flex;
   flex-direction: column;
-  position: relative;
   background-color: rgba(255, 255, 255, 0.05);
   width: 19%;
   min-width: 300px;
@@ -208,40 +207,70 @@ main .hidden {
   height: 84vh;
 }
 
-.list .list__container {
+.list .list__header {
+  padding: 4px;
+  background-color: #1A2830;
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-  padding: 0 4px 4px;
-  border-radius: 4px;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0px 8px 10px 0px #1A2830;
+  z-index: 1;
+}
+
+.list .list__header input {
+  padding: 0;
+}
+
+.list .list__header .list__search,
+.list .list__header .list__indicator {
+  background: inherit;
+  color: rgba(255, 255, 255, 0.55);
+  border: none;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.5rem;
+  height: 1.5rem;
+  font-size: 1rem;
+}
+
+.list .list__header .list__search:focus,
+.list .list__header .list__indicator:focus {
+  outline: none;
+}
+
+.list .list__header .list__indicator {
+  width: 100%;
+  cursor: pointer;
+}
+
+.list .list__header .list__indicator:hover {
   color: rgba(255, 255, 255, 0.75);
 }
 
-.list .list__container .list__header {
-  position: -webkit-sticky;
-  position: -moz-sticky;
-  position: -o-sticky;
-  position: -ms-sticky;
-  position: sticky;
-  top: 0;
-  padding: 0.3rem 0.1rem;
-  width: 100%;
-  height: 1.5rem;
-  background-color: #1A2830;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0px 4px 6px 0px #1A2830;
-  order: -1;
+.list .list__header .list__search {
+  padding: 0;
+  margin-left: 4px;
+  width: calc(100% - 2.5rem);
+  color: rgba(255, 255, 255, 0.5);
 }
 
-.list .list__container .list__header .keyboard-button {
-  margin: 0;
-  width: 1rem;
-  height: 1rem;
+.list .list__header .list__search:focus::placeholder {
+  color: transparent;
+}
+
+.list .list__header .list__search:focus ~ button {
+  opacity: 0.6;
+}
+
+.list .list__header .list__search:focus ~ button:hover {
+  opacity: 0.8;
+}
+
+.list .list__header .keyboard-button {
+  margin: 0 4px 0 0;
+  padding: 0;
+  width: 1.5rem;
+  height: 1.5rem;
   background-image: url(../assets/img/keyboard-button.svg);
   background-repeat: no-repeat;
   background-size: contain;
@@ -250,29 +279,27 @@ main .hidden {
   outline: none;
   cursor: pointer;
   filter: invert(1);
-  opacity: 0.85;
   transition: transform 0.075s, opacity 0.075s;
+  opacity: 0.1;
 }
 
-.list .list__container .list__header .keyboard-button:active {
-  opacity: 0.5;
+.list .list__header .keyboard-button:hover {
+  opacity: 0.8;
 }
 
-.list .list__container .list__header .list__search {
-  width: 30%;
+.list .list__header .keyboard-button:active {
+  opacity: 0.4;
 }
 
-.list .list__container .list__header .list__search,
-.list .list__container .list__header .list__indicator {
-  background: inherit;
-  color: rgba(255, 255, 255, 0.85);
-  border: none;
-  font-family: 'Roboto', sans-serif;
-}
-
-.list .list__container .list__header .list__search:focus,
-.list .list__container .list__header .list__indicator:focus {
-  outline: none;
+.list .list__container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px;
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .list .list__container .list__row {
@@ -285,7 +312,7 @@ main .hidden {
 }
 
 .list .list__container .list__row > div:first-child {
-  padding: 0 0 0 24px;
+  padding: 0 0 0 28px;
   background-position: 0;
   background-size: 24px;
   background-repeat: no-repeat;

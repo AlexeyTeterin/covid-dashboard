@@ -42,7 +42,7 @@ const setStats = () => {
   divRecovered.innerText = round(rec / k);
 };
 const toggleTotal = () => {
-  const options = Array.from(list.querySelectorAll('option'));
+  const options = Array.from(indicator.querySelectorAll('option'));
   const selectedOption = options.filter((option) => option.selected)[0].value;
   options.forEach((option) => option.setAttribute('selected', false));
 
@@ -54,7 +54,7 @@ const toggleTotal = () => {
   const targetOption = options.filter((option) => option.value === indicator.value)[0];
   targetOption.setAttribute('selected', true);
 
-  indicator.dispatchEvent(new Event('change'));
+  // indicator.dispatchEvent(new Event('change'));
 
   stat.total = !stat.total;
   buttonCount.innerText = stat.total ? 'Total' : 'New';
@@ -63,7 +63,7 @@ const toggleTotal = () => {
   setStats();
 };
 const toggleAbs = () => {
-  const options = Array.from(list.querySelectorAll('option'));
+  const options = Array.from(indicator.querySelectorAll('option'));
   const selectedOption = options.filter((option) => option.selected)[0].value;
   options.forEach((option) => option.setAttribute('selected', false));
 
@@ -75,7 +75,7 @@ const toggleAbs = () => {
   const targetOption = options.filter((option) => option.value === indicator.value)[0];
   targetOption.setAttribute('selected', true);
 
-  indicator.dispatchEvent(new Event('change'));
+  // indicator.dispatchEvent(new Event('change'));
 
   stat.absolute = !stat.absolute;
   buttonAbs.innerText = stat.absolute ? 'Absolute' : 'Per 100k';
@@ -87,13 +87,6 @@ const handleListClick = (event) => {
   const listRows = Array.from(list.querySelectorAll('.list__row'));
   const clickedRow = event.target.parentElement;
   const clickedCountryCode = clickedRow.dataset.CountryCode;
-  const { value } = event.target;
-
-  if (value) {
-    if (value.includes('Total') !== buttonCount.classList.contains('total')) toggleTotal();
-    if (value.includes('100k') === buttonAbs.classList.contains('absolute')) toggleAbs();
-    setStats();
-  }
 
   if (!clickedCountryCode) return;
 
@@ -101,6 +94,14 @@ const handleListClick = (event) => {
     .find((row) => row.dataset.CountryCode === clickedCountryCode).dataset || globalStats;
   buttonArea.innerText = source.Country;
   setStats(source);
+};
+const handleIndicatorChange = (event) => {
+  const { value } = event.target;
+  if (value) {
+    if (value.includes('Total') !== buttonCount.classList.contains('total')) toggleTotal();
+    if (value.includes('100k') === buttonAbs.classList.contains('absolute')) toggleAbs();
+    setStats();
+  }
 };
 const resetToWorldStats = () => {
   buttonArea.innerText = 'World';
@@ -132,10 +133,11 @@ const setGlobalStats = (worldStats) => {
   rec = source.TotalRecovered;
 };
 
-buttonCount.addEventListener('click', () => toggleTotal());
-buttonAbs.addEventListener('click', () => toggleAbs());
-buttonArea.addEventListener('click', () => resetToWorldStats());
-list.addEventListener('click', (event) => handleListClick(event));
+buttonCount.addEventListener('click', toggleTotal);
+buttonAbs.addEventListener('click', toggleAbs);
+buttonArea.addEventListener('click', resetToWorldStats);
+list.addEventListener('click', handleListClick);
+indicator.addEventListener('change', handleIndicatorChange);
 
 getWorldStats()
   .then((res) => {
