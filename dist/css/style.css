@@ -273,8 +273,9 @@ main .hidden {
 .list .list__container .list__row {
   display: flex;
   justify-content: space-between;
-  cursor: default;
+  height: 1.5rem;
   line-height: 1.5rem;
+  cursor: default;
 }
 
 .list .list__container .list__row > div:first-child {

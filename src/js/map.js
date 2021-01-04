@@ -33,8 +33,6 @@ const labelsArr = keysArr
   .map((el) => el.replace('New', 'New ').replace('Total', 'Total '));
 const clickedCountry = { target: null, name: '' };
 const infoType = { type: 'TotalConfirmed', absolute: true };
-const touchSupported = 'ontouchstart' in window ||
-  (window.DocumentTouch && document instanceof DocumentTouch);
 
 export default function setMap(res) {
   const listRows = Array.from(list.querySelectorAll('.list__row'));
@@ -57,10 +55,6 @@ export default function setMap(res) {
       }
     },
     countryMouseOver(e) {
-      if (touchSupported) {
-        alert('touch supported');
-        return;
-      }
       const layer = e.target;
       layer.setStyle({
         weight: 1,
@@ -71,7 +65,6 @@ export default function setMap(res) {
       mapInfo.update(layer.feature.properties.name);
     },
     countryMouseOut(e) {
-      if (touchSupported) return;
       if (clickedCountry.target !== e.target) geoJson.resetStyle(e.target);
       mapInfo.update();
     },
@@ -80,7 +73,6 @@ export default function setMap(res) {
       if (!targetRow.dataset.Country) return;
 
       const targetCountryName = targetRow.dataset.Country;
-      // console.log(targetCountryName);
       const { lat, long } = res
         .find((country) => country.country === targetCountryName).countryInfo;
       const targetCoordinates = L.latLng(lat, long);
