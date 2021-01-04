@@ -7,7 +7,7 @@ import { list, indicator, basicIndicators } from './list.js';
 const mapURL = 'https://api.mapbox.com/styles/v1/pavlovalisa/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
 const mapOptions = {
   attribution: '',
-  maxZoom: 18,
+  maxZoom: 6,
   minZoom: 2,
   id: 'ckipuyrx61npy17nqq9rtqsd7',
   tileSize: 512,
@@ -46,7 +46,8 @@ export default function setMap(res) {
   const handleMapEvents = {
     countryClick(e) {
       const { id } = e.target.feature;
-      if (res.find((country) => country.countryInfo.iso3 === id)) {
+      const targetCountry = res.find((country) => country.countryInfo.iso3 === id);
+      if (targetCountry) {
         const clickEvent = new Event('click', { bubbles: true });
         const targetRow = listRows.find((row) => row.dataset.id === id);
         if (targetRow) targetRow.firstChild.dispatchEvent(clickEvent);
@@ -58,7 +59,7 @@ export default function setMap(res) {
         weight: 1,
         color: '#e7e7e7',
         dashArray: '',
-        fillOpacity: 0.5,
+        fillOpacity: 0.8,
       });
       mapInfo.update(layer.feature.properties.name);
     },
@@ -71,25 +72,36 @@ export default function setMap(res) {
     listClick(e) {
       const targetRow = e.target.parentElement;
       if (!targetRow.dataset.Country) return;
-      const targetId = targetRow.dataset.id;
+
+      const targetCountryName = targetRow.dataset.Country;
+      const { lat, long } = res
+        .find((country) => country.country === targetCountryName).countryInfo;
+      const targetCoordinates = L.latLng(lat, long);
+      const targetLayer = geoJson._layers[Object.keys(geoJson._layers)
+        .find((key) => geoJson._layers[key].feature.properties.name === targetCountryName)];
       const clickedListName = res
         .find((a) => a.country === targetRow.dataset.Country).country;
+      const selectionRemoved = clickedListName === clickedCountry.name;
+
       if (clickedCountry.target) geoJson.resetStyle(clickedCountry.target);
-      if (clickedListName === clickedCountry.name) {
+
+      if (selectionRemoved) {
+        map.setView([40, 20], 2);
         clickedCountry.name = '';
         clickedCountry.target = null;
         return;
       }
-      const target = geoJson._layers[Object.keys(geoJson._layers)
-        .find((key) => geoJson._layers[key].feature.id === targetId)];
-      if (!target) return;
+
+      map.setView(targetCoordinates, 3);
       clickedCountry.name = clickedListName;
-      clickedCountry.target = target;
-      target.setStyle({
+      clickedCountry.target = targetLayer;
+
+      if (!targetLayer) return;
+      targetLayer.setStyle({
         weight: 1,
         color: '#e7e7e7',
         dashArray: '',
-        fillOpacity: 0.5,
+        fillOpacity: 0.8,
       });
     },
   };
@@ -145,11 +157,11 @@ export default function setMap(res) {
   const style = (feature) => ({
     fillColor: getColor(feature.properties.name),
     weight: 1,
-    opacity: 0.5,
+    opacity: 0.8,
     color: '',
     dashArray: '3',
     dashOpacity: 0.1,
-    fillOpacity: 0.3,
+    fillOpacity: 0.4,
   });
   const onEachFeature = (feature, layer) => {
     layer.on({
