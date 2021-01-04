@@ -4,15 +4,15 @@
 import { geoJson } from 'leaflet';
 import { list, indicator, basicIndicators } from './list.js';
 
-const mapURL = 'https://api.mapbox.com/styles/v1/pavlovalisa/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
+const mapURL = 'https://api.mapbox.com/styles/v1/alexeyteterin/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
 const mapOptions = {
   attribution: '',
   maxZoom: 6,
   minZoom: 1,
-  id: 'ckipuyrx61npy17nqq9rtqsd7',
+  id: 'ckjiols004v5219tednapnr06',
   tileSize: 512,
   zoomOffset: -1,
-  accessToken: 'pk.eyJ1IjoicGF2bG92YWxpc2EiLCJhIjoiY2tpcHUxaW1pMXB6cTJ4cGtmcmo1dzVtYSJ9.Wyer4Fg3gii60yxTn2cdOw',
+  accessToken: 'pk.eyJ1IjoiYWxleGV5dGV0ZXJpbiIsImEiOiJja2ppaHYyeDMxOXE2MnhvN3J5eXoxeXJ0In0.jr2Ql5GDOrgMXi1mWaUJBQ',
 };
 const maxStat = {};
 const setMaxStat = (key) => {
@@ -47,6 +47,7 @@ export default function setMap(res) {
     countryClick(e) {
       const { id } = e.target.feature;
       const targetCountry = res.find((country) => country.countryInfo.iso3 === id);
+      console.log(res, id, targetCountry);
       if (targetCountry) {
         const clickEvent = new Event('click', { bubbles: true });
         const targetRow = listRows.find((row) => row.dataset.id === id);
@@ -74,6 +75,7 @@ export default function setMap(res) {
       if (!targetRow.dataset.Country) return;
 
       const targetCountryName = targetRow.dataset.Country;
+      // console.log(targetCountryName);
       const { lat, long } = res
         .find((country) => country.country === targetCountryName).countryInfo;
       const targetCoordinates = L.latLng(lat, long);
@@ -200,8 +202,7 @@ export default function setMap(res) {
         stats = (stats / (targetData.population / 100000)).toFixed(2);
       }
 
-      this.div.innerHTML = `<b>${targetCountry}</b><br/>
-        ${typeOfValue} ${absoluteOrRelative}:<br/>
+      this.div.innerHTML = `${typeOfValue} ${absoluteOrRelative} in <b>${targetCountry}</b>:<br/>
         ${stats}`;
     }
   };

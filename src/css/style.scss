@@ -20,6 +20,8 @@
   justify-content: center;
 }
 
+$color-body-primary: rgba(14, 28, 37, 1);
+
 body {
   display: flex;
   flex-direction: column;
@@ -28,7 +30,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background: #09100d;
+  background: $color-body-primary;
   color: aliceblue;
   font-family: 'Roboto',
     sans-serif;
@@ -36,7 +38,7 @@ body {
 
 main {
   @include flex-column;
-  width: 99vw;
+  width: 100%;
   box-sizing: border-box;
 
   .hidden {
@@ -187,7 +189,7 @@ main {
   width: 100%;
   max-width: 1600px;
   justify-content: center;
-  padding: 5px;
+  padding: 5px 12px;
   box-sizing: border-box;
 }
 
@@ -236,12 +238,12 @@ main {
       top: 0;
       padding: 0.3rem 0.1rem;
       height: 1.5rem;
-      background-color: #161C19;
+      background-color: #1A2830;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0px 4px 6px 0px rgba(22, 28, 25, 1);
+      box-shadow: 0px 4px 6px 0px #1A2830;
       order: -1;
 
       .keyboard-button {
@@ -250,7 +252,6 @@ main {
         height: 1rem;
         background-image: url(../assets/img/keyboard-button.svg);
         background-repeat: no-repeat;
-        background-color: #e2e9e6;
         background-size: contain;
         background-position: center;
         border: none;
@@ -394,12 +395,17 @@ main {
 .leaflet-top,
 .legend {
   line-height: 18px;
-  background: #351c1c90;
   margin: 0;
+  padding: 4px;
 }
 
-.info {
-  width: 140px;
+.info.leaflet-control {
+  text-align: right;
+}
+
+.info.legend {
+  background: rgba(0, 0, 0, 0.4);
+  text-align: left;
 }
 
 .legend i {
@@ -464,7 +470,7 @@ footer {
   align-items: center;
   width: 100%;
   height: 35px;
-  background: #2b2a2a50;
+  background: rgba(255, 255, 255, 0.05);
   margin-top: auto;
   align-self: flex-end;
   font-size: 14px;
@@ -483,7 +489,6 @@ footer {
 
 @media screen and (max-width: 1023px) {
   main {
-    width: 98vw;
     height: auto;
   }
 
@@ -539,7 +544,7 @@ footer {
 
   .content-bot {
     box-sizing: border-box;
-    padding: 5px;
+    padding: 5px 12px;
   }
 
   .graph {

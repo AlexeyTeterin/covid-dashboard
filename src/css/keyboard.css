@@ -16,7 +16,7 @@ strong {
   width: 100vw;
   min-width: 500px;
   padding: 5px 0;
-	background: linear-gradient(180deg, rgba(39, 46, 43) 0%, rgba(29, 36, 33) 100%);
+	background: linear-gradient(180deg, #23465c 0%, #1c384a 100%);
   user-select: none;
   transition: bottom 0.5s ease-in-out, height 0.5s;
   box-shadow: 0px 0px 5px 0px rgba(55, 72, 97, 0.4);
