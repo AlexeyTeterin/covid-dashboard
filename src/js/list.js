@@ -5,13 +5,8 @@ const searchInput = document.querySelector('#list__search');
 export const indicator = document.querySelector('#list__indicator');
 export const list = document.querySelector('.list__container');
 const keyboardButton = document.querySelector('.keyboard-button');
-export const basicIndicators = [
-  'TotalConfirmed',
-  'TotalRecovered',
-  'TotalDeaths',
-  'NewConfirmed',
-  'NewRecovered',
-  'NewDeaths',
+export const basicIndicators = ['TotalConfirmed', 'TotalRecovered',
+  'TotalDeaths', 'NewConfirmed', 'NewRecovered', 'NewDeaths',
 ];
 
 const keyboard = new Keyboard();
