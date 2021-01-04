@@ -155,18 +155,15 @@ main .hidden {
   background-image: url(../assets/img/minimize.svg);
 }
 
-.flex {
-  display: flex;
-  max-height: 49vh;
-  min-height: 40vh;
-}
-
 .content-top {
+  display: flex;
+  height: 40vh;
+  min-height: 340px;
+  width: 100%;
+  max-width: 1600px;
   justify-content: center;
   padding: 5px;
   box-sizing: border-box;
-  width: 100%;
-  max-width: 2400px;
 }
 
 .content-bot {
@@ -189,7 +186,6 @@ main .hidden {
   background-color: rgba(255, 255, 255, 0.05);
   width: 19%;
   min-width: 300px;
-  height: 39vh;
   border-radius: 4px;
   min-height: 0;
   transition: opacity 0.5s, width 0.5s, height 0.5s, box-shadow 0.2s;
@@ -312,7 +308,8 @@ main .hidden {
   padding: 4px 4px 0;
   width: 19%;
   min-width: 300px;
-  height: fit-content;
+  height: 330px;
+  box-sizing: border-box;
   background-color: rgba(255, 255, 255, 0.05);
   color: rgba(255, 255, 255, 0.95);
   border-radius: 4px;
@@ -506,11 +503,6 @@ footer img {
   main {
     width: 98vw;
     height: auto;
-  }
-  .flex {
-    display: flex;
-    max-height: unset;
-    min-height: unset;
   }
   .content-top {
     display: flex;
