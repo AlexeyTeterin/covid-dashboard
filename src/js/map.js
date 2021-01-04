@@ -55,6 +55,9 @@ export default function setMap(res) {
     },
     countryMouseOver(e) {
       const layer = e.target;
+      const touchSupported = 'ontouchstart' in window
+        || (window.DocumentTouch && document instanceof DocumentTouch);
+      if (touchSupported) return;
       layer.setStyle({
         weight: 1,
         color: '#e7e7e7',
