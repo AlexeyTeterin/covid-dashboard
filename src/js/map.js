@@ -47,7 +47,6 @@ export default function setMap(res) {
     countryClick(e) {
       const { id } = e.target.feature;
       const targetCountry = res.find((country) => country.countryInfo.iso3 === id);
-      console.log(res, id, targetCountry);
       if (targetCountry) {
         const clickEvent = new Event('click', { bubbles: true });
         const targetRow = listRows.find((row) => row.dataset.id === id);
