@@ -220,6 +220,10 @@ main .hidden {
 }
 
 .list .list__container .list__header {
+  position: -webkit-sticky;
+  position: -moz-sticky;
+  position: -o-sticky;
+  position: -ms-sticky;
   position: sticky;
   top: 0;
   padding: 0.3rem 0.1rem;
