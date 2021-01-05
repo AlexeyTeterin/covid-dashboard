@@ -208,11 +208,9 @@ main .hidden {
 }
 
 .list .list__header {
-  padding: 4px;
+  position: relative;
+  height: 3rem;
   background-color: #1A2830;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0px 8px 10px 0px #1A2830;
   z-index: 1;
@@ -267,6 +265,9 @@ main .hidden {
 }
 
 .list .list__header .keyboard-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
   margin: 0 4px 0 0;
   padding: 0;
   width: 1.5rem;
