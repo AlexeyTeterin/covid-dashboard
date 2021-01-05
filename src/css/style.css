@@ -85,6 +85,7 @@ main .hidden {
 .title h2 {
   position: relative;
   margin: 0;
+  font-size: 1.75rem;
 }
 
 .title h2 a {
@@ -104,12 +105,12 @@ main .hidden {
 
 .title h2 a span.title__icon {
   position: absolute;
-  left: -1.7rem;
+  left: calc(-1.75rem - 4px);
   background-image: url(../assets/img/favicon.svg);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  width: 1.5rem;
+  width: 1.75rem;
   height: 100%;
   transition: opacity 0.1s;
   animation: spin 8s linear infinite;
