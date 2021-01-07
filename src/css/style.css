@@ -206,6 +206,8 @@ button:active {
   padding: 0;
   max-width: 1600px;
   justify-content: center;
+  box-sizing: border-box;
+  padding: 0 12px;
 }
 
 .list {
@@ -551,10 +553,6 @@ footer img {
     justify-content: center;
     min-height: unset;
     height: auto;
-  }
-  .content-bot {
-    box-sizing: border-box;
-    padding: 5px 12px;
   }
   .map-wrapper {
     width: 100%;
