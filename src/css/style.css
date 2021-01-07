@@ -6,7 +6,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background: #0e1c25;
+  background: #0b171d;
   color: aliceblue;
   font-family: 'Roboto', sans-serif;
 }
@@ -28,6 +28,29 @@ main .hidden {
   display: none;
 }
 
+button {
+  width: 100%;
+  cursor: pointer;
+  font-size: 1.3rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: aliceblue;
+  border: none;
+  padding: 0.7rem 1rem;
+  margin: 0 auto 4px;
+  border-radius: 4px;
+  outline: none;
+  color: rgba(255, 255, 255, 0.85);
+  transition: background 0.1s;
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+button:active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -43,6 +66,11 @@ main .hidden {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
+}
+
+.hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .loading {
@@ -180,16 +208,11 @@ main .hidden {
   justify-content: center;
 }
 
-.hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-
 .list {
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.1);
   width: 19%;
   min-width: 300px;
   border-radius: 4px;
@@ -216,9 +239,9 @@ main .hidden {
 
 .list .list__header {
   position: relative;
-  background-color: #1A2830;
+  background-color: #242F34;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0px 8px 10px 0px #1A2830;
+  box-shadow: 0px 8px 10px 0px #242F34;
   z-index: 1;
 }
 
@@ -351,7 +374,7 @@ main .hidden {
   min-width: 300px;
   height: 330px;
   box-sizing: border-box;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.95);
   border-radius: 4px;
   min-height: 0;
@@ -375,10 +398,6 @@ main .hidden {
 .table-wrapper.fit-window .row {
   width: 40%;
   margin: auto;
-}
-
-.table-wrapper:hover {
-  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .row {
@@ -468,7 +487,7 @@ main .hidden {
   position: relative;
   width: 59%;
   max-width: 700px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.1);
   margin-top: 0.5rem;
   transition: background 0.2s;
   min-height: 0;
@@ -499,36 +518,12 @@ main .hidden {
   max-height: 350px;
 }
 
-button {
-  width: 100%;
-  cursor: pointer;
-  font-size: 1.3rem;
-  background: rgba(255, 255, 255, 0.05);
-  color: aliceblue;
-  border: none;
-  padding: 0.7rem 1rem;
-  margin: 0 auto 4px;
-  border-radius: 4px;
-  outline: none;
-  color: rgba(255, 255, 255, 0.85);
-  transition: background 0.1s;
-}
-
-button:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-button:active {
-  background: rgba(255, 255, 255, 0.1);
-}
-
 footer {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 35px;
-  background: rgba(255, 255, 255, 0.05);
   margin-top: auto;
   align-self: flex-end;
   font-size: 14px;
@@ -546,9 +541,6 @@ footer img {
 }
 
 @media screen and (max-width: 1023px) {
-  main {
-    height: auto;
-  }
   .content-top {
     display: flex;
     align-items: center;
@@ -556,6 +548,10 @@ footer img {
     justify-content: center;
     min-height: unset;
     height: auto;
+  }
+  .content-bot {
+    box-sizing: border-box;
+    padding: 5px 12px;
   }
   .map-wrapper {
     width: 100%;
@@ -594,10 +590,6 @@ footer img {
   }
   .table-wrapper.fit-window .row {
     width: 100%;
-  }
-  .content-bot {
-    box-sizing: border-box;
-    padding: 5px 12px;
   }
   .graph {
     max-width: 600px;

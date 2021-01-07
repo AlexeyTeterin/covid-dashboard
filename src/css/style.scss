@@ -20,7 +20,9 @@
   justify-content: center;
 }
 
-$color-body-primary: rgba(14, 28, 37, 1);
+$color-body-primary: hsl(202, 44%, 8%);
+$color-section-bg: rgba(255, 255, 255, 0.10);
+$color-section-bg-abs: #242F34;
 
 body {
   display: flex;
@@ -50,6 +52,29 @@ main {
   }
 }
 
+button {
+  width: 100%;
+  cursor: pointer;
+  font-size: 1.3rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: aliceblue;
+  border: none;
+  padding: 0.7rem 1rem;
+  margin: 0 auto 4px;
+  border-radius: 4px;
+  outline: none;
+  color: rgba(255, 255, 255, 0.85);
+  transition: background 0.1s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  &:active {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -65,6 +90,11 @@ main {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
+}
+
+.hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .loading {
@@ -104,7 +134,7 @@ main {
   margin-top: 0.5rem;
   margin-bottom: 8px;
   width: 100%;
-  
+
   h2 {
     position: relative;
     margin: 0;
@@ -192,7 +222,7 @@ main {
   justify-content: center;
   padding: 5px 12px;
   box-sizing: border-box;
-  
+
   &.flex {
     min-height: 0;
     height: auto;
@@ -207,16 +237,11 @@ main {
   justify-content: center;
 }
 
-.hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-
 .list {
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: $color-section-bg;
   width: 19%;
   min-width: 300px;
   border-radius: 4px;
@@ -232,9 +257,9 @@ main {
 
   .list__header {
     position: relative;
-    background-color: #1A2830;
+    background-color: $color-section-bg-abs;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0px 8px 10px 0px #1A2830;
+    box-shadow: 0px 8px 10px 0px $color-section-bg-abs;
     z-index: 1;
 
     input {
@@ -276,10 +301,10 @@ main {
         &::placeholder {
           color: transparent;
         }
-        
-        & ~button {
+
+        &~button {
           opacity: 0.6;
-          
+
           &:hover {
             opacity: 0.8;
           }
@@ -305,7 +330,7 @@ main {
       filter: invert(1);
       transition: transform 0.075s, opacity 0.075s;
       opacity: 0.1;
-      
+
       &:hover {
         opacity: 0.8;
       }
@@ -318,7 +343,6 @@ main {
 
   .list__container {
     display: flex;
-    // height: 100%;
     flex-direction: row;
     flex-wrap: wrap;
     overflow-y: scroll;
@@ -370,7 +394,7 @@ main {
   min-width: 300px;
   height: 330px;
   box-sizing: border-box;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: $color-section-bg;
   color: rgba(255, 255, 255, 0.95);
   border-radius: 4px;
   @include block-border();
@@ -383,10 +407,6 @@ main {
       width: 40%;
       margin: auto;
     }
-  }
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.05);
   }
 }
 
@@ -464,7 +484,7 @@ main {
   position: relative;
   width: 59%;
   max-width: 700px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: $color-section-bg;
   margin-top: 0.5rem;
   transition: background 0.2s;
   @include block-border();
@@ -485,36 +505,12 @@ main {
   }
 }
 
-button {
-  width: 100%;
-  cursor: pointer;
-  font-size: 1.3rem;
-  background: rgba(255, 255, 255, 0.05);
-  color: aliceblue;
-  border: none;
-  padding: 0.7rem 1rem;
-  margin: 0 auto 4px;
-  border-radius: 4px;
-  outline: none;
-  color: rgba(255, 255, 255, 0.85);
-  transition: background 0.1s;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-  }
-
-  &:active {
-    background: rgba(255, 255, 255, 0.1);
-  }
-}
-
 footer {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 35px;
-  background: rgba(255, 255, 255, 0.05);
   margin-top: auto;
   align-self: flex-end;
   font-size: 14px;
@@ -532,20 +528,16 @@ footer {
 }
 
 @media screen and (max-width: 1023px) {
-  main {
-    height: auto;
-  }
-  
-  // .flex {
-  //   display: flex;
-  //   max-height: 0;
-  //   min-height: 0;
-  // }
 
   .content-top {
     @include flex-column;
     min-height: unset;
     height: auto;
+  }
+  
+  .content-bot {
+    box-sizing: border-box;
+    padding: 5px 12px;
   }
 
   .map-wrapper {
@@ -592,12 +584,6 @@ footer {
       }
     }
   }
-
-  .content-bot {
-    box-sizing: border-box;
-    padding: 5px 12px;
-  }
-
 
   .graph {
     max-width: 600px;
