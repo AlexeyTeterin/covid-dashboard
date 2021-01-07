@@ -233,7 +233,7 @@ button {
   display: flex;
   width: 100%;
   padding: 0;
-  max-width: 2400px;
+  max-width: 1600px;
   justify-content: center;
 }
 
@@ -252,14 +252,15 @@ button {
     width: auto;
     max-width: 600px;
     min-height: 60vh;
-    height: 84vh;
+    height: calc(100vh - 140px);
   }
 
   .list__header {
     position: relative;
     background-color: $color-section-bg-abs;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0px 8px 10px 0px $color-section-bg-abs;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
     z-index: 1;
 
     input {
@@ -284,6 +285,8 @@ button {
     .list__indicator {
       margin-bottom: 4px;
       width: 100%;
+      border-top-right-radius: inherit;
+      border-top-left-radius: inherit;
       cursor: pointer;
 
       &:hover {
@@ -302,11 +305,9 @@ button {
           color: transparent;
         }
 
-        &~button {
-          opacity: 0.6;
-
+        & ~button {
           &:hover {
-            opacity: 0.8;
+            opacity: 0.6;
           }
         }
       }
@@ -329,15 +330,15 @@ button {
       cursor: pointer;
       filter: invert(1);
       transition: transform 0.075s, opacity 0.075s;
-      opacity: 0.1;
-
+      opacity: 0.2;
+      
       &:hover {
-        opacity: 0.8;
+        opacity: 0.6;
       }
-
+      
       &:active {
-        opacity: 0.4;
-      }
+        opacity: 1;
+      } 
     }
   }
 
@@ -348,7 +349,8 @@ button {
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     padding: 4px;
-    border-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
     color: rgba(255, 255, 255, 0.75);
 
     .list__row {
@@ -492,7 +494,8 @@ button {
   min-width: 440px;
 
   &.fit-window {
-    width: 80%;
+    width: 90%;
+    margin-top: -5px;
     max-width: unset;
 
     canvas {
@@ -512,6 +515,7 @@ footer {
   width: 100%;
   height: 35px;
   margin-top: auto;
+  padding-top: 8px;
   align-self: flex-end;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.4);
@@ -587,7 +591,6 @@ footer {
   }
 
   .graph {
-    max-width: 600px;
     width: 100%;
     margin: 3px 0 8px;
 
