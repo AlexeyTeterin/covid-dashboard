@@ -523,7 +523,8 @@ footer {
   img {
     margin-right: 5px;
     width: 50px;
-    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.75));
+    filter: invert(1);
+    opacity: 0.65;
   }
 }
 
