@@ -167,6 +167,11 @@ main .hidden {
   box-sizing: border-box;
 }
 
+.content-top.flex {
+  min-height: 0;
+  height: auto;
+}
+
 .content-bot {
   display: flex;
   width: 100%;
@@ -181,6 +186,7 @@ main .hidden {
 }
 
 .list {
+  position: relative;
   display: flex;
   flex-direction: column;
   background-color: rgba(255, 255, 255, 0.05);
@@ -548,6 +554,7 @@ footer img {
     align-items: center;
     flex-direction: column;
     justify-content: center;
+    min-height: unset;
     height: auto;
   }
   .map-wrapper {
