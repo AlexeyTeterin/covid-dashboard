@@ -594,7 +594,7 @@ footer img {
   }
   .graph {
     width: 100%;
-    min-width: 420px;
+    min-width: 320px;
     max-width: 600px;
     margin: 3px 0 8px;
   }
