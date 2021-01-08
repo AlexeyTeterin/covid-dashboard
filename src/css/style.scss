@@ -493,7 +493,7 @@ button {
   transition: background 0.2s;
   @include block-border();
   border-radius: 4px;
-  min-width: 440px;
+  min-width: 420px;
 
   &.fit-window {
     width: 90%;
@@ -589,6 +589,7 @@ footer {
 
   .graph {
     width: 100%;
+    max-width: 600px;
     margin: 3px 0 8px;
 
     &.fit-window {

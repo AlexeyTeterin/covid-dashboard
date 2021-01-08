@@ -495,7 +495,7 @@ button:active {
   min-height: 0;
   transition: opacity 0.5s, width 0.5s, height 0.5s, box-shadow 0.2s;
   border-radius: 4px;
-  min-width: 440px;
+  min-width: 420px;
 }
 
 .graph:hover {
@@ -594,6 +594,7 @@ footer img {
   }
   .graph {
     width: 100%;
+    max-width: 600px;
     margin: 3px 0 8px;
   }
   .graph.fit-window {
