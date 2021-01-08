@@ -47,6 +47,7 @@ const chart = new Chart(canvas, {
         },
         ticks: {
           fontColor: 'rgba(255, 255, 255, 0.5)',
+          fontSize: 11,
           callback: (value) => {
             const date = new Date(value);
             const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
@@ -62,6 +63,7 @@ const chart = new Chart(canvas, {
           color: 'rgba(255, 255, 255, 0.1)',
         },
         ticks: {
+          fontSize: 11,
           callback: (value, index, values) => {
             let delimeter = 1;
             let tail = '';
@@ -200,9 +202,11 @@ const observer = new ResizeObserver((entries) => {
     const { width } = entry.contentRect;
     if (width < 600) {
       chart.options.scales.xAxes[0].display = false;
+      chart.options.scales.yAxes[0].ticks.fontSize = 10;
       chart.options.title.fontSize = 16;
     } if (width >= 600) {
       chart.options.scales.xAxes[0].display = true;
+      chart.options.scales.yAxes[0].ticks.fontSize = 12;
       chart.options.title.fontSize = 20;
     }
   });
