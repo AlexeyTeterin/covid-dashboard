@@ -1,6 +1,6 @@
 import Chart from 'chart.js';
 import { getWorldStatsByDay, getCountryStatsByDay } from './CovidData.js';
-import { buttonAbs } from './table.js';
+import { buttonAbs, globalStats } from './table.js';
 import { list, indicator } from './list.js';
 
 const canvas = document.querySelector('#chart');
@@ -47,6 +47,17 @@ const chart = new Chart(canvas, {
         },
         ticks: {
           fontColor: 'rgba(255, 255, 255, 0.5)',
+          callback: (value, index, values) => {
+            const date = new Date(value);
+            const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+              'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+            ];
+            const currMonth = MONTHS[date.getMonth()];
+            const currLabel = `${currMonth} ${date.getDate()}, ${date.getFullYear().toString().substr(2)}`;
+            if (!values[index + 2]) return currLabel;
+            if (index % 15) return null;
+            return currLabel;
+          },
         },
       }],
       yAxes: [{
@@ -54,9 +65,39 @@ const chart = new Chart(canvas, {
           color: 'rgba(255, 255, 255, 0.1)',
         },
         ticks: {
+          callback: (value, index, values) => {
+            let delimeter = 1;
+            let tail = '';
+            if (Math.max(...values) > 1000) {
+              tail = 'k';
+              delimeter = 1000;
+            }
+            if (Math.max(...values) > 1000000) {
+              tail = 'M';
+              delimeter = 1000000;
+            }
+            return `${value / delimeter} ${tail}`;
+          },
           fontColor: 'rgba(255, 255, 255, 0.5)',
         },
       }],
+    },
+    hover: {
+      intersect: false,
+      mode: 'index',
+      axis: 'x',
+    },
+    tooltips: {
+      intersect: false,
+      titleAlign: 'center',
+      mode: 'index',
+      callbacks: {
+        title: (tooltipItem, data) => {
+          const date = new Date(data.labels[tooltipItem[0].index]);
+          return date.toDateString().substr(4);
+        },
+        // label: (item, data) => {},
+      },
     },
   },
 });
@@ -78,7 +119,8 @@ const updateChartData = (data, countryCode) => {
   const { cases, recovered, deaths } = data;
   const { datasets } = chart.data;
   const { options } = chart;
-  const worldPopulation = 7827000000;
+  const worldPopulation = globalStats.population || localStorage.worldPopulation || 7798000000;
+  localStorage.worldPopulation = worldPopulation;
   const selectedCountry = document.querySelector('.list__row_active');
   const population = countryCode ? selectedCountry.dataset.population : worldPopulation;
   const relativeValues = buttonAbs.classList.contains('relative');
@@ -99,10 +141,9 @@ const updateChartData = (data, countryCode) => {
   chart.update();
 };
 
-const handleCountrySelection = (graph, countryCode) => {
+const handleCountrySelection = (countryCode) => {
   getCountryStatsByDay(countryCode)
     .then((res) => {
-      // const chart = graph;
       const activeRow = document.querySelector('.list__row_active');
       const countryName = activeRow.dataset.Country;
       chart.options.title.text = countryName;
@@ -136,13 +177,13 @@ const handleListClick = (event, DailyWorldStats) => {
   if (!target.classList.contains('list__row')) return;
   const countryIsSelected = !target.classList.contains('list__row_active');
   if (!countryIsSelected) updateChartData(DailyWorldStats);
-  if (countryIsSelected) handleCountrySelection(chart, target.dataset.CountryCode);
+  if (countryIsSelected) handleCountrySelection(target.dataset.CountryCode);
 };
 
 const handleButtonAbsClick = (DailyWorldStats) => {
   const activeRow = document.querySelector('.list__row_active');
 
-  if (activeRow) handleCountrySelection(chart, activeRow.dataset.CountryCode);
+  if (activeRow) handleCountrySelection(activeRow.dataset.CountryCode);
   if (!activeRow) updateChartData(DailyWorldStats);
 };
 
@@ -150,7 +191,7 @@ const handleIndicatorChange = (DailyWorldStats) => {
   const countryIsSelected = document.querySelector('.list__row_active');
   if (!countryIsSelected) setTimeout(() => updateChartData(DailyWorldStats), 0);
   if (countryIsSelected) {
-    setTimeout(() => handleCountrySelection(chart, countryIsSelected.dataset.CountryCode), 0);
+    setTimeout(() => handleCountrySelection(countryIsSelected.dataset.CountryCode), 0);
   }
 
   const absoluteOn = !indicator.value.includes('100k');
@@ -166,7 +207,7 @@ chart.data.datasets.forEach((el, index) => {
   dataset.borderColor = dataset.pointBackgroundColor;
   dataset.borderWidth = 1;
   dataset.pointRadius = 2;
-  dataset.pointHoverRadius = 5;
+  dataset.pointHoverRadius = 6;
   dataset.backgroundColor = 'rgba(0, 0, 0, 0)';
   if (index > 2) dataset.hidden = true;
 });

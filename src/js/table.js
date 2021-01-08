@@ -11,7 +11,7 @@ export const buttonAbs = document.querySelector('.row-title-abs');
 
 const stat = { world: true, total: true, absolute: true };
 let source;
-let globalStats;
+const globalStats = {};
 let con;
 let deat;
 let rec;
@@ -118,7 +118,7 @@ const setUpdateTime = (updated) => {
     .innerText = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 };
 const setGlobalStats = (worldStats) => {
-  globalStats = {
+  Object.assign(globalStats, {
     population: worldStats.population,
     NewConfirmed: worldStats.todayCases,
     TotalConfirmed: worldStats.cases,
@@ -126,7 +126,7 @@ const setGlobalStats = (worldStats) => {
     TotalDeaths: worldStats.deaths,
     NewRecovered: worldStats.todayRecovered,
     TotalRecovered: worldStats.recovered,
-  };
+  });
   source = globalStats;
   con = source.TotalConfirmed;
   deat = source.TotalDeaths;
@@ -147,3 +147,5 @@ getWorldStats()
   })
   .then(() => getAllCountriesStats())
   .then((allCountriesStats) => setMap(allCountriesStats, setStats()));
+
+export { globalStats };
