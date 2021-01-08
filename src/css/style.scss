@@ -607,3 +607,9 @@ footer {
     }
   }
 }
+
+@media screen and (max-width: 380px) {
+  footer {
+    font-size: 12px;
+  }
+}

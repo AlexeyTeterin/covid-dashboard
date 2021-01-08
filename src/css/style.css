@@ -609,3 +609,9 @@ footer img {
     width: 100%;
   }
 }
+
+@media screen and (max-width: 380px) {
+  footer {
+    font-size: 12px;
+  }
+}
