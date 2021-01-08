@@ -209,10 +209,14 @@ const observer = new ResizeObserver((entries) => {
       chart.options.scales.xAxes[0].display = false;
       chart.options.scales.yAxes[0].ticks.fontSize = 10;
       chart.options.title.fontSize = 16;
+      chart.options.legend.labels.fontSize = 10;
+      chart.options.legend.position = 'right';
     } if (width >= 600) {
       chart.options.scales.xAxes[0].display = true;
       chart.options.scales.yAxes[0].ticks.fontSize = 12;
       chart.options.title.fontSize = 20;
+      chart.options.legend.labels.fontSize = 12;
+      chart.options.legend.position = 'bottom';
     }
   });
 });
