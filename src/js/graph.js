@@ -47,16 +47,13 @@ const chart = new Chart(canvas, {
         },
         ticks: {
           fontColor: 'rgba(255, 255, 255, 0.5)',
-          callback: (value, index, values) => {
+          callback: (value) => {
             const date = new Date(value);
             const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
               'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
             ];
             const currMonth = MONTHS[date.getMonth()];
-            const currLabel = `${currMonth} ${date.getDate()}, ${date.getFullYear().toString().substr(2)}`;
-            if (!values[index + 2]) return currLabel;
-            if (index % 15) return null;
-            return currLabel;
+            return `${currMonth} ${date.getDate()}, ${date.getFullYear().toString().substr(2)}`;
           },
         },
       }],
@@ -96,7 +93,6 @@ const chart = new Chart(canvas, {
           const date = new Date(data.labels[tooltipItem[0].index]);
           return date.toDateString().substr(4);
         },
-        // label: (item, data) => {},
       },
     },
   },
@@ -199,6 +195,19 @@ const handleIndicatorChange = (DailyWorldStats) => {
   else removeTailFromLabels(' per 100k');
 };
 
+const observer = new ResizeObserver((entries) => {
+  Object.values(entries).forEach((entry) => {
+    const { width } = entry.contentRect;
+    if (width < 600) {
+      chart.options.scales.xAxes[0].display = false;
+      chart.options.title.fontSize = 16;
+    } if (width >= 600) {
+      chart.options.scales.xAxes[0].display = true;
+      chart.options.title.fontSize = 20;
+    }
+  });
+});
+
 Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 0.7)';
 Chart.defaults.global.defaultFontFamily = 'Roboto';
 chart.data.datasets.forEach((el, index) => {
@@ -215,6 +224,7 @@ chart.data.datasets.forEach((el, index) => {
 list.addEventListener('click', (event) => handleListClick(event, dailyStats));
 buttonAbs.addEventListener('click', () => handleButtonAbsClick(dailyStats));
 indicator.addEventListener('change', () => handleIndicatorChange(dailyStats));
+observer.observe(document.querySelector('.graph'));
 
 getWorldStatsByDay()
   .then((result) => {

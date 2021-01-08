@@ -487,13 +487,13 @@ button {
 .graph {
   position: relative;
   width: 59%;
+  min-width: 600px;
   max-width: 700px;
   background-color: $color-section-bg;
   margin-top: 0.5rem;
   transition: background 0.2s;
   @include block-border();
   border-radius: 4px;
-  min-width: 420px;
 
   &.fit-window {
     width: 90%;
@@ -589,6 +589,7 @@ footer {
 
   .graph {
     width: 100%;
+    min-width: 420px;
     max-width: 600px;
     margin: 3px 0 8px;
 

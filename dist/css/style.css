@@ -488,6 +488,7 @@ button:active {
 .graph {
   position: relative;
   width: 59%;
+  min-width: 600px;
   max-width: 700px;
   background-color: rgba(255, 255, 255, 0.1);
   margin-top: 0.5rem;
@@ -495,7 +496,6 @@ button:active {
   min-height: 0;
   transition: opacity 0.5s, width 0.5s, height 0.5s, box-shadow 0.2s;
   border-radius: 4px;
-  min-width: 420px;
 }
 
 .graph:hover {
@@ -594,6 +594,7 @@ footer img {
   }
   .graph {
     width: 100%;
+    min-width: 420px;
     max-width: 600px;
     margin: 3px 0 8px;
   }
