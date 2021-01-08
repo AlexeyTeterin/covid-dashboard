@@ -28,7 +28,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 340px;
+  min-width: 360px;
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -217,11 +217,11 @@ button {
 .content-top {
   display: flex;
   height: 40vh;
-  min-height: 340px;
+  min-height: 360px;
   width: 100%;
   max-width: 1600px;
   justify-content: center;
-  padding: 5px 12px;
+  padding: 5px 10px;
   box-sizing: border-box;
 
   &.flex {
@@ -237,7 +237,7 @@ button {
   max-width: 1600px;
   justify-content: center;
   box-sizing: border-box;
-  padding: 0 12px;
+  padding: 0 10px;
 }
 
 .list {

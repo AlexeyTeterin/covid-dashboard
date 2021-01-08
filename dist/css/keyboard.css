@@ -14,7 +14,7 @@ strong {
   height: fit-content;
   bottom: 0;
   width: 100vw;
-  min-width: 440px;
+  min-width: 360px;
   padding: 5px 0;
 	background: linear-gradient(180deg, #1c384a 0%, #162d3b 100%);
   user-select: none;
