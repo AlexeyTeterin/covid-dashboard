@@ -39,6 +39,7 @@ const chart = new Chart(canvas, {
         usePointStyle: true,
       },
       position: 'bottom',
+      align: 'center',
     },
     scales: {
       xAxes: [{
@@ -160,7 +161,8 @@ const handleCountrySelection = (countryCode) => {
 const addTailToLabels = (tail) => chart.data.datasets
   .forEach((el) => {
     const dataset = el;
-    if (!dataset.label.includes(tail)) dataset.label += tail;
+    if (dataset.label.includes(tail)) return;
+    dataset.label += tail;
   });
 
 const removeTailFromLabels = (tail) => chart.data.datasets
@@ -180,6 +182,9 @@ const handleListClick = (event, DailyWorldStats) => {
 
 const handleButtonAbsClick = (DailyWorldStats) => {
   const activeRow = document.querySelector('.list__row_active');
+  const absoluteOn = !indicator.value.includes('100k');
+  if (!absoluteOn) addTailToLabels(' per 100k');
+  if (absoluteOn) removeTailFromLabels(' per 100k');
 
   if (activeRow) handleCountrySelection(activeRow.dataset.CountryCode);
   if (!activeRow) updateChartData(DailyWorldStats);
