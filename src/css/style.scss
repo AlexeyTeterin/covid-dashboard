@@ -64,6 +64,7 @@ button {
   border-radius: 4px;
   outline: none;
   color: rgba(255, 255, 255, 0.85);
+  font-family: 'Roboto', sans-serif;
   transition: background 0.1s;
   cursor: pointer;
 
@@ -436,6 +437,13 @@ button {
 .row {
   @include flex-column;
   font-size: 1.3rem;
+  
+  .row-title-area span {
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+    color: transparent;
+  }
   
   &.switchers {
     flex-direction: row;

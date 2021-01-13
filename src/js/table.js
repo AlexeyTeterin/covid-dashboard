@@ -107,7 +107,8 @@ const handleListClick = (event) => {
 
   source = listRows
     .find((row) => row.dataset.CountryCode === clickedCountryCode).dataset || globalStats;
-  buttonArea.innerText = source.Country;
+  buttonArea.innerHTML = `<span>ww</span>${source.Country}`;
+  buttonArea.firstChild.style.setProperty('background-image', `url(https://www.countryflags.io/${source.CountryCode}/shiny/24.png)`);
   setStats(source);
 };
 const handleIndicatorChange = (event) => {
