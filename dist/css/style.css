@@ -52,21 +52,11 @@ button:active {
   background: rgba(255, 255, 255, 0.1);
 }
 
-button span {
-  position: absolute;
-  right: 16px;
-}
-
-button.total, button.absolute {
-  text-align: left;
-}
-
 button.total span, button.absolute span {
   color: rgba(255, 255, 255, 0.15);
 }
 
 button.new, button.relative {
-  text-align: left;
   color: rgba(255, 255, 255, 0.15);
 }
 
@@ -399,9 +389,9 @@ button.new span, button.relative span {
   min-width: 300px;
   height: 100%;
   box-sizing: border-box;
+  border-radius: 4px;
   background-color: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.95);
-  border-radius: 4px;
   min-height: 0;
   transition: opacity 0.5s, width 0.5s, height 0.5s, box-shadow 0.2s;
 }
@@ -433,9 +423,26 @@ button.new span, button.relative span {
   font-size: 1.3rem;
 }
 
+.row.switchers {
+  flex-direction: row;
+}
+
+.row.switchers button {
+  padding: 0.25rem 0.5rem;
+}
+
+.row.switchers button:last-child {
+  margin-left: 4px;
+}
+
+.row .total-or-new {
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
 .row div {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
 }
 
@@ -454,11 +461,11 @@ button.new span, button.relative span {
   font-weight: bold;
 }
 
-.row .table-cases {
+.row .cases-confirmed {
   color: #de776e;
 }
 
-.row .table-recovered {
+.row .cases-recovered {
   color: #82b0a4;
 }
 

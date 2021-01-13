@@ -2,9 +2,9 @@ import { getWorldStats, getAllCountriesStats } from './CovidData.js';
 import { list, indicator } from './list.js';
 import setMap from './map.js';
 
-const divDeaths = document.querySelector('.table-deaths');
-const divRecovered = document.querySelector('.table-recovered');
-const divCases = document.querySelector('.table-cases');
+const divDeaths = document.querySelector('.cases-deaths');
+const divRecovered = document.querySelector('.cases-recovered');
+const divCases = document.querySelector('.cases-confirmed');
 const buttonArea = document.querySelector('.row-title-area');
 export const buttonCount = document.querySelector('.row-title-count');
 export const buttonAbs = document.querySelector('.row-title-abs');
@@ -56,15 +56,9 @@ const toggleTotal = () => {
 
   stat.total = !stat.total;
   if (stat.total) {
-    document.querySelectorAll('.total-or-new').forEach((el) => {
-      const span = el;
-      span.innerHTML = 'All time&nbsp;';
-    });
+    document.querySelector('.total-or-new').innerHTML = 'all time';
   } else {
-    document.querySelectorAll('.total-or-new').forEach((el) => {
-      const span = el;
-      span.innerHTML = 'Last day&nbsp;';
-    });
+    document.querySelector('.total-or-new').innerHTML = 'last day';
   }
 
   setTimeout(() => indicator.dispatchEvent(new Event('change')), 0);
