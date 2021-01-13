@@ -37,9 +37,9 @@ const setStats = () => {
     deat = source.NewDeaths;
     rec = source.NewRecovered;
   }
-  divCases.innerText = round(con / k);
-  divDeaths.innerText = round(deat / k);
-  divRecovered.innerText = round(rec / k);
+  divCases.innerText = round(con / k).toLocaleString();
+  divDeaths.innerText = round(deat / k).toLocaleString();
+  divRecovered.innerText = round(rec / k).toLocaleString();
 };
 const toggleTotal = () => {
   const options = Array.from(indicator.querySelectorAll('option'));
@@ -54,10 +54,20 @@ const toggleTotal = () => {
   const targetOption = options.filter((option) => option.value === indicator.value)[0];
   targetOption.setAttribute('selected', true);
 
-  // indicator.dispatchEvent(new Event('change'));
-
   stat.total = !stat.total;
-  buttonCount.innerText = stat.total ? 'Total' : 'New';
+  if (stat.total) {
+    document.querySelectorAll('.total-or-new').forEach((el) => {
+      const span = el;
+      span.innerHTML = 'All time&nbsp;';
+    });
+  } else {
+    document.querySelectorAll('.total-or-new').forEach((el) => {
+      const span = el;
+      span.innerHTML = 'Last day&nbsp;';
+    });
+  }
+
+  setTimeout(() => indicator.dispatchEvent(new Event('change')), 0);
   buttonCount.classList.toggle('total');
   buttonCount.classList.toggle('new');
   setStats();
@@ -75,10 +85,21 @@ const toggleAbs = () => {
   const targetOption = options.filter((option) => option.value === indicator.value)[0];
   targetOption.setAttribute('selected', true);
 
-  // indicator.dispatchEvent(new Event('change'));
-
   stat.absolute = !stat.absolute;
-  buttonAbs.innerText = stat.absolute ? 'Absolute' : 'Per 100k';
+
+  if (stat.absolute) {
+    document.querySelectorAll('.tail').forEach((el) => {
+      const span = el;
+      span.innerHTML = '';
+    });
+  } else {
+    document.querySelectorAll('.tail').forEach((el) => {
+      const span = el;
+      span.innerHTML = '&nbsp;per 100 k';
+    });
+  }
+
+  setTimeout(() => indicator.dispatchEvent(new Event('change')), 0);
   buttonAbs.classList.toggle('absolute');
   buttonAbs.classList.toggle('relative');
   setStats();

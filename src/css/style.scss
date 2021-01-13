@@ -54,11 +54,10 @@ main {
 }
 
 button {
+  position: relative;
   width: 100%;
-  cursor: pointer;
   font-size: 1.3rem;
   background: rgba(255, 255, 255, 0.05);
-  color: aliceblue;
   border: none;
   padding: 0.7rem 1rem;
   margin: 0 auto 4px;
@@ -66,6 +65,7 @@ button {
   outline: none;
   color: rgba(255, 255, 255, 0.85);
   transition: background 0.1s;
+  cursor: pointer;
 
   &:hover {
     background: rgba(255, 255, 255, 0.15);
@@ -73,6 +73,29 @@ button {
 
   &:active {
     background: rgba(255, 255, 255, 0.1);
+  }
+  
+  span {
+    position: absolute;
+    right: 16px; 
+   }
+  
+  &.total, &.absolute {
+    // background: rgba(255, 255, 255, 0.1);
+    text-align: left;
+    
+    span {
+      color: rgba(255, 255, 255, 0.15);
+    }
+  }
+  
+  &.new, &.relative {
+    text-align: left;
+    color: rgba(255, 255, 255, 0.15);
+    
+    span {
+      color: rgba(255, 255, 255, 0.85);
+    }
   }
 }
 
@@ -393,11 +416,11 @@ button {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   padding: 4px 4px 0;
   width: 19%;
   min-width: 300px;
-  height: 330px;
+  height: 100%;
   box-sizing: border-box;
   background-color: $color-section-bg;
   color: rgba(255, 255, 255, 0.95);
@@ -420,18 +443,32 @@ button {
   font-size: 1.3rem;
 
   div {
-    padding: 0.5rem 0.5rem;
-    width: 100%;
-    text-align: left;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-
-    &:last-child {
-      justify-content: flex-start;
-      white-space: nowrap;
-      overflow: hidden;
+  }
+  
+  >div {
+    width: 100%;
+    padding: 0.5rem 0.5rem;
+    flex-direction: column;
+    
+    & >div:first-child {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.55);
     }
+    
+    & >div:last-child {
+      font-weight: bold;
+    }
+  }
+  
+  & .table-cases {
+    color: #de776e;
+  }
+  
+  & .table-recovered {
+    color: #82b0a4;
   }
 }
 

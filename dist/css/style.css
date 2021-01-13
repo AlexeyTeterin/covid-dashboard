@@ -30,11 +30,10 @@ main .hidden {
 }
 
 button {
+  position: relative;
   width: 100%;
-  cursor: pointer;
   font-size: 1.3rem;
   background: rgba(255, 255, 255, 0.05);
-  color: aliceblue;
   border: none;
   padding: 0.7rem 1rem;
   margin: 0 auto 4px;
@@ -42,6 +41,7 @@ button {
   outline: none;
   color: rgba(255, 255, 255, 0.85);
   transition: background 0.1s;
+  cursor: pointer;
 }
 
 button:hover {
@@ -50,6 +50,28 @@ button:hover {
 
 button:active {
   background: rgba(255, 255, 255, 0.1);
+}
+
+button span {
+  position: absolute;
+  right: 16px;
+}
+
+button.total, button.absolute {
+  text-align: left;
+}
+
+button.total span, button.absolute span {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+button.new, button.relative {
+  text-align: left;
+  color: rgba(255, 255, 255, 0.15);
+}
+
+button.new span, button.relative span {
+  color: rgba(255, 255, 255, 0.85);
 }
 
 ::-webkit-scrollbar {
@@ -371,11 +393,11 @@ button:active {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   padding: 4px 4px 0;
   width: 19%;
   min-width: 300px;
-  height: 330px;
+  height: 100%;
   box-sizing: border-box;
   background-color: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.95);
@@ -412,18 +434,32 @@ button:active {
 }
 
 .row div {
-  padding: 0.5rem 0.5rem;
-  width: 100%;
-  text-align: left;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
-.row div:last-child {
-  justify-content: flex-start;
-  white-space: nowrap;
-  overflow: hidden;
+.row > div {
+  width: 100%;
+  padding: 0.5rem 0.5rem;
+  flex-direction: column;
+}
+
+.row > div > div:first-child {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.row > div > div:last-child {
+  font-weight: bold;
+}
+
+.row .table-cases {
+  color: #de776e;
+}
+
+.row .table-recovered {
+  color: #82b0a4;
 }
 
 .map-wrapper {

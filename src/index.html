@@ -19,7 +19,7 @@
       <h2></span><a href="."><span class="title__icon"></span>COVID-19 Dashboard</a></h2>
       <span>Last update time: <span class="day-updated">update in progress...</span></span>
     </div>
-    
+
     <div class="loading pulsate">Loading...</div>
 
     <div class="content-top hidden">
@@ -46,22 +46,34 @@
         <div class="max-min-btn"></div>
         <div class="row">
           <button class="row-title-area">World</button>
-          <button class="row-title-count total">Total</button>
-          <button class="row-title-abs absolute">Absolute</button>
         </div>
         <div class="row">
           <div>
-            <div>Cases:</div>
+            <div>
+              <span class="total-or-new">All time&nbsp;</span>
+              <b>cases</b>
+              <span class="tail"></span>:
+            </div>
             <div class="table-cases">0</div>
           </div>
           <div>
-            <div>Deaths:</div>
-            <div class="table-deaths">0</div>
-          </div>
-          <div>
-            <div>Recovered:</div>
+            <div><span class="total-or-new">All time&nbsp;</span>
+              <b>recovered</b>
+              <span class="tail"></span>:
+            </div>
             <div class="table-recovered">0</div>
           </div>
+          <div>
+            <div><span class="total-or-new">All time&nbsp;</span>
+              <b>deaths</b>
+              <span class="tail"></span>:
+            </div>
+            <div class="table-deaths">0</div>
+          </div>
+        </div>
+        <div class="row">
+          <button class="row-title-count total">Total <span>New</span></button>
+          <button class="row-title-abs absolute">Absolute <span>Relative</span></button>
         </div>
       </div>
     </div>

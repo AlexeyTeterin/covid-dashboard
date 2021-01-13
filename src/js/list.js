@@ -76,7 +76,9 @@ const sortRows = () => {
   rows.forEach((row) => {
     row.style.setProperty('order', rowsSorted.indexOf(row));
     const value = row.children[1];
-    value.textContent = row.dataset[option];
+    value.textContent = parseFloat(row.dataset[option]).toLocaleString();
+    const pos = value.textContent.length - 2;
+    if (value.textContent.charAt(pos) === ',') value.textContent += '0';
   });
   if (activeElement) activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
