@@ -438,6 +438,7 @@ button.new span, button.relative span {
 .row .total-or-new {
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.55);
+  padding-top: 0;
 }
 
 .row div {
