@@ -174,6 +174,7 @@ export default function setMap(res) {
     list.addEventListener('click', handleMapEvents.listClick);
     document.querySelector('.row-title-count').addEventListener('click', () => setLabel(indicator));
     document.querySelector('.row-title-abs').addEventListener('click', () => setLabel(indicator));
+    document.querySelector('.map-wrapper > .max-min-btn').addEventListener('click', () => setTimeout(() => map.invalidateSize(true), 250));
   };
 
   mapInfo.onAdd = function add() {
@@ -217,7 +218,6 @@ export default function setMap(res) {
   };
 
   map.setMaxBounds(L.latLngBounds(southWest, northEast));
-  setInterval(() => map.invalidateSize(true), 100);
   runEventListeners();
 
   request.open('GET', './assets/json/countries.json');
