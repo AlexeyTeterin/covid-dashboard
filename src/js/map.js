@@ -36,7 +36,7 @@ const infoType = { type: 'TotalConfirmed', absolute: true };
 
 export default function setMap(res) {
   const listRows = Array.from(list.querySelectorAll('.list__row'));
-  const map = L.map('mapid').setView([40, 20], 2);
+  const map = L.map('mapid').setView([40, 20], 1);
   const mapInfo = L.control();
   const mapLegend = L.control({ position: 'bottomright' });
   const southWest = L.latLng(-90, -220);
@@ -85,7 +85,7 @@ export default function setMap(res) {
       if (clickedCountry.target) geoJson.resetStyle(clickedCountry.target);
 
       if (selectionRemoved) {
-        map.setView([40, 20], 2);
+        map.setView([40, 20], 1);
         clickedCountry.name = '';
         clickedCountry.target = null;
         return;
@@ -221,12 +221,12 @@ export default function setMap(res) {
   request.onload = () => {
     const collection = JSON.parse(request.responseText);
 
+    runEventListeners();
     L.tileLayer(mapURL, mapOptions).addTo(map);
     map.setMaxBounds(bounds);
     basicIndicators.forEach((key) => setMaxStat(key));
     mapInfo.addTo(map);
     mapLegend.addTo(map);
-    runEventListeners();
 
     geoJson = L.geoJson(collection, {
       style,
