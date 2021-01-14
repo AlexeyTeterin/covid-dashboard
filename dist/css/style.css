@@ -1,3 +1,4 @@
+@charset "UTF-8";
 body {
   display: flex;
   flex-direction: column;
@@ -40,8 +41,13 @@ button {
   border-radius: 4px;
   outline: none;
   color: rgba(255, 255, 255, 0.85);
+  font-family: 'Roboto', sans-serif;
   transition: background 0.1s;
   cursor: pointer;
+}
+
+button span {
+  position: relative;
 }
 
 button:hover {
@@ -52,16 +58,33 @@ button:active {
   background: rgba(255, 255, 255, 0.1);
 }
 
-button.total span, button.absolute span {
+button.total span:first-child::before,
+button.absolute span:first-child::before {
+  position: absolute;
+  content: '●';
+  left: -1rem;
+}
+
+button.total span:last-child,
+button.absolute span:last-child {
   color: rgba(255, 255, 255, 0.15);
 }
 
-button.new, button.relative {
+button.new,
+button.relative {
   color: rgba(255, 255, 255, 0.15);
 }
 
-button.new span, button.relative span {
+button.new span:last-child,
+button.relative span:last-child {
   color: rgba(255, 255, 255, 0.85);
+}
+
+button.new span:last-child::before,
+button.relative span:last-child::before {
+  position: absolute;
+  content: '●';
+  left: -1rem;
 }
 
 ::-webkit-scrollbar {
@@ -421,6 +444,13 @@ button.new span, button.relative span {
   flex-direction: column;
   justify-content: center;
   font-size: 1.3rem;
+}
+
+.row .row-title-area span {
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+  color: transparent;
 }
 
 .row.switchers {

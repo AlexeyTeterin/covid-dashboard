@@ -23,6 +23,8 @@
 $color-body-primary: hsl(202, 44%, 8%);
 $color-section-bg: rgba(255, 255, 255, 0.10);
 $color-section-bg-abs: #242F34;
+$color-light-text: rgba(255, 255, 255, 0.85);
+$color-dark-text: rgba(255, 255, 255, 0.15);
 
 body {
   display: flex;
@@ -63,34 +65,50 @@ button {
   margin: 0 auto 4px;
   border-radius: 4px;
   outline: none;
-  color: rgba(255, 255, 255, 0.85);
+  color: $color-light-text;
   font-family: 'Roboto', sans-serif;
   transition: background 0.1s;
   cursor: pointer;
 
+  span {
+    position: relative;
+  }
+
   &:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: $color-dark-text;
   }
 
   &:active {
-    background: rgba(255, 255, 255, 0.1);
+    background: $color-section-bg;
+  }
+}
+
+button.total,
+button.absolute {
+
+  span:first-child::before {
+    position: absolute;
+    content: '●';
+    left: -1rem;
   }
 
-  &.total,
-  &.absolute {
+  span:last-child {
+    color: $color-dark-text;
+  }
+}
 
-    span {
-      color: rgba(255, 255, 255, 0.15);
-    }
+button.new,
+button.relative {
+  color: $color-dark-text;
+
+  span:last-child {
+    color: $color-light-text;
   }
 
-  &.new,
-  &.relative {
-    color: rgba(255, 255, 255, 0.15);
-
-    span {
-      color: rgba(255, 255, 255, 0.85);
-    }
+  span:last-child::before {
+    position: absolute;
+    content: '●';
+    left: -1rem;
   }
 }
 
@@ -419,7 +437,7 @@ button {
   box-sizing: border-box;
   border-radius: 4px;
   background-color: $color-section-bg;
-  
+
   color: rgba(255, 255, 255, 0.95);
   @include block-border();
 
@@ -437,32 +455,32 @@ button {
 .row {
   @include flex-column;
   font-size: 1.3rem;
-  
+
   .row-title-area span {
     background-repeat: no-repeat;
     width: 24px;
     height: 24px;
     color: transparent;
   }
-  
+
   &.switchers {
     flex-direction: row;
-    
+
     button {
       padding: 0.25rem 0.5rem;
-      
+
       &:last-child {
         margin-left: 4px;
       }
     }
   }
-  
+
   .total-or-new {
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.55);
     padding-top: 0;
   }
-  
+
   div {
     display: flex;
     justify-content: center;
