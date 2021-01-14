@@ -370,6 +370,7 @@ button.relative {
       filter: invert(1);
       transition: transform 0.075s, opacity 0.075s;
       opacity: 0.2;
+      color: transparent;
 
       &:hover {
         opacity: 0.6;
