@@ -356,6 +356,8 @@ export default class KEYBOARD {
           keyElement.append(document.createElement('img'));
           keyElement.children[0].src = './assets/img/on-off-icon.svg';
           keyElement.children[0].alt = 'OFF';
+          keyElement.children[0].width = '20';
+          keyElement.children[0].height = '20';
 
           keyElement.addEventListener('click', () => {
             this.soundClick('./assets/audio/switch-10.mp3');
@@ -370,7 +372,8 @@ export default class KEYBOARD {
           keyElement.append(document.createElement('img'));
           keyElement.children[0].src = './assets/img/sound-off.svg';
           keyElement.children[0].alt = 'sound';
-
+          keyElement.children[0].width = '20';
+          keyElement.children[0].height = '20';
           keyElement.addEventListener('click', () => {
             this.toggleSound();
             this.soundClick('./assets/audio/switch-10.mp3');
