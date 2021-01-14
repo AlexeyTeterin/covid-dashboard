@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable no-undef */
 
+import * as L from 'leaflet';
 import { geoJson } from 'leaflet';
 import { list, indicator, basicIndicators } from './list.js';
 
@@ -35,13 +35,11 @@ const clickedCountry = { target: null, name: '' };
 const infoType = { type: 'TotalConfirmed', absolute: true };
 
 export default function setMap(res) {
-  const listRows = Array.from(list.querySelectorAll('.list__row'));
-  const map = L.map('mapid').setView([40, 20], 1);
+  const map = L.map('mapid').setView([40, 20], 2);
   const mapInfo = L.control();
   const mapLegend = L.control({ position: 'bottomright' });
   const southWest = L.latLng(-90, -220);
   const northEast = L.latLng(90, 220);
-  const bounds = L.latLngBounds(southWest, northEast);
   const request = new XMLHttpRequest();
   const handleMapEvents = {
     countryClick(e) {
@@ -50,7 +48,8 @@ export default function setMap(res) {
         .find((country) => country.countryInfo.iso3 === id);
       if (targetCountry) {
         const clickEvent = new Event('click', { bubbles: true });
-        const targetRow = listRows.find((row) => row.dataset.id === id);
+        const targetRow = Array.from(list.querySelectorAll('.list__row'))
+          .find((row) => row.dataset.id === id);
         if (targetRow) targetRow.firstChild.dispatchEvent(clickEvent);
       }
     },
@@ -85,7 +84,7 @@ export default function setMap(res) {
       if (clickedCountry.target) geoJson.resetStyle(clickedCountry.target);
 
       if (selectionRemoved) {
-        map.setView([40, 20], 1);
+        map.setView([40, 20], 2);
         clickedCountry.name = '';
         clickedCountry.target = null;
         return;
@@ -169,12 +168,12 @@ export default function setMap(res) {
       click: handleMapEvents.countryClick,
     });
   };
+
   const runEventListeners = () => {
     indicator.addEventListener('click', (event) => setLabel(event.target));
     list.addEventListener('click', handleMapEvents.listClick);
     document.querySelector('.row-title-count').addEventListener('click', () => setLabel(indicator));
     document.querySelector('.row-title-abs').addEventListener('click', () => setLabel(indicator));
-    document.querySelector('.map-wrapper > .max-min-btn').addEventListener('click', () => setTimeout(() => map.invalidateSize(true), 250));
   };
 
   mapInfo.onAdd = function add() {
@@ -187,7 +186,7 @@ export default function setMap(res) {
       this.div.innerHTML = 'Hover over a country';
     }
     if (countryName) {
-      const targetRow = listRows
+      const targetRow = Array.from(list.querySelectorAll('.list__row'))
         .find((row) => row.dataset.Country === countryName) || null;
       const targetData = targetRow ? targetRow.dataset : {};
       const typeOfValue = labelsArr[keysArr.indexOf(infoType.type)];
@@ -217,22 +216,26 @@ export default function setMap(res) {
     return div;
   };
 
+  map.setMaxBounds(L.latLngBounds(southWest, northEast));
+  setInterval(() => map.invalidateSize(true), 100);
+  runEventListeners();
+
   request.open('GET', './assets/json/countries.json');
   request.onload = () => {
     const collection = JSON.parse(request.responseText);
 
-    runEventListeners();
-    L.tileLayer(mapURL, mapOptions).addTo(map);
-    map.setMaxBounds(bounds);
-    basicIndicators.forEach((key) => setMaxStat(key));
-    mapInfo.addTo(map);
-    mapLegend.addTo(map);
-
-    geoJson = L.geoJson(collection, {
-      style,
-      onEachFeature,
-    }).addTo(map);
+    (function waitForListLoad() {
+      if (list.dataset.status === 'loaded') {
+        basicIndicators.forEach((key) => setMaxStat(key));
+        L.tileLayer(mapURL, mapOptions).addTo(map);
+        mapInfo.addTo(map);
+        mapLegend.addTo(map);
+        geoJson = L.geoJson(collection, {
+          style,
+          onEachFeature,
+        }).addTo(map);
+      } else setTimeout(waitForListLoad, 15);
+    }());
   };
-
   request.send();
 }

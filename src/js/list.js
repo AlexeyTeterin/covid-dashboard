@@ -14,8 +14,8 @@ keyboard.init();
 
 const calcPer100k = (value, population) => +((value / population) * 100000).toFixed(2);
 
-const loadRows = (data) => {
-  data
+const loadRows = async (data) => {
+  await data
     .filter((country) => country.countryInfo.iso2 !== null)
     .forEach((country) => {
       const row = document.createElement('div');
@@ -59,6 +59,7 @@ const loadRows = (data) => {
       row.append(name, value);
       list.append(row);
     });
+  list.dataset.status = 'loaded';
 };
 
 const sortRows = () => {
