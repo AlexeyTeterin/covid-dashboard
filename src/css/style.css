@@ -225,7 +225,7 @@ button.relative span:last-child::before {
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #ffffff;
 }
 
 input:focus + .slider {
