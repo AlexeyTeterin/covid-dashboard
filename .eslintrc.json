@@ -16,7 +16,7 @@
     "sourceType": "module"
   },
   "rules": {
+    "import/extensions": "off",
     "linebreak-style": ["error", "unix"], // changes the file to LF
-    "import/extensions": ["error", "ignorePackages", { "js": "always" }]
   }
 }
