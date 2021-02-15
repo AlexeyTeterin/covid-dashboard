@@ -76,6 +76,29 @@ body.day .graph {
   background-color: #fff;
 }
 
+body.day button {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.day button:hover {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+body.day button.total span:last-child,
+body.day button.absolute span:last-child {
+  color: gray;
+}
+
+body.day button.new,
+body.day button.relative {
+  color: gray;
+}
+
+body.day button.new span:last-child,
+body.day button.relative span:last-child {
+  color: black;
+}
+
 main {
   display: flex;
   align-items: center;
