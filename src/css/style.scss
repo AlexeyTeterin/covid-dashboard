@@ -54,6 +54,7 @@ body.day {
   .list__header {
     color: black;
     background-color: $color-section-bg-day;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   }
 
   .list__container {
@@ -61,9 +62,8 @@ body.day {
     background-color: $color-section-bg-day;
   }
   
-  .list__indicator.day {
-    color: black;
-    background-color: $color-section-bg-day;
+  .list__indicator {
+    color: black !important;
   }
   
   #list__search {
@@ -74,6 +74,10 @@ body.day {
   .list .list__container .list__row_active {
     background-color: rgba(0, 0, 0, 0.15);
     color: black;
+  }
+  
+  .keyboard-button {
+    filter: invert(0) !important;
   }
   
   .table-wrapper {

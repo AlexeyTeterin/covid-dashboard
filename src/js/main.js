@@ -9,8 +9,8 @@ const list = document.querySelector('.list');
 const toggleNightMode = () => {
   if (checkbox.checked) console.log('day');
   document.body.classList.toggle('day');
-  list.classList.toggle('day');
-  indicator.classList.toggle('day');
+  // list.classList.toggle('day');
+  // indicator.classList.toggle('day');
 };
 
 resizeBtns.forEach((btn) => {
