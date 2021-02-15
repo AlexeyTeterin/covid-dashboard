@@ -2,18 +2,18 @@ import {
   setGraphTheme, chart, dailyStats, updateChartData,
 } from './graph';
 import { getWorldStats, getAllCountriesStats, getWorldStatsByDay } from './CovidData';
+import Keyboard from './Keyboard';
 import {
-  searchInput, indicator, keyboardButton, listContainer,
+  searchInput, indicator, keyboardButton, listContainer, resizeBtns, themeSwitch,
 } from './dom';
 import {
-  handleListSearch, sortRows, keyboard, createListIndicator, loadRows,
+  handleListSearch, sortRows, createListIndicator, loadRows,
   hideLoadingText, handleListClick,
 } from './list';
 import { setUpdateTime, setGlobalStats, setStats } from './table';
 import setMap from './map';
 
-const resizeBtns = document.querySelectorAll('.max-min-btn');
-const themeSwitch = document.querySelector('#checkbox');
+const keyboard = new Keyboard();
 
 const handleThemeSwitchClick = () => {
   const isDayTheme = document.body.classList.contains('day');

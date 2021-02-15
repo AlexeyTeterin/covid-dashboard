@@ -12,6 +12,8 @@ export const listContainer = document.querySelector('.list__container');
 export const keyboardButton = document.querySelector('.keyboard-button');
 export const loading = document.querySelector('.loading');
 export const contentTop = document.querySelector('.content-top');
+export const resizeBtns = document.querySelectorAll('.max-min-btn');
+export const themeSwitch = document.querySelector('#checkbox');
 
 export const getListRows = () => listContainer.querySelectorAll('.list__row');
 export const getActiveListRow = () => listContainer.querySelector('.list__row_active');

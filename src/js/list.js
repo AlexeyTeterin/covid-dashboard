@@ -1,4 +1,3 @@
-import Keyboard from './Keyboard';
 import {
   listContainer, indicator, searchInput, loading,
 } from './dom';
@@ -7,8 +6,6 @@ export const basicIndicators = [
   'TotalConfirmed', 'TotalRecovered', 'TotalDeaths',
   'NewConfirmed', 'NewRecovered', 'NewDeaths',
 ];
-
-export const keyboard = new Keyboard();
 
 const calcPer100k = (value, population) => +((value / population) * 100000).toFixed(2);
 
