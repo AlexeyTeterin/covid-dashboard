@@ -1,13 +1,14 @@
 import Chart from 'chart.js';
-import { getWorldStatsByDay, getCountryStatsByDay } from './CovidData';
-import { buttonAbs, globalStats } from './table';
-import { list, indicator } from './list';
+import { getCountryStatsByDay } from './CovidData';
+import globalStats from './table';
 import graphSettings from './graphSettings';
+import {
+  canvasEl, buttonAbs, listContainer, indicator, getActiveListRow,
+} from './dom';
 
-const canvas = document.querySelector('#chart');
-const chart = new Chart(canvas, graphSettings);
+export const chart = new Chart(canvasEl, graphSettings);
 
-let dailyStats;
+export const dailyStats = {};
 
 const newCasesByDay = (totalCasesByDay) => {
   const cases = Object.values(totalCasesByDay);
@@ -20,7 +21,7 @@ const newCasesByDay = (totalCasesByDay) => {
 const casesPer100k = (casesByDay, population) => casesByDay
   .map((el) => ((el / population) * 100000).toFixed(2));
 
-const updateChartData = (data, countryCode) => {
+export const updateChartData = (data, countryCode) => {
   const { cases, recovered, deaths } = data;
   const { datasets } = chart.data;
   const { options } = chart;
@@ -87,7 +88,7 @@ const handleListClick = (event) => {
 };
 
 const handleButtonAbsClick = () => {
-  const activeRow = document.querySelector('.list__row_active');
+  const activeRow = getActiveListRow();
   const absoluteOn = !indicator.value.includes('100k');
   if (!absoluteOn) addTailToLabels(' per 100k');
   if (absoluteOn) removeTailFromLabels(' per 100k');
@@ -111,49 +112,38 @@ const handleIndicatorChange = () => {
 const setGraphSize = (style) => {
   const { scales, title, legend } = chart.options;
   const isFull = style === 'full';
-    
-  scales.xAxes[0].display = isFull ? true : false;
+
+  scales.xAxes[0].display = !!isFull;
   scales.yAxes[0].ticks.fontSize = isFull ? 12 : 10;
   title.fontSize = isFull ? 20 : 16;
   legend.labels.fontSize = isFull ? 12 : 10;
   legend.position = isFull ? 'bottom' : 'right';
-}
+};
 
 const observer = new ResizeObserver((entries) => {
   Object.values(entries).forEach((entry) => {
     const { width } = entry.contentRect;
-    console.log(width)
     if (width < 600) setGraphSize('compact');
     if (width >= 600) setGraphSize('full');
   });
 });
 
 export const setGraphTheme = (theme) => {
-  const { scales } = chart.options;
-  
-  if (theme === 'day') {
-    Chart.defaults.global.defaultFontColor = 'rgba(0, 0, 0, 0.7)';
-    scales.xAxes[0].gridLines.color = 'rgba(0, 0, 0, 0.15)';
-    scales.yAxes[0].gridLines.color = 'rgba(0, 0, 0, 0.15)';
-    scales.xAxes[0].ticks.fontColor = 'rgba(0, 0, 0, 0.5)';
-    scales.yAxes[0].ticks.fontColor = 'rgba(0, 0, 0, 0.5)';
-    chart.data.datasets[2].pointBackgroundColor = 'rgba(0, 0, 0, 0.8)';
-    chart.data.datasets[5].pointBackgroundColor = 'rgba(0, 0, 0, 0.4)';
-  } else {
-    Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 0.7)';
-    scales.xAxes[0].gridLines.color = 'rgba(255, 255, 255, 0.1)';
-    scales.yAxes[0].gridLines.color = 'rgba(255, 255, 255, 0.1)';
-    scales.xAxes[0].ticks.fontColor = 'rgba(255, 255, 255, 0.5)';
-    scales.yAxes[0].ticks.fontColor = 'rgba(255, 255, 255, 0.5)';
-    chart.data.datasets[2].pointBackgroundColor = 'rgba(255, 255, 255, 0.4)';
-    chart.data.datasets[5].pointBackgroundColor = 'rgba(255, 255, 255, 0.9)';
-  }
+  const { xAxes, yAxes } = chart.options.scales;
+  const isDayTheme = theme === 'day';
+  const setRgba = (n, alpha) => `rgba(${n}, ${n}, ${n}, ${alpha})`;
+
+  Chart.defaults.global.defaultFontColor = isDayTheme ? setRgba(0, 0.7) : setRgba(255, 0.7);
+  xAxes[0].gridLines.color = isDayTheme ? setRgba(0, 0.15) : setRgba(255, 0.1);
+  yAxes[0].gridLines.color = xAxes[0].gridLines.color;
+  xAxes[0].ticks.fontColor = isDayTheme ? setRgba(0, 0.5) : setRgba(255, 0.5);
+  yAxes[0].ticks.fontColor = xAxes[0].ticks.fontColor;
+  chart.data.datasets[2].pointBackgroundColor = isDayTheme ? setRgba(0, 0.8) : setRgba(255, 0.4);
+  chart.data.datasets[5].pointBackgroundColor = isDayTheme ? setRgba(0, 0.4) : setRgba(255, 0.8);
 
   chart.update();
-}
+};
 
-Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 0.7)';
-Chart.defaults.global.defaultFontFamily = 'Roboto';
 chart.data.datasets.forEach((el, index) => {
   const dataset = el;
   dataset.pointBorderColor = 'rgba(0, 0, 0, 0)';
@@ -165,14 +155,7 @@ chart.data.datasets.forEach((el, index) => {
   if (index > 2) dataset.hidden = true;
 });
 
-list.addEventListener('click', handleListClick);
+listContainer.addEventListener('click', handleListClick);
 buttonAbs.addEventListener('click', handleButtonAbsClick);
 indicator.addEventListener('change', handleIndicatorChange);
 observer.observe(document.querySelector('.graph'));
-
-getWorldStatsByDay()
-  .then((result) => {
-    dailyStats = result;
-    chart.data.labels = Object.keys(dailyStats.cases);
-    updateChartData(dailyStats);
-  });

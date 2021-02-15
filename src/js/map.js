@@ -1,24 +1,16 @@
 /* eslint-disable no-underscore-dangle */
 
-import * as L from 'leaflet';
+import * as Leaflet from 'leaflet';
 import { geoJson } from 'leaflet';
-import { list, indicator, basicIndicators } from './list.js';
+import { basicIndicators } from './list';
+import { listContainer, indicator, getListRows } from './dom';
+import { mapURL, mapColors, mapParams } from './mapSettings';
 
-const mapURL = 'https://api.mapbox.com/styles/v1/alexeyteterin/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
-const mapOptions = {
-  attribution: '',
-  maxZoom: 6,
-  minZoom: 1,
-  id: 'ckjiols004v5219tednapnr06',
-  tileSize: 512,
-  zoomOffset: -1,
-  accessToken: 'pk.eyJ1IjoiYWxleGV5dGV0ZXJpbiIsImEiOiJja2ppaHYyeDMxOXE2MnhvN3J5eXoxeXJ0In0.jr2Ql5GDOrgMXi1mWaUJBQ',
-};
 const maxStat = {};
 const setMaxStat = (key) => {
   let max = 0;
   let maxPer100 = 0;
-  list.querySelectorAll('.list__row')
+  getListRows()
     .forEach((listRow) => {
       const value = listRow.dataset[key];
       const valuePer100k = value / (listRow.dataset.population / 100000);
@@ -35,11 +27,11 @@ const clickedCountry = { target: null, name: '' };
 const infoType = { type: 'TotalConfirmed', absolute: true };
 
 export default function setMap(res) {
-  const map = L.map('mapid').setView([40, 20], 2);
-  const mapInfo = L.control();
-  const mapLegend = L.control({ position: 'bottomright' });
-  const southWest = L.latLng(-90, -220);
-  const northEast = L.latLng(90, 220);
+  const map = Leaflet.map('mapid').setView([40, 20], 2);
+  const mapInfo = Leaflet.control();
+  const mapLegend = Leaflet.control({ position: 'bottomright' });
+  const southWest = Leaflet.latLng(-90, -220);
+  const northEast = Leaflet.latLng(90, 220);
   const request = new XMLHttpRequest();
   const handleMapEvents = {
     countryClick(e) {
@@ -48,7 +40,7 @@ export default function setMap(res) {
         .find((country) => country.countryInfo.iso3 === id);
       if (targetCountry) {
         const clickEvent = new Event('click', { bubbles: true });
-        const targetRow = Array.from(list.querySelectorAll('.list__row'))
+        const targetRow = Array.from(getListRows())
           .find((row) => row.dataset.id === id);
         if (targetRow) targetRow.firstChild.dispatchEvent(clickEvent);
       }
@@ -74,7 +66,7 @@ export default function setMap(res) {
       const targetCountryName = targetRow.dataset.Country;
       const { lat, long } = res
         .find((country) => country.country === targetCountryName).countryInfo;
-      const targetCoordinates = L.latLng(lat, long);
+      const targetCoordinates = Leaflet.latLng(lat, long);
       const targetLayer = geoJson._layers[Object.keys(geoJson._layers)
         .find((key) => geoJson._layers[key].feature.properties.name === targetCountryName)];
       const clickedListName = res
@@ -104,12 +96,9 @@ export default function setMap(res) {
     },
   };
   const getColor = (name) => {
-    const rows = Array.from(list.querySelectorAll('.list__row'));
+    const rows = Array.from(getListRows());
     const country = res.find((c) => c.country === name);
     if (!country) { return ''; }
-    const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
-      '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
-    ];
     const per100 = infoType.absolute ? 1 : country.population / 100000;
     const stat = infoType.absolute ? maxStat[infoType.type] : maxStat[`${infoType.type}Per100`];
     const k = rows
@@ -120,12 +109,10 @@ export default function setMap(res) {
     else level = level.toFixed(3);
     let a = Math.floor((stat - k) / level);
     a = a > 7 ? 7 : a;
-    return colors[a < 0 ? 0 : a];
+    return mapColors[a < 0 ? 0 : a];
   };
   const setColors = () => {
-    const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
-      '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
-    ].reverse();
+    const colors = mapColors.reverse();
     const label = document.querySelector('div.info.legend.leaflet-control');
     const { _layers } = geoJson;
     let level = maxStat[`${infoType.type}${infoType.absolute ? '' : 'Per100'}`] / 8;
@@ -171,14 +158,14 @@ export default function setMap(res) {
 
   const runEventListeners = () => {
     indicator.addEventListener('click', (event) => setLabel(event.target));
-    list.addEventListener('click', handleMapEvents.listClick);
+    listContainer.addEventListener('click', handleMapEvents.listClick);
     document.querySelector('.row-title-count').addEventListener('click', () => setLabel(indicator));
     document.querySelector('.row-title-abs').addEventListener('click', () => setLabel(indicator));
     document.querySelector('.map-wrapper > .max-min-btn').addEventListener('click', () => setTimeout(() => map.invalidateSize(true), 250));
   };
 
   mapInfo.onAdd = function add() {
-    this.div = L.DomUtil.create('div', 'info');
+    this.div = Leaflet.DomUtil.create('div', 'info');
     this.update();
     return this.div;
   };
@@ -187,7 +174,7 @@ export default function setMap(res) {
       this.div.innerHTML = 'Hover over a country';
     }
     if (countryName) {
-      const targetRow = Array.from(list.querySelectorAll('.list__row'))
+      const targetRow = Array.from(getListRows())
         .find((row) => row.dataset.Country === countryName) || null;
       const targetData = targetRow ? targetRow.dataset : {};
       const typeOfValue = labelsArr[keysArr.indexOf(infoType.type)];
@@ -205,19 +192,17 @@ export default function setMap(res) {
   };
   mapLegend.onAdd = function add() {
     const key = 'TotalConfirmed';
-    const div = L.DomUtil.create('div', 'info legend');
+    const div = Leaflet.DomUtil.create('div', 'info legend');
     let level = Math.round(maxStat[key] / 8);
     if (level > 1000) level = Math.round(level / 1000) * 1000;
-    const colors = ['#800026', '#BD0026', '#E31A1C', '#FC4E2A',
-      '#FD8D3C', '#FEB24C', '#FED976', '#FFEDA0',
-    ];
+    const colors = mapColors.slice();
     colors.reverse().forEach((color, i) => {
       div.innerHTML += `<i style="background:${color}"></i> ${level * i}${colors[i + 1] ? `&ndash;${level * (i + 1)}<br>` : '+'}`;
     });
     return div;
   };
 
-  map.setMaxBounds(L.latLngBounds(southWest, northEast));
+  map.setMaxBounds(Leaflet.latLngBounds(southWest, northEast));
   runEventListeners();
 
   request.open('GET', './assets/json/countries.json');
@@ -225,12 +210,12 @@ export default function setMap(res) {
     const collection = JSON.parse(request.responseText);
 
     (function waitForListLoad() {
-      if (list.dataset.status === 'loaded') {
+      if (listContainer.dataset.status === 'loaded') {
         basicIndicators.forEach((key) => setMaxStat(key));
-        L.tileLayer(mapURL, mapOptions).addTo(map);
+        Leaflet.tileLayer(mapURL, mapParams).addTo(map);
         mapInfo.addTo(map);
         mapLegend.addTo(map);
-        geoJson = L.geoJson(collection, {
+        geoJson = Leaflet.geoJson(collection, {
           style,
           onEachFeature,
         }).addTo(map);

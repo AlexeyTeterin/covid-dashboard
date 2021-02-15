@@ -1,20 +1,18 @@
-import { getAllCountriesStats, getWorldStats } from './CovidData.js';
-import Keyboard from './keyboard.js';
+import Keyboard from './Keyboard';
+import {
+  listContainer, indicator, searchInput, loading,
+} from './dom';
 
-const searchInput = document.querySelector('#list__search');
-export const indicator = document.querySelector('#list__indicator');
-export const list = document.querySelector('.list__container');
-const keyboardButton = document.querySelector('.keyboard-button');
-export const basicIndicators = ['TotalConfirmed', 'TotalRecovered',
-  'TotalDeaths', 'NewConfirmed', 'NewRecovered', 'NewDeaths',
+export const basicIndicators = [
+  'TotalConfirmed', 'TotalRecovered', 'TotalDeaths',
+  'NewConfirmed', 'NewRecovered', 'NewDeaths',
 ];
 
-const keyboard = new Keyboard();
-keyboard.init();
+export const keyboard = new Keyboard();
 
 const calcPer100k = (value, population) => +((value / population) * 100000).toFixed(2);
 
-const loadRows = async (data) => {
+export const loadRows = async (data) => {
   await data
     .filter((country) => country.countryInfo.iso2 !== null)
     .forEach((country) => {
@@ -57,12 +55,12 @@ const loadRows = async (data) => {
       Object.assign(row.dataset, countryDataset);
 
       row.append(name, value);
-      list.append(row);
+      listContainer.append(row);
     });
-  list.dataset.status = 'loaded';
+  listContainer.dataset.status = 'loaded';
 };
 
-const sortRows = () => {
+export const sortRows = () => {
   const option = indicator.value;
 
   const activeElement = document.querySelector('.list__row_active');
@@ -84,7 +82,7 @@ const sortRows = () => {
   if (activeElement) activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
 
-const createListIndicator = () => {
+export const createListIndicator = () => {
   const splitWords = (string) => {
     let result = string;
     ['Total', 'Confirmed', 'Deaths', 'Recovered', 'Per', 'New'].forEach((word) => {
@@ -106,7 +104,7 @@ const createListIndicator = () => {
   return options;
 };
 
-const listSearchHandler = () => {
+export const handleListSearch = () => {
   const input = document.querySelector('#list__search');
   const filter = input.value.toUpperCase();
   const rows = Array.from(document.getElementsByClassName('list__row'));
@@ -119,7 +117,7 @@ const listSearchHandler = () => {
   });
 };
 
-const listClickHandler = (event) => {
+export const handleListClick = (event) => {
   const target = event.target.parentElement;
   const activeElement = document.querySelector('.list__row_active');
   if (!target.classList.contains('list__row')) return;
@@ -131,32 +129,17 @@ const listClickHandler = (event) => {
     setTimeout(() => document.querySelector('.row-title-area').dispatchEvent(new Event('click')), 50);
   }
   searchInput.value = '';
-  listSearchHandler();
+  handleListSearch();
   target.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
 
-const hideLoadingText = () => {
-  document.querySelector('.loading').classList.add('hidden');
+export const hideLoadingText = () => {
+  loading.classList.add('hidden');
   document.querySelector('.content-top').classList.remove('hidden');
   document.querySelector('.content-bot').classList.remove('hidden');
 };
 
 setTimeout(() => {
-  document.querySelector('.loading').textContent = 'API performs caching at the moment, please try to reload page 5 minutes later.';
-  document.querySelector('.loading').classList.remove('pulsate');
+  loading.textContent = 'API performs caching at the moment, please try to reload page 5 minutes later.';
+  loading.classList.remove('pulsate');
 }, 7000);
-
-searchInput.addEventListener('input', () => listSearchHandler());
-indicator.addEventListener('change', () => setTimeout(() => sortRows(), 0));
-keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
-
-getWorldStats()
-  .then(() => createListIndicator())
-  .then(() => getAllCountriesStats())
-  .then((allCountriesStats) => {
-    loadRows(allCountriesStats);
-    sortRows('TotalConfirmed');
-    list.addEventListener('click', (event) => listClickHandler(event));
-    hideLoadingText();
-  })
-  .catch((e) => new Error(e));

@@ -1,13 +1,6 @@
-import { getWorldStats, getAllCountriesStats } from './CovidData.js';
-import { list, indicator } from './list.js';
-import setMap from './map.js';
-
-const divDeaths = document.querySelector('.cases-deaths');
-const divRecovered = document.querySelector('.cases-recovered');
-const divCases = document.querySelector('.cases-confirmed');
-const buttonArea = document.querySelector('.row-title-area');
-export const buttonCount = document.querySelector('.row-title-count');
-export const buttonAbs = document.querySelector('.row-title-abs');
+import {
+  divCases, divDeaths, divRecovered, buttonCount, buttonAbs, buttonArea, listContainer, indicator,
+} from './dom';
 
 const stat = { world: true, total: true, absolute: true };
 let source;
@@ -17,7 +10,7 @@ let deat;
 let rec;
 
 const round = (n) => Math.round(n * 100) / 100;
-const setStats = () => {
+export const setStats = () => {
   if (!source) {
     divCases.innerText = 'no info';
     divDeaths.innerText = 'no info';
@@ -99,7 +92,7 @@ const toggleAbs = () => {
   setStats();
 };
 const handleListClick = (event) => {
-  const listRows = Array.from(list.querySelectorAll('.list__row'));
+  const listRows = Array.from(listContainer.querySelectorAll('.list__row'));
   const clickedRow = event.target.parentElement;
   const clickedCountryCode = clickedRow.dataset.CountryCode;
 
@@ -128,12 +121,12 @@ const resetToWorldStats = () => {
   const click = new Event('click', { bubbles: true });
   if (activeListRow) activeListRow.firstChild.dispatchEvent(click);
 };
-const setUpdateTime = (updated) => {
+export const setUpdateTime = (updated) => {
   const date = new Date(updated);
   document.querySelector('.day-updated')
     .innerText = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 };
-const setGlobalStats = (worldStats) => {
+export const setGlobalStats = (worldStats) => {
   Object.assign(globalStats, {
     population: worldStats.population,
     NewConfirmed: worldStats.todayCases,
@@ -152,16 +145,7 @@ const setGlobalStats = (worldStats) => {
 buttonCount.addEventListener('click', toggleTotal);
 buttonAbs.addEventListener('click', toggleAbs);
 buttonArea.addEventListener('click', resetToWorldStats);
-list.addEventListener('click', handleListClick);
+listContainer.addEventListener('click', handleListClick);
 indicator.addEventListener('change', handleIndicatorChange);
 
-getWorldStats()
-  .then((res) => {
-    setUpdateTime(res.updated);
-    setGlobalStats(res);
-    setStats();
-  })
-  .then(() => getAllCountriesStats())
-  .then((allCountriesStats) => setMap(allCountriesStats, setStats()));
-
-export { globalStats };
+export default globalStats;

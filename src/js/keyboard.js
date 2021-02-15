@@ -1,8 +1,8 @@
-import layouts from './keyboardLayouts.js';
+import layouts from './keyboardLayouts';
 
-const textarea = document.querySelector('#list__search');
+import { textarea } from './dom';
 
-export default class KEYBOARD {
+export default class Keyboard {
   constructor() {
     this.properties = {
       value: '',

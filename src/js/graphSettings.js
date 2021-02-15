@@ -1,6 +1,12 @@
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
-'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+import Chart from 'chart.js';
+
+const MONTHS = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ];
+
+Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 0.7)';
+Chart.defaults.global.defaultFontFamily = 'Roboto';
 
 const graphSettings = {
   type: 'line',
@@ -94,6 +100,6 @@ const graphSettings = {
       },
     },
   },
-}
+};
 
 export default graphSettings;
