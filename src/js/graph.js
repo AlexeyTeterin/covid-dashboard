@@ -64,6 +64,7 @@ const chart = new Chart(canvas, {
           color: 'rgba(255, 255, 255, 0.1)',
         },
         ticks: {
+          fontColor: 'rgba(255, 255, 255, 0.5)',
           fontSize: 11,
           callback: (value, index, values) => {
             let delimeter = 1;
@@ -78,7 +79,6 @@ const chart = new Chart(canvas, {
             }
             return `${value / delimeter} ${tail}`;
           },
-          fontColor: 'rgba(255, 255, 255, 0.5)',
         },
       }],
     },
@@ -172,27 +172,27 @@ const removeTailFromLabels = (tail) => chart.data.datasets
     if (tailIndex > 0) dataset.label = dataset.label.substring(0, tailIndex);
   });
 
-const handleListClick = (event, DailyWorldStats) => {
+const handleListClick = (event) => {
   const target = event.target.parentElement;
   if (!target.classList.contains('list__row')) return;
   const countryIsSelected = !target.classList.contains('list__row_active');
-  if (!countryIsSelected) updateChartData(DailyWorldStats);
+  if (!countryIsSelected) updateChartData(dailyStats);
   if (countryIsSelected) handleCountrySelection(target.dataset.CountryCode);
 };
 
-const handleButtonAbsClick = (DailyWorldStats) => {
+const handleButtonAbsClick = () => {
   const activeRow = document.querySelector('.list__row_active');
   const absoluteOn = !indicator.value.includes('100k');
   if (!absoluteOn) addTailToLabels(' per 100k');
   if (absoluteOn) removeTailFromLabels(' per 100k');
 
   if (activeRow) handleCountrySelection(activeRow.dataset.CountryCode);
-  if (!activeRow) updateChartData(DailyWorldStats);
+  if (!activeRow) updateChartData(dailyStats);
 };
 
-const handleIndicatorChange = (DailyWorldStats) => {
+const handleIndicatorChange = () => {
   const countryIsSelected = document.querySelector('.list__row_active');
-  if (!countryIsSelected) setTimeout(() => updateChartData(DailyWorldStats), 0);
+  if (!countryIsSelected) setTimeout(() => updateChartData(dailyStats), 0);
   if (countryIsSelected) {
     setTimeout(() => handleCountrySelection(countryIsSelected.dataset.CountryCode), 0);
   }
@@ -202,24 +202,56 @@ const handleIndicatorChange = (DailyWorldStats) => {
   else removeTailFromLabels(' per 100k');
 };
 
+const makeGraphCompact = () => {
+  const { scales, title, legend } = chart.options;
+  scales.xAxes[0].display = false;
+  scales.yAxes[0].ticks.fontSize = 10;
+  title.fontSize = 16;
+  legend.labels.fontSize = 10;
+  legend.position = 'right';
+}
+
+const makeGraphFull = () => {
+  const { scales, title, legend } = chart.options;
+  scales.xAxes[0].display = true;
+  scales.yAxes[0].ticks.fontSize = 12;
+  title.fontSize = 20;
+  legend.labels.fontSize = 12;
+  legend.position = 'bottom';
+}
+
 const observer = new ResizeObserver((entries) => {
   Object.values(entries).forEach((entry) => {
     const { width } = entry.contentRect;
-    if (width < 600) {
-      chart.options.scales.xAxes[0].display = false;
-      chart.options.scales.yAxes[0].ticks.fontSize = 10;
-      chart.options.title.fontSize = 16;
-      chart.options.legend.labels.fontSize = 10;
-      chart.options.legend.position = 'right';
-    } if (width >= 600) {
-      chart.options.scales.xAxes[0].display = true;
-      chart.options.scales.yAxes[0].ticks.fontSize = 12;
-      chart.options.title.fontSize = 20;
-      chart.options.legend.labels.fontSize = 12;
-      chart.options.legend.position = 'bottom';
-    }
+    if (width < 600) makeGraphCompact();
+    if (width >= 600) makeGraphFull();
   });
 });
+
+
+export const switchGraphTheme = (theme) => {
+  const { scales } = chart.options;
+  
+  if (theme === 'day') {
+    Chart.defaults.global.defaultFontColor = 'rgba(0, 0, 0, 0.7)';
+    scales.xAxes[0].gridLines.color = 'rgba(0, 0, 0, 0.15)';
+    scales.yAxes[0].gridLines.color = 'rgba(0, 0, 0, 0.15)';
+    scales.xAxes[0].ticks.fontColor = 'rgba(0, 0, 0, 0.5)';
+    scales.yAxes[0].ticks.fontColor = 'rgba(0, 0, 0, 0.5)';
+    chart.data.datasets[2].pointBackgroundColor = 'rgba(0, 0, 0, 0.8)';
+    chart.data.datasets[5].pointBackgroundColor = 'rgba(0, 0, 0, 0.4)';
+  } else {
+    Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 0.7)';
+    scales.xAxes[0].gridLines.color = 'rgba(255, 255, 255, 0.1)';
+    scales.yAxes[0].gridLines.color = 'rgba(255, 255, 255, 0.1)';
+    scales.xAxes[0].ticks.fontColor = 'rgba(255, 255, 255, 0.5)';
+    scales.yAxes[0].ticks.fontColor = 'rgba(255, 255, 255, 0.5)';
+    chart.data.datasets[2].pointBackgroundColor = 'rgba(255, 255, 255, 0.4)';
+    chart.data.datasets[5].pointBackgroundColor = 'rgba(255, 255, 255, 0.9)';
+  }
+
+  chart.update();
+}
 
 Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, 0.7)';
 Chart.defaults.global.defaultFontFamily = 'Roboto';
@@ -234,9 +266,9 @@ chart.data.datasets.forEach((el, index) => {
   if (index > 2) dataset.hidden = true;
 });
 
-list.addEventListener('click', (event) => handleListClick(event, dailyStats));
-buttonAbs.addEventListener('click', () => handleButtonAbsClick(dailyStats));
-indicator.addEventListener('change', () => handleIndicatorChange(dailyStats));
+list.addEventListener('click', handleListClick);
+buttonAbs.addEventListener('click', handleButtonAbsClick);
+indicator.addEventListener('change', handleIndicatorChange);
 observer.observe(document.querySelector('.graph'));
 
 getWorldStatsByDay()
