@@ -398,7 +398,6 @@ input:checked + .slider:before {
 .content-bot {
   display: flex;
   width: 100%;
-  padding: 0;
   max-width: 1600px;
   justify-content: center;
   box-sizing: border-box;
