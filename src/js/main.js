@@ -1,5 +1,5 @@
 import './graph';
-import { switchGraphTheme } from './graph';
+import { setGraphTheme } from './graph';
 import './map';
 
 const resizeBtns = document.querySelectorAll('.max-min-btn');
@@ -8,7 +8,7 @@ const themeSwitch = document.querySelector('#checkbox');
 const onThemeSwitchClick = () => {
   const isDayTheme = document.body.classList.contains('day');
   document.body.classList.toggle('day');
-  switchGraphTheme(isDayTheme ? 'night' : 'day');
+  setGraphTheme(isDayTheme ? 'night' : 'day');
 }
 
 const onResizeClick = (event) => {

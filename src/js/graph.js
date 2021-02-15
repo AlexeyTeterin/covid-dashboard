@@ -202,34 +202,28 @@ const handleIndicatorChange = () => {
   else removeTailFromLabels(' per 100k');
 };
 
-const makeGraphCompact = () => {
+const setGraphSize = (style) => {
   const { scales, title, legend } = chart.options;
-  scales.xAxes[0].display = false;
-  scales.yAxes[0].ticks.fontSize = 10;
-  title.fontSize = 16;
-  legend.labels.fontSize = 10;
-  legend.position = 'right';
-}
-
-const makeGraphFull = () => {
-  const { scales, title, legend } = chart.options;
-  scales.xAxes[0].display = true;
-  scales.yAxes[0].ticks.fontSize = 12;
-  title.fontSize = 20;
-  legend.labels.fontSize = 12;
-  legend.position = 'bottom';
+  const isFull = style === 'full';
+    
+  scales.xAxes[0].display = isFull ? true : false;
+  scales.yAxes[0].ticks.fontSize = isFull ? 12 : 10;
+  title.fontSize = isFull ? 20 : 16;
+  legend.labels.fontSize = isFull ? 12 : 10;
+  legend.position = isFull ? 'bottom' : 'right';
 }
 
 const observer = new ResizeObserver((entries) => {
   Object.values(entries).forEach((entry) => {
     const { width } = entry.contentRect;
-    if (width < 600) makeGraphCompact();
-    if (width >= 600) makeGraphFull();
+    console.log(width)
+    if (width < 600) setGraphSize('compact');
+    if (width >= 600) setGraphSize('full');
   });
 });
 
 
-export const switchGraphTheme = (theme) => {
+export const setGraphTheme = (theme) => {
   const { scales } = chart.options;
   
   if (theme === 'day') {
