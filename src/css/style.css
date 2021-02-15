@@ -99,6 +99,18 @@ body.day button.relative span:last-child {
   color: black;
 }
 
+body.day footer {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+body.day footer a {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+body.day footer img {
+  filter: invert(0);
+}
+
 main {
   display: flex;
   align-items: center;

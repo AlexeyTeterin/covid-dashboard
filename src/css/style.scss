@@ -50,7 +50,7 @@ body.day {
   .title span {
     color: black;
   }
-  
+
   .list__header {
     color: black;
     background-color: $color-section-bg-day;
@@ -61,58 +61,58 @@ body.day {
     color: black;
     background-color: $color-section-bg-day;
   }
-  
+
   .list__indicator {
     color: black !important;
   }
-  
+
   #list__search {
     color: black;
     background-color: $color-section-bg-day;
   }
-  
+
   .list .list__container .list__row_active {
     background-color: rgba(0, 0, 0, 0.15);
     color: black;
   }
-  
+
   .keyboard-button {
     filter: invert(0) !important;
   }
-  
+
   .table-wrapper {
     background-color: $color-section-bg-day;
     color: black;
-    
+
     button {
       color: black;
     }
-    
+
     .row .total-or-new {
       color: black;
     }
-    
+
     .row .cases div:first-child {
-      color:black;
+      color: black;
     }
   }
-  
+
   .map {
     color: white;
   }
-  
+
   .graph {
     background-color: $color-section-bg-day;
   }
-  
+
   button {
     background: rgba(0, 0, 0, 0.05);
-    
+
     &:hover {
-          background: rgba(0, 0, 0, 0.15);
+      background: rgba(0, 0, 0, 0.15);
     }
   }
-  
+
   button.total,
   button.absolute {
     span:last-child {
@@ -123,9 +123,21 @@ body.day {
   button.new,
   button.relative {
     color: gray;
-    
+
     span:last-child {
       color: black;
+    }
+  }
+
+  footer {
+    color: rgba(0, 0, 0, 0.4);
+
+    a {
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    img {
+      filter: invert(0);
     }
   }
 }
