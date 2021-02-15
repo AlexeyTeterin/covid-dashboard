@@ -2,7 +2,7 @@ import {
   setGraphTheme, chart, dailyStats, updateChartData,
 } from './graph';
 import { getWorldStats, getAllCountriesStats, getWorldStatsByDay } from './CovidData';
-import Keyboard from './Keyboard';
+import Keyboard from './keyboard';
 import {
   searchInput, indicator, keyboardButton, listContainer, resizeBtns, themeSwitch,
 } from './dom';
