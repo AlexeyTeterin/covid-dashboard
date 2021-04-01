@@ -1,6 +1,6 @@
 # Covid-19 Dashboard
 SPA to track Covid-19 statistics by country.
-###### `JavaScript` `REST API` `Webpack` `Chart.js` `Leaflet` `Custom UI`
+###### `Teamwork` `JavaScript` `REST API` `Webpack` `Chart.js` `Leaflet` `Custom UI`
 
 1. Task: [covid-dashboard](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/covid-dashboard.md)
 2. Screenshot: 
