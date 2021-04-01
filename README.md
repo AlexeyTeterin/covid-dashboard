@@ -9,5 +9,5 @@ SPA to track Covid-19 statistics by country.
 [alexeyteterin-covid-dashboard.netlify.app](https://alexeyteterin-covid-dashboard.netlify.app/)
 4. Done: `23.12.2020` / Deadline: `23.12.2020`
 5. Score: `270 / 280`
-Всё сделано, кроме:
+All done, besides:
 - [ ] реализованы юнит-тесты – 2 балла за каждый уникальный тест, но не больше 10 баллов
