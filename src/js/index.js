@@ -19,6 +19,8 @@ import {
 import { createListIndicator, loadRows, sortRows } from './components/list';
 import { setGlobalStats, setStats, setUpdateTime } from './components/table';
 import setMap from './components/map';
+import '../css/style.scss';
+import '../css/keyboard.css';
 
 getAllData()
   .then(([worldStats, worldByDay, allCountriesStats]) => {

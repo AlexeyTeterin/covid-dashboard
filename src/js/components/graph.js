@@ -6,6 +6,7 @@ import {
   buttonAbs,
   canvasEl,
   getActiveListRow,
+  graphMessage,
   indicator,
   listContainer,
 } from '../dom';
@@ -53,20 +54,37 @@ export const updateChartData = (data = dailyStats, countryCode, max = 0) => {
   chart.update();
 };
 
+const setGraphMessage = (msg) => {
+  graphMessage.innerHTML = msg;
+  graphMessage.classList.add('pulsate');
+};
+
+const clearGraphMessage = () => {
+  graphMessage.innerHTML = '';
+  graphMessage.classList.remove('pulsate');
+};
+
 const handleCountrySelection = (countryCode) => {
+  chart.clear();
+
+  setGraphMessage('loading...');
+
   getCountryStatsByDay(countryCode)
     .then((res) => {
-      const activeRow = document.querySelector('.list__row_active');
-      const countryName = activeRow.dataset.Country;
+      const countryName = getActiveListRow().dataset.Country;
       chart.options.title.text = countryName;
       if (!res.timeline) {
         chart.data.datasets.forEach((el) => {
           const dataset = el;
           dataset.data = [];
         });
-        chart.update();
+
+        setGraphMessage(`No data available for ${countryName}`);
       }
-      if (res.timeline) updateChartData(res.timeline, countryCode);
+      if (res.timeline) {
+        clearGraphMessage();
+        updateChartData(res.timeline, countryCode);
+      }
     })
     .catch((e) => new Error(e.message));
 };
@@ -89,7 +107,10 @@ const handleListClick = (event) => {
   const target = event.target.parentElement;
   if (!target.classList.contains('list__row')) return;
   const countryIsSelected = !target.classList.contains('list__row_active');
-  if (!countryIsSelected) updateChartData(dailyStats);
+  if (!countryIsSelected) {
+    updateChartData(dailyStats);
+    clearGraphMessage();
+  }
   if (countryIsSelected) handleCountrySelection(target.dataset.CountryCode);
 };
 
@@ -105,7 +126,11 @@ const handleButtonAbsClick = () => {
 
 const handleIndicatorChange = () => {
   const countryIsSelected = document.querySelector('.list__row_active');
-  if (!countryIsSelected) setTimeout(() => updateChartData(dailyStats), 0);
+  if (!countryIsSelected) {
+    setTimeout(() => {
+      updateChartData(dailyStats);
+    }, 0);
+  }
   if (countryIsSelected) {
     setTimeout(() => handleCountrySelection(countryIsSelected.dataset.CountryCode), 0);
   }
