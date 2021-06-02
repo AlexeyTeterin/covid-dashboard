@@ -1,10 +1,14 @@
 import Chart from 'chart.js';
-import { getCountryStatsByDay } from './CovidData';
+import { getCountryStatsByDay } from '../utils';
 import globalStats from './table';
 import graphSettings from './graphSettings';
 import {
-  canvasEl, buttonAbs, listContainer, indicator, getActiveListRow,
-} from './dom';
+  buttonAbs,
+  canvasEl,
+  getActiveListRow,
+  indicator,
+  listContainer,
+} from '../dom';
 
 export const chart = new Chart(canvasEl, graphSettings);
 
@@ -21,7 +25,7 @@ const newCasesByDay = (totalCasesByDay) => {
 const casesPer100k = (casesByDay, population) => casesByDay
   .map((el) => ((el / population) * 100000).toFixed(2));
 
-export const updateChartData = (data, countryCode) => {
+export const updateChartData = (data = dailyStats, countryCode, max = 0) => {
   const { cases, recovered, deaths } = data;
   const { datasets } = chart.data;
   const { options } = chart;
@@ -31,19 +35,21 @@ export const updateChartData = (data, countryCode) => {
   const population = countryCode ? selectedCountry.dataset.population : worldPopulation;
   const relativeValues = buttonAbs.classList.contains('relative');
 
-  datasets[0].data = Object.values(cases);
-  datasets[1].data = Object.values(recovered);
-  datasets[2].data = Object.values(deaths);
-  datasets[3].data = newCasesByDay(cases);
-  datasets[4].data = newCasesByDay(recovered);
-  datasets[5].data = newCasesByDay(deaths);
+  chart.data.labels = Object.keys(dailyStats.cases).slice(-max);
+
+  [cases, recovered, deaths]
+    .forEach((set, index) => {
+      datasets[index].data = Object.values(set).slice(-max);
+      datasets[index + 3].data = newCasesByDay(set).slice(-max);
+    });
+
   if (relativeValues) {
-    datasets.forEach((el) => {
-      const dataset = el;
+    datasets.forEach((dataset) => {
       dataset.data = casesPer100k(dataset.data, population);
     });
   }
   if (!countryCode) options.title.text = 'World';
+
   chart.update();
 };
 

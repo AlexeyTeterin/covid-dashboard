@@ -1,6 +1,4 @@
-import {
-  listContainer, indicator, searchInput, loading,
-} from './dom';
+import { indicator, listContainer, loading } from '../dom';
 
 export const basicIndicators = [
   'TotalConfirmed', 'TotalRecovered', 'TotalDeaths',
@@ -76,7 +74,11 @@ export const sortRows = () => {
     const pos = value.textContent.length - 2;
     if (value.textContent.charAt(pos) === ',') value.textContent += '0';
   });
-  if (activeElement) activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (activeElement) {
+    activeElement.scrollIntoView({
+      behavior: 'smooth', block: 'center',
+    });
+  }
 };
 
 export const createListIndicator = () => {
@@ -99,41 +101,6 @@ export const createListIndicator = () => {
     if (option === 'TotalConfirmed') selectorOption.setAttribute('selected', true);
   });
   return options;
-};
-
-export const handleListSearch = () => {
-  const input = document.querySelector('#list__search');
-  const filter = input.value.toUpperCase();
-  const rows = Array.from(document.getElementsByClassName('list__row'));
-
-  rows.forEach((element) => {
-    const row = element;
-    const countryName = row.children[0].textContent;
-    if (countryName.toUpperCase().indexOf(filter) >= 0) row.style.display = '';
-    else row.style.display = 'none';
-  });
-};
-
-export const handleListClick = (event) => {
-  const target = event.target.parentElement;
-  const activeElement = document.querySelector('.list__row_active');
-  if (!target.classList.contains('list__row')) return;
-
-  if (activeElement) activeElement.classList.remove('list__row_active');
-  target.classList.add('list__row_active');
-  if (activeElement === target) {
-    target.classList.remove('list__row_active');
-    setTimeout(() => document.querySelector('.row-title-area').dispatchEvent(new Event('click')), 50);
-  }
-  searchInput.value = '';
-  handleListSearch();
-  target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-};
-
-export const hideLoadingText = () => {
-  loading.classList.add('hidden');
-  document.querySelector('.content-top').classList.remove('hidden');
-  document.querySelector('.content-bot').classList.remove('hidden');
 };
 
 setTimeout(() => {

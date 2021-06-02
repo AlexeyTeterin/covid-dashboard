@@ -1,6 +1,6 @@
 import layouts from './keyboardLayouts';
 
-import { textarea } from './dom';
+import { textarea } from '../dom';
 
 export default class Keyboard {
   constructor() {
@@ -51,9 +51,7 @@ export default class Keyboard {
   }
 
   toggleCapsLock() {
-    const {
-      keys,
-    } = this.elements;
+    const { keys } = this.elements;
     const {
       english,
       shift,
@@ -102,9 +100,7 @@ export default class Keyboard {
   }
 
   shiftPress() {
-    const {
-      keys,
-    } = this.elements;
+    const { keys } = this.elements;
     const {
       en,
       ruShifted,
@@ -134,9 +130,7 @@ export default class Keyboard {
   }
 
   shiftUnpress() {
-    const {
-      keys,
-    } = this.elements;
+    const { keys } = this.elements;
     const {
       ru,
       en,
@@ -473,9 +467,7 @@ export default class Keyboard {
 
   // Input from real keyboard
   phisycalInput() {
-    const {
-      whichCodes,
-    } = this.elements.layouts;
+    const { whichCodes } = this.elements.layouts;
     const {
       capsLock,
       shift,
@@ -621,9 +613,7 @@ export default class Keyboard {
   }
 
   toggleSound() {
-    const {
-      sound,
-    } = this.properties;
+    const { sound } = this.properties;
     const soundBtn = document.querySelector('#sound');
     if (sound) {
       soundBtn.classList.remove('keyboard__key--active');
@@ -637,9 +627,7 @@ export default class Keyboard {
   }
 
   toggleMic() {
-    const {
-      micOn,
-    } = this.properties;
+    const { micOn } = this.properties;
     const micBtn = document.querySelector('#mic');
     if (micOn) {
       micBtn.classList.remove('keyboard__key--active', 'pressed');
@@ -669,9 +657,7 @@ export default class Keyboard {
       shift,
       english,
     } = this.properties;
-    const {
-      keys,
-    } = this.elements;
+    const { keys } = this.elements;
     const langButtonText = document.getElementById('lang').textContent;
 
     for (let index = 0; index < keys.length; index += 1) {

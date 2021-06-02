@@ -1,8 +1,17 @@
 import {
-  divCases, divDeaths, divRecovered, buttonCount, buttonAbs, buttonArea, listContainer, indicator,
-} from './dom';
+  buttonAbs,
+  buttonArea,
+  buttonCount,
+  divCases,
+  divDeaths,
+  divRecovered,
+  indicator,
+  listContainer,
+} from '../dom';
 
-const stat = { world: true, total: true, absolute: true };
+const stat = {
+  world: true, total: true, absolute: true,
+};
 let source;
 const globalStats = {};
 let con;
@@ -118,7 +127,9 @@ const resetToWorldStats = () => {
   setStats();
 
   const activeListRow = document.querySelector('.list__row_active');
-  const click = new Event('click', { bubbles: true });
+  const click = new Event('click', {
+    bubbles: true,
+  });
   if (activeListRow) activeListRow.firstChild.dispatchEvent(click);
 };
 export const setUpdateTime = (updated) => {

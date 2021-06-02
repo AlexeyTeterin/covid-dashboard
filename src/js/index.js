@@ -1,63 +1,48 @@
 import {
-  setGraphTheme, chart, dailyStats, updateChartData,
-} from './graph';
-import { getWorldStats, getAllCountriesStats, getWorldStatsByDay } from './CovidData';
-import Keyboard from './keyboard';
+  handleListClick,
+  handleListSearch,
+  handleResizeClick,
+  handleThemeSwitchClick,
+  hideLoadingText,
+} from './controller';
+import { getAllData } from './utils';
+import Keyboard from './components/keyboard';
+import { dailyStats, updateChartData } from './components/graph';
 import {
-  searchInput, indicator, keyboardButton, listContainer, resizeBtns, themeSwitch,
+  indicator,
+  keyboardButton,
+  listContainer,
+  resizeBtns,
+  searchInput,
+  themeSwitch,
 } from './dom';
-import {
-  handleListSearch, sortRows, createListIndicator, loadRows,
-  hideLoadingText, handleListClick,
-} from './list';
-import { setUpdateTime, setGlobalStats, setStats } from './table';
-import setMap from './map';
+import { createListIndicator, loadRows, sortRows } from './components/list';
+import { setGlobalStats, setStats, setUpdateTime } from './components/table';
+import setMap from './components/map';
 
-const keyboard = new Keyboard();
-
-const handleThemeSwitchClick = () => {
-  const isDayTheme = document.body.classList.contains('day');
-  document.body.classList.toggle('day');
-  setGraphTheme(isDayTheme ? 'night' : 'day');
-};
-
-const handleResizeClick = (event) => {
-  document.querySelector('.content-top').classList.toggle('flex');
-  const target = event.target.parentElement;
-  event.target.classList.toggle('min');
-  Array.from(document.querySelectorAll('.resizable'))
-    .filter((div) => div !== target)
-    .forEach((div) => div.classList.toggle('hidden'));
-  target.classList.toggle('fit-window');
-};
-
-getWorldStats()
-  .then((res) => {
-    setUpdateTime(res.updated);
-    setGlobalStats(res);
+getAllData()
+  .then(([worldStats, worldByDay, allCountriesStats]) => {
+    setUpdateTime(worldStats.updated);
+    setGlobalStats(worldStats);
     setStats();
-  });
 
-getWorldStatsByDay()
-  .then((result) => {
-    Object.assign(dailyStats, result);
-    chart.data.labels = Object.keys(dailyStats.cases);
-    updateChartData(dailyStats);
-  });
+    Object.assign(dailyStats, worldByDay);
+    updateChartData();
 
-getAllCountriesStats()
-  .then((allCountriesStats) => {
     createListIndicator();
     loadRows(allCountriesStats);
     sortRows('TotalConfirmed');
     hideLoadingText();
     setMap(allCountriesStats, setStats());
-    keyboard.init();
     listContainer.addEventListener('click', handleListClick);
-  });
+  })
+  .then(() => {
+    const keyboard = new Keyboard();
+    keyboard.init();
+    keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
 
-resizeBtns.forEach((btn) => btn.addEventListener('click', handleResizeClick));
-themeSwitch.addEventListener('click', handleThemeSwitchClick);
-searchInput.addEventListener('input', handleListSearch);
-indicator.addEventListener('change', () => setTimeout(() => sortRows(), 0));
-keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
+    resizeBtns.forEach((btn) => btn.addEventListener('click', handleResizeClick));
+    themeSwitch.addEventListener('click', handleThemeSwitchClick);
+    searchInput.addEventListener('input', handleListSearch);
+    indicator.addEventListener('change', () => setTimeout(() => sortRows(), 0));
+  });

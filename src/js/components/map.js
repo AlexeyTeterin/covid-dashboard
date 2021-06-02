@@ -3,8 +3,8 @@
 import * as Leaflet from 'leaflet';
 import { geoJson } from 'leaflet';
 import { basicIndicators } from './list';
-import { listContainer, indicator, getListRows } from './dom';
-import { mapURL, mapColors, mapParams } from './mapSettings';
+import { getListRows, indicator, listContainer } from '../dom';
+import { mapColors, mapParams, mapURL } from './mapSettings';
 
 const maxStat = {};
 const setMaxStat = (key) => {
@@ -23,13 +23,19 @@ const setMaxStat = (key) => {
 const keysArr = basicIndicators.slice();
 const labelsArr = keysArr
   .map((el) => el.replace('New', 'New ').replace('Total', 'Total '));
-const clickedCountry = { target: null, name: '' };
-const infoType = { type: 'TotalConfirmed', absolute: true };
+const clickedCountry = {
+  target: null, name: '',
+};
+const infoType = {
+  type: 'TotalConfirmed', absolute: true,
+};
 
 export default function setMap(res) {
   const map = Leaflet.map('mapid').setView([40, 20], 2);
   const mapInfo = Leaflet.control();
-  const mapLegend = Leaflet.control({ position: 'bottomright' });
+  const mapLegend = Leaflet.control({
+    position: 'bottomright',
+  });
   const southWest = Leaflet.latLng(-90, -220);
   const northEast = Leaflet.latLng(90, 220);
   const request = new XMLHttpRequest();
@@ -39,7 +45,9 @@ export default function setMap(res) {
       const targetCountry = res
         .find((country) => country.countryInfo.iso3 === id);
       if (targetCountry) {
-        const clickEvent = new Event('click', { bubbles: true });
+        const clickEvent = new Event('click', {
+          bubbles: true,
+        });
         const targetRow = Array.from(getListRows())
           .find((row) => row.dataset.id === id);
         if (targetRow) targetRow.firstChild.dispatchEvent(clickEvent);

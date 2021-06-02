@@ -21,3 +21,7 @@ export async function getAllCountriesStats() {
   const data = await response.json();
   return data;
 }
+
+export async function getAllData() {
+  return Promise.all([getWorldStats(), getWorldStatsByDay(), getAllCountriesStats()]);
+}
