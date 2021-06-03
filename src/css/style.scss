@@ -1,3 +1,13 @@
+$color-body-primary: hsl(202, 44%, 8%);
+$color-body-day: #e7e7e7;
+$color-section-bg: rgba(255, 255, 255, 0.1);
+$color-section-bg-day: #fff;
+$color-section-bg-abs: #242f34;
+$color-light-text: rgba(255, 255, 255, 0.85);
+$color-dark-text: rgba(255, 255, 255, 0.15);
+
+$graph-msg-appear-duration: 150ms;
+
 @mixin block-border {
   min-height: 0;
   transition: opacity 0.5s, width 0.5s, height 0.5s, box-shadow 0.2s;
@@ -18,14 +28,6 @@
   flex-direction: column;
   justify-content: center;
 }
-
-$color-body-primary: hsl(202, 44%, 8%);
-$color-body-day: #e7e7e7;
-$color-section-bg: rgba(255, 255, 255, 0.1);
-$color-section-bg-day: #fff;
-$color-section-bg-abs: #242f34;
-$color-light-text: rgba(255, 255, 255, 0.85);
-$color-dark-text: rgba(255, 255, 255, 0.15);
 
 body {
   display: flex;
@@ -390,7 +392,18 @@ input:checked + .slider:before {
   justify-content: center;
   position: absolute;
   opacity: 0;
-  transition: opacity 0.15s;
+  transition: opacity $graph-msg-appear-duration;
+}
+
+.graph-timeframe {
+  position: absolute;
+  top: 4px;
+  right: 20px;
+  outline: none;
+}
+
+.hidden {
+  visibility: hidden;
 }
 
 .max-min-btn {

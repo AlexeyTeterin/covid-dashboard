@@ -7,7 +7,7 @@ import {
 } from './controller';
 import { getAllData } from './utils';
 import Keyboard from './components/keyboard';
-import { dailyStats, updateChartData } from './components/graph';
+import { updateChartData, worldDailyStats } from './components/graph';
 import {
   indicator,
   keyboardButton,
@@ -28,7 +28,7 @@ getAllData()
     setGlobalStats(worldStats);
     setStats();
 
-    Object.assign(dailyStats, worldByDay);
+    Object.assign(worldDailyStats, worldByDay);
     updateChartData();
 
     createListIndicator();

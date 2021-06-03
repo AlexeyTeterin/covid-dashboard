@@ -7,13 +7,22 @@ import {
   canvasEl,
   getActiveListRow,
   graphMessage,
+  graphTimeframeSelect,
   indicator,
   listContainer,
 } from '../dom';
 
 export const chart = new Chart(canvasEl, graphSettings);
 
-export const dailyStats = {};
+export const worldDailyStats = {};
+
+const state = {
+  dailyStats: null,
+  countryCode: null,
+  timeframe: 0,
+};
+
+const MSG_APPEAR_DURATION = 150;
 
 const newCasesByDay = (totalCasesByDay) => {
   const cases = Object.values(totalCasesByDay);
@@ -26,7 +35,7 @@ const newCasesByDay = (totalCasesByDay) => {
 const casesPer100k = (casesByDay, population) => casesByDay
   .map((el) => ((el / population) * 100000).toFixed(2));
 
-export const updateChartData = (data = dailyStats, countryCode, max = 0) => {
+export const updateChartData = (data = worldDailyStats, countryCode) => {
   const { cases, recovered, deaths } = data;
   const { datasets } = chart.data;
   const { options } = chart;
@@ -36,12 +45,12 @@ export const updateChartData = (data = dailyStats, countryCode, max = 0) => {
   const population = countryCode ? selectedCountry.dataset.population : worldPopulation;
   const relativeValues = buttonAbs.classList.contains('relative');
 
-  chart.data.labels = Object.keys(dailyStats.cases).slice(-max);
+  chart.data.labels = Object.keys(worldDailyStats.cases).slice(-state.timeframe);
 
   [cases, recovered, deaths]
     .forEach((set, index) => {
-      datasets[index].data = Object.values(set).slice(-max);
-      datasets[index + 3].data = newCasesByDay(set).slice(-max);
+      datasets[index].data = Object.values(set).slice(-state.timeframe);
+      datasets[index + 3].data = newCasesByDay(set).slice(-state.timeframe);
     });
 
   if (relativeValues) {
@@ -57,11 +66,13 @@ export const updateChartData = (data = dailyStats, countryCode, max = 0) => {
 const setGraphMessage = (msg) => {
   graphMessage.innerHTML = msg;
   graphMessage.classList.add('pulsate');
+  graphMessage.classList.remove('hidden');
 };
 
 const clearGraphMessage = () => {
   graphMessage.innerHTML = '';
   graphMessage.classList.remove('pulsate');
+  setTimeout(() => graphMessage.classList.add('hidden'), MSG_APPEAR_DURATION);
 };
 
 const handleCountrySelection = (countryCode) => {
@@ -72,16 +83,20 @@ const handleCountrySelection = (countryCode) => {
   getCountryStatsByDay(countryCode)
     .then((res) => {
       const countryName = getActiveListRow().dataset.Country;
+
+      state.countryCode = countryCode;
       chart.options.title.text = countryName;
+
       if (!res.timeline) {
-        chart.data.datasets.forEach((el) => {
-          const dataset = el;
+        state.dailyStats = null;
+        chart.data.datasets.forEach((dataset) => {
           dataset.data = [];
         });
 
         setGraphMessage(`No data available for ${countryName}`);
       }
       if (res.timeline) {
+        state.dailyStats = res.timeline;
         clearGraphMessage();
         updateChartData(res.timeline, countryCode);
       }
@@ -105,13 +120,20 @@ const removeTailFromLabels = (tail) => chart.data.datasets
 
 const handleListClick = (event) => {
   const target = event.target.parentElement;
+  const { CountryCode } = target.dataset;
+
   if (!target.classList.contains('list__row')) return;
   const countryIsSelected = !target.classList.contains('list__row_active');
   if (!countryIsSelected) {
-    updateChartData(dailyStats);
+    state.countryCode = null;
+    state.dailyStats = null;
+    updateChartData(worldDailyStats);
     clearGraphMessage();
   }
-  if (countryIsSelected) handleCountrySelection(target.dataset.CountryCode);
+  if (countryIsSelected) {
+    state.countryCode = CountryCode;
+    handleCountrySelection(CountryCode);
+  }
 };
 
 const handleButtonAbsClick = () => {
@@ -121,14 +143,14 @@ const handleButtonAbsClick = () => {
   if (absoluteOn) removeTailFromLabels(' per 100k');
 
   if (activeRow) handleCountrySelection(activeRow.dataset.CountryCode);
-  if (!activeRow) updateChartData(dailyStats);
+  if (!activeRow) updateChartData(worldDailyStats);
 };
 
 const handleIndicatorChange = () => {
   const countryIsSelected = document.querySelector('.list__row_active');
   if (!countryIsSelected) {
     setTimeout(() => {
-      updateChartData(dailyStats);
+      updateChartData(worldDailyStats);
     }, 0);
   }
   if (countryIsSelected) {
@@ -138,6 +160,19 @@ const handleIndicatorChange = () => {
   const absoluteOn = !indicator.value.includes('100k');
   if (!absoluteOn) addTailToLabels(' per 100k');
   else removeTailFromLabels(' per 100k');
+};
+
+const handleTimeframeChange = (event) => {
+  const { dailyStats, countryCode } = state;
+  const { value } = event.target;
+  const isCountrySelected = Boolean(state.countryCode);
+
+  state.timeframe = value;
+  if (isCountrySelected) {
+    updateChartData(dailyStats, countryCode);
+  } else {
+    updateChartData(worldDailyStats);
+  }
 };
 
 const setGraphSize = (style) => {
@@ -189,4 +224,5 @@ chart.data.datasets.forEach((el, index) => {
 listContainer.addEventListener('click', handleListClick);
 buttonAbs.addEventListener('click', handleButtonAbsClick);
 indicator.addEventListener('change', handleIndicatorChange);
+graphTimeframeSelect.addEventListener('change', handleTimeframeChange);
 observer.observe(document.querySelector('.graph'));

@@ -15,6 +15,7 @@ export const contentTop = document.querySelector('.content-top');
 export const resizeBtns = document.querySelectorAll('.max-min-btn');
 export const themeSwitch = document.querySelector('#checkbox');
 export const graphMessage = document.querySelector('.graph-message');
+export const graphTimeframeSelect = document.querySelector('#timeframe');
 
 export const getListRows = () => listContainer.querySelectorAll('.list__row');
 export const getActiveListRow = () => listContainer.querySelector('.list__row_active');
