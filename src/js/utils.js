@@ -25,3 +25,16 @@ export async function getAllCountriesStats() {
 export async function getAllData() {
   return Promise.all([getWorldStats(), getWorldStatsByDay(), getAllCountriesStats()]);
 }
+
+export const getFlagURL = (countryCode) => `url(https://www.countryflags.io/${countryCode}/shiny/24.png)`;
+
+export const getFlagImg = async (countryCode) => {
+  const responce = await fetch(`https://www.countryflags.io/${countryCode}/shiny/24.png`, {
+    mode: 'no-cors',
+  });
+  const img = await responce.blob();
+  console.log(img);
+  const localURL = URL.createObjectURL(img).substr(5);
+  console.log(localURL);
+  return `url(${localURL})`;
+};

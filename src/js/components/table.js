@@ -8,6 +8,7 @@ import {
   indicator,
   listContainer,
 } from '../dom';
+import { getFlagURL } from '../utils';
 
 const stat = {
   world: true, total: true, absolute: true,
@@ -19,6 +20,7 @@ let deat;
 let rec;
 
 const round = (n) => Math.round(n * 100) / 100;
+
 export const setStats = () => {
   if (!source) {
     divCases.innerText = 'no info';
@@ -43,6 +45,7 @@ export const setStats = () => {
   divDeaths.innerText = round(deat / k).toLocaleString();
   divRecovered.innerText = round(rec / k).toLocaleString();
 };
+
 const toggleTotal = () => {
   const options = Array.from(indicator.querySelectorAll('option'));
   const selectedOption = options.filter((option) => option.selected)[0].value;
@@ -68,6 +71,7 @@ const toggleTotal = () => {
   buttonCount.classList.toggle('new');
   setStats();
 };
+
 const toggleAbs = () => {
   const options = Array.from(indicator.querySelectorAll('option'));
   const selectedOption = options.filter((option) => option.selected)[0].value;
@@ -100,6 +104,7 @@ const toggleAbs = () => {
   buttonAbs.classList.toggle('relative');
   setStats();
 };
+
 const handleListClick = (event) => {
   const listRows = Array.from(listContainer.querySelectorAll('.list__row'));
   const clickedRow = event.target.parentElement;
@@ -110,9 +115,10 @@ const handleListClick = (event) => {
   source = listRows
     .find((row) => row.dataset.CountryCode === clickedCountryCode).dataset || globalStats;
   buttonArea.innerHTML = `<span>ww</span>${source.Country}`;
-  buttonArea.firstChild.style.setProperty('background-image', `url(https://www.countryflags.io/${source.CountryCode}/shiny/24.png)`);
+  buttonArea.firstChild.style.setProperty('background-image', getFlagURL(source.CountryCode));
   setStats(source);
 };
+
 const handleIndicatorChange = (event) => {
   const { value } = event.target;
   if (value) {
@@ -121,6 +127,7 @@ const handleIndicatorChange = (event) => {
     setStats();
   }
 };
+
 const resetToWorldStats = () => {
   buttonArea.innerText = 'World';
   source = globalStats;
@@ -132,11 +139,13 @@ const resetToWorldStats = () => {
   });
   if (activeListRow) activeListRow.firstChild.dispatchEvent(click);
 };
+
 export const setUpdateTime = (updated) => {
   const date = new Date(updated);
   document.querySelector('.day-updated')
     .innerText = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 };
+
 export const setGlobalStats = (worldStats) => {
   Object.assign(globalStats, {
     population: worldStats.population,
