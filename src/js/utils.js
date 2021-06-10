@@ -1,3 +1,9 @@
+import { lastUpdateTimeEl } from './dom';
+
+export const capitalize = (str) => str[0].toUpperCase() + str.slice(1);
+
+export const calcPer100k = (value, population) => +((value / population) * 100000).toFixed(2);
+
 export async function getWorldStatsByDay() {
   const response = await fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=720');
   const data = await response.json();
@@ -39,4 +45,8 @@ export const getFlagImg = async (countryCode) => {
   return `url(${localURL})`;
 };
 
-export const capitalize = (str) => str[0].toUpperCase() + str.slice(1);
+export const setUpdateTime = (updated) => {
+  const date = new Date(updated);
+  lastUpdateTimeEl
+    .innerText = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+};

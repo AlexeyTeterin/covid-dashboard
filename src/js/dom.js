@@ -13,6 +13,7 @@ export const resizeBtns = document.querySelectorAll('.max-min-btn');
 export const themeSwitch = document.querySelector('#checkbox');
 export const graphMessage = document.querySelector('.graph-message');
 export const graphTimeframeSelect = document.querySelector('#timeframe');
+export const lastUpdateTimeEl = document.querySelector('.day-updated');
 export const tableDivs = {
   confirmed: document.querySelector('.cases-confirmed'),
   recovered: document.querySelector('.cases-recovered'),

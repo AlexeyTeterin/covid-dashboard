@@ -436,9 +436,10 @@ export default class Keyboard {
   }
 
   toggleKeyboard() {
-    const keyboard = this.elements.main;
-    if (keyboard.classList.contains('goDown')) this.showKeyboard();
-    else this.hideKeyboard();
+    const { main } = this.elements;
+    const isKeyboardHidden = main.classList.contains('goDown');
+
+    isKeyboardHidden ? this.showKeyboard() : this.hideKeyboard();
   }
 
   setCursorPos(pos) {
@@ -465,17 +466,12 @@ export default class Keyboard {
     return this.properties.value;
   }
 
-  // Input from real keyboard
   phisycalInput() {
     const { whichCodes } = this.elements.layouts;
-    const {
-      capsLock,
-      shift,
-    } = this.properties;
+    const { keys } = this.elements;
+    const { capsLock, shift } = this.properties;
     const keySet = [];
-    this.elements.keys.forEach((key) => {
-      keySet.push(key.textContent);
-    });
+    keys.forEach((key) => keySet.push(key.textContent));
 
     document.onkeydown = (event) => {
       const pos = whichCodes.indexOf(event.which);

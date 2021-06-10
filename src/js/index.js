@@ -5,7 +5,7 @@ import {
   handleThemeSwitchClick,
   hideLoadingText,
 } from './controller';
-import { getAllData } from './utils';
+import { getAllData, setUpdateTime } from './utils';
 import Keyboard from './components/keyboard';
 import { updateChartData, worldDailyStats } from './components/graph';
 import {
@@ -17,7 +17,7 @@ import {
   themeSwitch,
 } from './dom';
 import { createListIndicator, loadRows, sortRows } from './components/list';
-import { setGlobalStats, setStats, setUpdateTime } from './components/table';
+import { setGlobalStats, setStats } from './components/table';
 import setMap from './components/map';
 import '../css/style.scss';
 import '../css/keyboard.css';

@@ -121,12 +121,6 @@ const setTableWorldStats = () => {
   if (activeListRow) activeListRow.firstChild.dispatchEvent(click);
 };
 
-export const setUpdateTime = (updated) => {
-  const date = new Date(updated);
-  document.querySelector('.day-updated')
-    .innerText = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-};
-
 export const setGlobalStats = (worldStats) => {
   Object.assign(globalStats, {
     population: worldStats.population,

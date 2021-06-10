@@ -1,24 +1,24 @@
 import { MESSAGES } from '../constants';
-import { indicator, listContainer, loading } from '../dom';
+import { calcPer100k, getFlagURL } from '../utils';
+import { getListRows, indicator, listContainer, loading } from '../dom';
 
 export const basicIndicators = [
   'TotalConfirmed', 'TotalRecovered', 'TotalDeaths',
   'NewConfirmed', 'NewRecovered', 'NewDeaths',
 ];
 
-const calcPer100k = (value, population) => +((value / population) * 100000).toFixed(2);
-
 export const loadRows = async (data) => {
   await data
     .filter((country) => country.countryInfo.iso2 !== null)
     .forEach((country) => {
       const row = document.createElement('div');
-      const name = document.createElement('div');
-      const value = document.createElement('div');
+      const countryName = document.createElement('div');
+      const statValue = document.createElement('div');
+      const flagURL = getFlagURL(country.countryInfo.iso2);
 
       row.classList.add('list__row');
-      name.textContent = country.country;
-      name.style.setProperty('background-image', `url(https://www.countryflags.io/${country.countryInfo.iso2}/shiny/24.png)`);
+      countryName.textContent = country.country;
+      countryName.style.setProperty('background-image', flagURL);
       const {
         countryInfo,
         population,
@@ -50,7 +50,7 @@ export const loadRows = async (data) => {
 
       Object.assign(row.dataset, countryDataset);
 
-      row.append(name, value);
+      row.append(countryName, statValue);
       listContainer.append(row);
     });
   listContainer.dataset.status = 'loaded';
@@ -60,16 +60,18 @@ export const sortRows = () => {
   const option = indicator.value;
 
   const activeElement = document.querySelector('.list__row_active');
-  const rows = document.querySelectorAll('.list__row');
+  const rows = getListRows();
   const rowsSorted = Array.from(rows).sort((a, b) => {
-    const firtNum = parseFloat(a.dataset[option], 10);
+    const firstNum = parseFloat(a.dataset[option], 10);
     const secondNum = parseFloat(b.dataset[option], 10);
-    if (firtNum > secondNum) return -1;
-    if (firtNum < secondNum) return 1;
-    return 0;
+    if (firstNum === secondNum) return 0;
+    return (firstNum > secondNum) ? -1 : 1;
   });
+
   rows.forEach((row) => {
-    row.style.setProperty('order', rowsSorted.indexOf(row));
+    const rowPosition = rowsSorted.indexOf(row);
+
+    row.style.setProperty('order', rowPosition);
     const value = row.children[1];
     value.textContent = parseFloat(row.dataset[option]).toLocaleString();
     const pos = value.textContent.length - 2;
