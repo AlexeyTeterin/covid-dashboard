@@ -3,7 +3,13 @@
 import * as Leaflet from 'leaflet';
 import { geoJson } from 'leaflet';
 import { basicIndicators } from './list';
-import { getListRows, indicator, listContainer } from '../dom';
+import {
+  buttonAbs,
+  buttonCount,
+  getListRows,
+  indicator,
+  listContainer,
+} from '../dom';
 import { mapColors, mapParams, mapURL } from './mapSettings';
 
 const maxStat = {};
@@ -139,14 +145,15 @@ export default function setMap(res) {
       label.innerHTML += `<i style="background:${color}"></i> ${value(i)}${colors[i + 1] ? `&ndash;${value(i + 1)}<br>` : '+'}`;
     });
   };
-  const setLabel = (e) => {
-    if (e.value) {
-      if (infoType === e.value.replace('Per100k', '') && (!infoType.absolute === e.value.includes('Per100k'))) return;
-      infoType.absolute = !e.value.includes('Per100k');
-      infoType.type = e.value.replace('Per100k', '');
-      setColors();
-    }
+
+  const setLabel = (labelName) => {
+    if (!labelName) return;
+
+    infoType.absolute = !labelName.includes('Per100k');
+    infoType.type = labelName.replace('Per100k', '');
+    setColors();
   };
+
   const style = (feature) => ({
     fillColor: getColor(feature.properties.name),
     weight: 1,
@@ -156,6 +163,7 @@ export default function setMap(res) {
     dashOpacity: 0.1,
     fillOpacity: 0.4,
   });
+
   const onEachFeature = (feature, layer) => {
     layer.on({
       mouseover: handleMapEvents.countryMouseOver,
@@ -165,10 +173,10 @@ export default function setMap(res) {
   };
 
   const runEventListeners = () => {
-    indicator.addEventListener('click', (event) => setLabel(event.target));
+    indicator.addEventListener('click', (event) => setLabel(event.target.value));
     listContainer.addEventListener('click', handleMapEvents.listClick);
-    document.querySelector('.row-title-count').addEventListener('click', () => setLabel(indicator));
-    document.querySelector('.row-title-abs').addEventListener('click', () => setLabel(indicator));
+    buttonCount.addEventListener('click', () => setLabel(indicator.value));
+    buttonAbs.addEventListener('click', () => setLabel(indicator.value));
     document.querySelector('.map-wrapper > .max-min-btn').addEventListener('click', () => setTimeout(() => map.invalidateSize(true), 250));
   };
 

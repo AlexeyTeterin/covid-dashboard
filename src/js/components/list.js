@@ -1,3 +1,4 @@
+import { MESSAGES } from '../constants';
 import { indicator, listContainer, loading } from '../dom';
 
 export const basicIndicators = [
@@ -104,6 +105,6 @@ export const createListIndicator = () => {
 };
 
 setTimeout(() => {
-  loading.textContent = 'API performs caching at the moment, please try to reload page 5 minutes later.';
+  loading.textContent = MESSAGES.apiError;
   loading.classList.remove('pulsate');
 }, 7000);

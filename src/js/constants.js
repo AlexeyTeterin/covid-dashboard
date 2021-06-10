@@ -1,5 +1,6 @@
 export const MESSAGES = {
   noInfo: 'no info',
+  apiError: 'API performs caching at the moment, please try to reload page 5 minutes later.',
 };
 
 export const caseTypes = ['confirmed', 'recovered', 'deaths'];

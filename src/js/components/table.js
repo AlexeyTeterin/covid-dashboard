@@ -108,7 +108,7 @@ const handleIndicatorChange = (event) => {
   setStats();
 };
 
-const resetToWorldStats = () => {
+const setTableWorldStats = () => {
   buttonArea.innerText = 'World';
 
   state.resetToGlobalStats();
@@ -138,14 +138,11 @@ export const setGlobalStats = (worldStats) => {
     TotalRecovered: worldStats.recovered,
   });
   state.resetToGlobalStats();
-  state.confirmed = state.actualStats.TotalConfirmed;
-  state.deaths = state.actualStats.TotalDeaths;
-  state.recovered = state.actualStats.TotalRecovered;
 };
 
 buttonCount.addEventListener('click', toggleTotal);
 buttonAbs.addEventListener('click', toggleAbs);
-buttonArea.addEventListener('click', resetToWorldStats);
+buttonArea.addEventListener('click', setTableWorldStats);
 listContainer.addEventListener('click', handleListClick);
 indicator.addEventListener('change', handleIndicatorChange);
 
