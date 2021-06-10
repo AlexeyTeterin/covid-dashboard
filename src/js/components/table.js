@@ -1,136 +1,117 @@
+import { casePrefixes, caseTypes, tableTitles } from '../constants';
 import {
   buttonAbs,
   buttonArea,
   buttonCount,
-  divCases,
-  divDeaths,
-  divRecovered,
   indicator,
   listContainer,
+  tableDivs,
 } from '../dom';
-import { getFlagURL } from '../utils';
 
-const stat = {
-  world: true, total: true, absolute: true,
-};
-let source;
+import { capitalize, getFlagURL } from '../utils';
+
 const globalStats = {};
-let con;
-let deat;
-let rec;
+
+const state = {
+  actualStats: {},
+  allTime: true,
+  absolute: true,
+  confirmed: 0,
+  recovered: 0,
+  deaths: 0,
+  resetToGlobalStats() {
+    Object.assign(this.actualStats, globalStats);
+  },
+};
 
 const round = (n) => Math.round(n * 100) / 100;
 
-export const setStats = () => {
-  if (!source) {
-    divCases.innerText = 'no info';
-    divDeaths.innerText = 'no info';
-    divRecovered.innerText = 'no info';
-    return;
-  }
-  let k = 1;
-  if (!stat.absolute) {
-    k = source.population / 100000;
-  }
-  if (stat.total) {
-    con = source.TotalConfirmed;
-    deat = source.TotalDeaths;
-    rec = source.TotalRecovered;
-  } else {
-    con = source.NewConfirmed;
-    deat = source.NewDeaths;
-    rec = source.NewRecovered;
-  }
-  divCases.innerText = round(con / k).toLocaleString();
-  divDeaths.innerText = round(deat / k).toLocaleString();
-  divRecovered.innerText = round(rec / k).toLocaleString();
-};
+export const setStats = () => caseTypes.forEach((type) => {
+  const prefix = capitalize(state.allTime ? casePrefixes.total : casePrefixes.new);
+  const statName = `${prefix}${capitalize(type)}`;
+  const delimeter = state.absolute ? 1 : state.actualStats.population / 100000;
 
-const toggleTotal = () => {
+  state[type] = state.actualStats[statName];
+  tableDivs[type].innerText = round(state[type] / delimeter).toLocaleString();
+});
+
+const getSelectedCaseType = () => {
   const options = Array.from(indicator.querySelectorAll('option'));
   const selectedOption = options.filter((option) => option.selected)[0].value;
   options.forEach((option) => option.setAttribute('selected', false));
-
-  const totalOrNew = stat.total ? 'New' : 'Total';
-  const absOrRel = stat.absolute ? '' : 'Per100k';
-  const casesType = selectedOption.replace(/(New)|(Total)|(Per100k)/g, '');
-  indicator.value = `${totalOrNew}${casesType}${absOrRel}`;
-
   const targetOption = options.filter((option) => option.value === indicator.value)[0];
   targetOption.setAttribute('selected', true);
 
-  stat.total = !stat.total;
-  if (stat.total) {
-    document.querySelector('.total-or-new').innerHTML = 'all time';
-  } else {
-    document.querySelector('.total-or-new').innerHTML = 'last day';
-  }
+  return selectedOption.replace(/(New)|(Total)|(Per100k)/g, '');
+};
 
-  setTimeout(() => indicator.dispatchEvent(new Event('change')), 0);
+const dispatchListUpdate = () => setTimeout(() => indicator.dispatchEvent(new Event('change')), 0);
+
+const toggleTotal = () => {
+  const prefix = capitalize(!state.allTime ? casePrefixes.total : casePrefixes.new);
+  const postfix = state.absolute ? '' : 'Per100k';
+  const caseType = getSelectedCaseType();
+  indicator.value = `${prefix}${caseType}${postfix}`;
+
+  state.allTime = !state.allTime;
+
+  tableDivs.totalOrNew.innerHTML = state.allTime ? tableTitles.total : tableTitles.new;
+
+  dispatchListUpdate();
   buttonCount.classList.toggle('total');
   buttonCount.classList.toggle('new');
   setStats();
 };
 
 const toggleAbs = () => {
-  const options = Array.from(indicator.querySelectorAll('option'));
-  const selectedOption = options.filter((option) => option.selected)[0].value;
-  options.forEach((option) => option.setAttribute('selected', false));
+  const prefix = capitalize(state.allTime ? casePrefixes.total : casePrefixes.new);
+  const postfix = state.absolute ? 'Per100k' : '';
+  const casesType = getSelectedCaseType();
+  indicator.value = `${prefix}${casesType}${postfix}`;
 
-  const totalOrNew = stat.total ? 'Total' : 'New';
-  const absOrRel = stat.absolute ? 'Per100k' : '';
-  const casesType = selectedOption.replace(/(New)|(Total)|(Per100k)/g, '');
-  indicator.value = `${totalOrNew}${casesType}${absOrRel}`;
+  state.absolute = !state.absolute;
 
-  const targetOption = options.filter((option) => option.value === indicator.value)[0];
-  targetOption.setAttribute('selected', true);
+  document.querySelectorAll('.tail').forEach((el) => {
+    el.innerHTML = state.absolute ? '' : '&nbsp;per 100 k';
+  });
 
-  stat.absolute = !stat.absolute;
-
-  if (stat.absolute) {
-    document.querySelectorAll('.tail').forEach((el) => {
-      const span = el;
-      span.innerHTML = '';
-    });
-  } else {
-    document.querySelectorAll('.tail').forEach((el) => {
-      const span = el;
-      span.innerHTML = '&nbsp;per 100 k';
-    });
-  }
-
-  setTimeout(() => indicator.dispatchEvent(new Event('change')), 0);
+  dispatchListUpdate();
   buttonAbs.classList.toggle('absolute');
   buttonAbs.classList.toggle('relative');
   setStats();
 };
 
 const handleListClick = (event) => {
+  const { actualStats } = state;
+
   const listRows = Array.from(listContainer.querySelectorAll('.list__row'));
   const clickedRow = event.target.parentElement;
   const clickedCountryCode = clickedRow.dataset.CountryCode;
+  const getActualStats = () => listRows
+    .find((row) => row.dataset.CountryCode === clickedCountryCode).dataset;
 
   if (!clickedCountryCode) return;
 
-  source = listRows
-    .find((row) => row.dataset.CountryCode === clickedCountryCode).dataset || globalStats;
-  buttonArea.innerHTML = `<span>ww</span>${source.Country}`;
-  buttonArea.firstChild.style.setProperty('background-image', getFlagURL(source.CountryCode));
-  setStats(source);
+  Object.assign(actualStats, getActualStats() || globalStats);
+
+  buttonArea.innerHTML = `<span>ww</span>${actualStats.Country}`;
+  buttonArea.firstChild.style.setProperty('background-image', getFlagURL(actualStats.CountryCode));
+  setStats();
 };
 
 const handleIndicatorChange = (event) => {
   const { value } = event.target;
-  if (value) {
-    if (value.includes('Total') !== buttonCount.classList.contains('total')) toggleTotal();
-    if (value.includes('100k') === buttonAbs.classList.contains('absolute')) toggleAbs();
-    setStats();
-  }
+  if (!value) return;
+
+  if (value.includes('Total') !== buttonCount.classList.contains('total')) toggleTotal();
+  if (value.includes('100k') === buttonAbs.classList.contains('absolute')) toggleAbs();
+  setStats();
 };
 
 const resetToWorldStats = () => {
   buttonArea.innerText = 'World';
-  source = globalStats;
+
+  state.resetToGlobalStats();
   setStats();
 
   const activeListRow = document.querySelector('.list__row_active');
@@ -156,10 +137,10 @@ export const setGlobalStats = (worldStats) => {
     NewRecovered: worldStats.todayRecovered,
     TotalRecovered: worldStats.recovered,
   });
-  source = globalStats;
-  con = source.TotalConfirmed;
-  deat = source.TotalDeaths;
-  rec = source.TotalRecovered;
+  state.resetToGlobalStats();
+  state.confirmed = state.actualStats.TotalConfirmed;
+  state.deaths = state.actualStats.TotalDeaths;
+  state.recovered = state.actualStats.TotalRecovered;
 };
 
 buttonCount.addEventListener('click', toggleTotal);

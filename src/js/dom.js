@@ -1,7 +1,4 @@
 export const canvasEl = document.querySelector('#chart');
-export const divDeaths = document.querySelector('.cases-deaths');
-export const divRecovered = document.querySelector('.cases-recovered');
-export const divCases = document.querySelector('.cases-confirmed');
 export const buttonArea = document.querySelector('.row-title-area');
 export const buttonCount = document.querySelector('.row-title-count');
 export const buttonAbs = document.querySelector('.row-title-abs');
@@ -16,6 +13,12 @@ export const resizeBtns = document.querySelectorAll('.max-min-btn');
 export const themeSwitch = document.querySelector('#checkbox');
 export const graphMessage = document.querySelector('.graph-message');
 export const graphTimeframeSelect = document.querySelector('#timeframe');
+export const tableDivs = {
+  confirmed: document.querySelector('.cases-confirmed'),
+  recovered: document.querySelector('.cases-recovered'),
+  deaths: document.querySelector('.cases-deaths'),
+  totalOrNew: document.querySelector('.total-or-new'),
+};
 
 export const getListRows = () => listContainer.querySelectorAll('.list__row');
 export const getActiveListRow = () => listContainer.querySelector('.list__row_active');

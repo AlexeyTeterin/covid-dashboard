@@ -38,3 +38,5 @@ export const getFlagImg = async (countryCode) => {
   console.log(localURL);
   return `url(${localURL})`;
 };
+
+export const capitalize = (str) => str[0].toUpperCase() + str.slice(1);

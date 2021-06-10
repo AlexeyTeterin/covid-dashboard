@@ -35,7 +35,7 @@ getAllData()
     loadRows(allCountriesStats);
     sortRows('TotalConfirmed');
     hideLoadingText();
-    setMap(allCountriesStats, setStats());
+    setMap(allCountriesStats);
     listContainer.addEventListener('click', handleListClick);
   })
   .then(() => {
