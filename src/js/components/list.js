@@ -1,6 +1,7 @@
 import { MESSAGES } from '../constants';
-import { calcPer100k, getFlagURL } from '../utils';
+import { calcPer100k } from '../utils';
 import { getListRows, indicator, listContainer, loading } from '../dom';
+import { getFlagURL } from '../model';
 
 export const basicIndicators = [
   'TotalConfirmed', 'TotalRecovered', 'TotalDeaths',

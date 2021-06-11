@@ -5,9 +5,9 @@ import {
   handleThemeSwitchClick,
   hideLoadingText,
 } from './controller';
-import { getAllData, setUpdateTime } from './utils';
+import { setUpdateTime } from './utils';
 import Keyboard from './components/keyboard';
-import { updateChartData, worldDailyStats } from './components/graph';
+import { updateChartData } from './components/graph';
 import {
   indicator,
   keyboardButton,
@@ -17,23 +17,24 @@ import {
   themeSwitch,
 } from './dom';
 import { createListIndicator, loadRows, sortRows } from './components/list';
-import { setGlobalStats, setStats } from './components/table';
+import { setStats } from './components/table';
 import setMap from './components/map';
 import '../css/style.scss';
 import '../css/keyboard.css';
+import { getAllData, globalDailyStats, setGlobalStats } from './model';
 
 getAllData()
-  .then(([worldStats, worldByDay, allCountriesStats]) => {
-    setUpdateTime(worldStats.updated);
+  .then(([worldStats, worldDailyStats, allCountriesStats]) => {
     setGlobalStats(worldStats);
+    setUpdateTime(worldStats.updated);
     setStats();
 
-    Object.assign(worldDailyStats, worldByDay);
+    Object.assign(globalDailyStats, worldDailyStats);
     updateChartData();
 
     createListIndicator();
     loadRows(allCountriesStats);
-    sortRows('TotalConfirmed');
+    sortRows();
     hideLoadingText();
     setMap(allCountriesStats);
     listContainer.addEventListener('click', handleListClick);

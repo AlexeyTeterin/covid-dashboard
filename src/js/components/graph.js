@@ -11,10 +11,9 @@ import {
   indicator,
   listContainer,
 } from '../dom';
+import { globalDailyStats } from '../model';
 
 export const chart = new Chart(canvasEl, graphSettings);
-
-export const worldDailyStats = {};
 
 const state = {
   dailyStats: null,
@@ -35,7 +34,7 @@ const newCasesByDay = (totalCasesByDay) => {
 const casesPer100k = (casesByDay, population) => casesByDay
   .map((el) => ((el / population) * 100000).toFixed(2));
 
-export const updateChartData = (data = worldDailyStats, countryCode) => {
+export const updateChartData = (data = globalDailyStats, countryCode) => {
   const { cases, recovered, deaths } = data;
   const { datasets } = chart.data;
   const { options } = chart;
@@ -45,7 +44,7 @@ export const updateChartData = (data = worldDailyStats, countryCode) => {
   const population = countryCode ? selectedCountry.dataset.population : worldPopulation;
   const relativeValues = buttonAbs.classList.contains('relative');
 
-  chart.data.labels = Object.keys(worldDailyStats.cases).slice(-state.timeframe);
+  chart.data.labels = Object.keys(globalDailyStats.cases).slice(-state.timeframe);
 
   [cases, recovered, deaths]
     .forEach((set, index) => {
@@ -127,7 +126,7 @@ const handleListClick = (event) => {
   if (!countryIsSelected) {
     state.countryCode = null;
     state.dailyStats = null;
-    updateChartData(worldDailyStats);
+    updateChartData(globalDailyStats);
     clearGraphMessage();
   }
   if (countryIsSelected) {
@@ -143,14 +142,14 @@ const handleButtonAbsClick = () => {
   if (absoluteOn) removeTailFromLabels(' per 100k');
 
   if (activeRow) handleCountrySelection(activeRow.dataset.CountryCode);
-  if (!activeRow) updateChartData(worldDailyStats);
+  if (!activeRow) updateChartData(globalDailyStats);
 };
 
 const handleIndicatorChange = () => {
   const countryIsSelected = document.querySelector('.list__row_active');
   if (!countryIsSelected) {
     setTimeout(() => {
-      updateChartData(worldDailyStats);
+      updateChartData(globalDailyStats);
     }, 0);
   }
   if (countryIsSelected) {
@@ -171,7 +170,7 @@ const handleTimeframeChange = (event) => {
   if (isCountrySelected) {
     updateChartData(dailyStats, countryCode);
   } else {
-    updateChartData(worldDailyStats);
+    updateChartData(globalDailyStats);
   }
 };
 

@@ -7,10 +7,8 @@ import {
   listContainer,
   tableDivs,
 } from '../dom';
-
-import { capitalize, getFlagURL } from '../utils';
-
-const globalStats = {};
+import { capitalize } from '../utils';
+import { getFlagURL, globalStats } from '../model';
 
 const state = {
   actualStats: {},
@@ -119,19 +117,6 @@ const setTableWorldStats = () => {
     bubbles: true,
   });
   if (activeListRow) activeListRow.firstChild.dispatchEvent(click);
-};
-
-export const setGlobalStats = (worldStats) => {
-  Object.assign(globalStats, {
-    population: worldStats.population,
-    NewConfirmed: worldStats.todayCases,
-    TotalConfirmed: worldStats.cases,
-    NewDeaths: worldStats.todayDeaths,
-    TotalDeaths: worldStats.deaths,
-    NewRecovered: worldStats.todayRecovered,
-    TotalRecovered: worldStats.recovered,
-  });
-  state.resetToGlobalStats();
 };
 
 buttonCount.addEventListener('click', toggleTotal);
