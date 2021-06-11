@@ -1,5 +1,4 @@
 import Chart from 'chart.js';
-import { getCountryStatsByDay } from '../utils';
 import globalStats from './table';
 import graphSettings from './graphSettings';
 import {
@@ -11,7 +10,7 @@ import {
   indicator,
   listContainer,
 } from '../dom';
-import { globalDailyStats } from '../model';
+import { getCountryStatsByDay, globalDailyStats } from '../model';
 
 export const chart = new Chart(canvasEl, graphSettings);
 
