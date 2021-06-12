@@ -98,15 +98,17 @@ const mapEvents = {
   },
 };
 
-const getColor = (name) => {
+const getColor = (countryName) => {
+  const actualCountry = allCountriesStats.find(({ country }) => country === countryName);
+  if (!actualCountry) return '';
+
   const rows = Array.from(getListRows());
-  const country = allCountriesStats.find((c) => c.country === name);
-  if (!country) { return ''; }
-  const per100 = infoType.absolute ? 1 : country.population / 100000;
-  const stat = infoType.absolute ? maxStat[infoType.type] : maxStat[`${infoType.type}Per100`];
+  const { absolute, type } = infoType;
+  const per100 = absolute ? 1 : actualCountry.population / 100000;
+  const stat = absolute ? maxStat[type] : maxStat[`${type}Per100`];
   const k = rows
-    .find((row) => row.dataset.Country === country.country)
-    .dataset[infoType.type] / per100;
+    .find(({ dataset }) => dataset.Country === actualCountry.country)
+    .dataset[type] / per100;
   let level = stat / 8;
   if (level > 1000) level = Math.round(level / 1000) * 1000;
   else level = level.toFixed(3);
