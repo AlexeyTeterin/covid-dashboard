@@ -8,7 +8,13 @@ import {
   indicator,
   listContainer,
 } from '../dom';
-import { countrySelectStyle, mapParams, mapSettings, mapURL } from './mapSettings';
+import {
+  countryDefaultStyle,
+  countrySelectStyle,
+  mapParams,
+  mapSettings,
+  mapURL,
+} from './mapSettings';
 import { basicIndicators, MESSAGES } from '../constants';
 import { allCountriesStats } from '../model';
 import countries from '../../assets/json/countries.json';
@@ -146,14 +152,9 @@ const setLabel = (labelName) => {
   setColors();
 };
 
-const setCountryStyle = (feature) => ({
-  fillColor: getColor(feature.properties.name),
-  weight: 1,
-  opacity: mapSettings.fillOpacity,
-  color: '',
-  dashArray: '3',
-  dashOpacity: 0.1,
-  fillOpacity: 0.4,
+const setCountryStyle = ({ properties }) => ({
+  fillColor: getColor(properties.name),
+  ...countryDefaultStyle,
 });
 
 const onEachFeature = (feature, layer) => {
