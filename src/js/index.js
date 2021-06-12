@@ -5,7 +5,6 @@ import {
   handleResizeClick,
   handleThemeSwitchClick,
   hideLoadingMessage,
-  isDayThemeSaved,
 } from './controller';
 import { setUpdateTime } from './utils';
 import Keyboard from './components/keyboard';
@@ -28,7 +27,7 @@ import { getAllData, setAllCountriesStats, setGlobalDailyStats, setGlobalStats }
 applySavedTheme();
 
 getAllData()
-  .then(([worldStats, worldDailyStats, allCountriesStats]) => {
+  .then(async ([worldStats, worldDailyStats, allCountriesStats]) => {
     hideLoadingMessage();
     setUpdateTime(worldStats.updated);
 
@@ -38,7 +37,7 @@ getAllData()
 
     resetTable();
     resetChart();
-    resetList();
+    await resetList();
     resetMap();
   })
   .then(() => {

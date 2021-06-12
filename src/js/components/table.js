@@ -113,9 +113,7 @@ export const resetTable = () => {
   setStats();
 
   const activeListRow = document.querySelector('.list__row_active');
-  const click = new Event('click', {
-    bubbles: true,
-  });
+  const click = new Event('click', { bubbles: true });
   if (activeListRow) activeListRow.firstChild.dispatchEvent(click);
 };
 

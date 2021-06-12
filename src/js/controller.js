@@ -54,9 +54,7 @@ export const handleListClick = (event) => {
   }
   searchInput.value = '';
   handleListSearch();
-  target.scrollIntoView({
-    behavior: 'smooth', block: 'center',
-  });
+  target.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
 
 export const hideLoadingMessage = () => {

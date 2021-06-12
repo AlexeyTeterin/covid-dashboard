@@ -49,9 +49,10 @@ export async function getAllData() {
 export const getFlagURL = (countryCode) => `url(https://www.countryflags.io/${countryCode}/shiny/24.png)`;
 
 export const getFlagImg = async (countryCode) => {
-  const responce = await fetch(`https://www.countryflags.io/${countryCode}/shiny/24.png`, {
-    mode: 'no-cors',
-  });
+  const responce = await fetch(
+    `https://www.countryflags.io/${countryCode}/shiny/24.png`,
+    { mode: 'no-cors' },
+  );
   const img = await responce.blob();
   const localURL = URL.createObjectURL(img).substr(5);
   return `url(${localURL})`;

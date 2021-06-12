@@ -18,9 +18,7 @@ module.exports = {
     port: 9000,
   },
   plugins: [
-    new HTMLWebpackPlugin({
-      template: './index.html',
-    }),
+    new HTMLWebpackPlugin({ template: './index.html' }),
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [{

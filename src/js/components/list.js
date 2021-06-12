@@ -74,9 +74,7 @@ export const sortListRows = () => {
     if (value.textContent.charAt(pos) === ',') value.textContent += '0';
   });
   if (activeElement) {
-    activeElement.scrollIntoView({
-      behavior: 'smooth', block: 'center',
-    });
+    activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 };
 
@@ -102,9 +100,9 @@ const createListIndicator = () => {
   return options;
 };
 
-export const resetList = () => {
+export const resetList = async () => {
   createListIndicator();
-  loadListRows(allCountriesStats);
+  await loadListRows(allCountriesStats);
   sortListRows();
 };
 
