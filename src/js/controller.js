@@ -48,7 +48,7 @@ export const handleListClick = (event) => {
   });
 };
 
-export const hideLoadingText = () => {
+export const hideLoadingMessage = () => {
   loading.classList.add('hidden');
   document.querySelector('.content-top').classList.remove('hidden');
   document.querySelector('.content-bot').classList.remove('hidden');

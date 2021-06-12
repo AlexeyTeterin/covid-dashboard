@@ -2,7 +2,6 @@
 
 import * as Leaflet from 'leaflet';
 import { geoJson } from 'leaflet';
-import { basicIndicators } from './list';
 import {
   buttonAbs,
   buttonCount,
@@ -11,6 +10,8 @@ import {
   listContainer,
 } from '../dom';
 import { mapColors, mapParams, mapURL } from './mapSettings';
+import { basicIndicators } from '../constants';
+import { allCountriesStats } from '../model';
 
 const maxStat = {};
 const setMaxStat = (key) => {
@@ -36,7 +37,7 @@ const infoType = {
   type: 'TotalConfirmed', absolute: true,
 };
 
-export default function setMap(res) {
+export default function resetMap(res = allCountriesStats) {
   const map = Leaflet.map('mapid').setView([40, 20], 2);
   const mapInfo = Leaflet.control();
   const mapLegend = Leaflet.control({

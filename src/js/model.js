@@ -1,18 +1,22 @@
 export const globalStats = {};
-
 export const globalDailyStats = {};
+export const allCountriesStats = [];
 
-export const setGlobalStats = (worldStats) => {
+export const setGlobalStats = (stats) => {
   Object.assign(globalStats, {
-    population: worldStats.population,
-    NewConfirmed: worldStats.todayCases,
-    TotalConfirmed: worldStats.cases,
-    NewDeaths: worldStats.todayDeaths,
-    TotalDeaths: worldStats.deaths,
-    NewRecovered: worldStats.todayRecovered,
-    TotalRecovered: worldStats.recovered,
+    population: stats.population,
+    NewConfirmed: stats.todayCases,
+    TotalConfirmed: stats.cases,
+    NewDeaths: stats.todayDeaths,
+    TotalDeaths: stats.deaths,
+    NewRecovered: stats.todayRecovered,
+    TotalRecovered: stats.recovered,
   });
 };
+
+export const setGlobalDailyStats = (stats) => Object.assign(globalDailyStats, stats);
+
+export const setAllCountriesStats = (stats) => Object.assign(allCountriesStats, stats);
 
 export async function getWorldStatsByDay() {
   const response = await fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=720');

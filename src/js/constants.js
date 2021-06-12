@@ -14,3 +14,8 @@ export const tableTitles = {
   total: 'all time',
   new: 'last day',
 };
+
+export const basicIndicators = [
+  'TotalConfirmed', 'TotalRecovered', 'TotalDeaths',
+  'NewConfirmed', 'NewRecovered', 'NewDeaths',
+];

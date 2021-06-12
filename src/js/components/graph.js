@@ -33,7 +33,7 @@ const newCasesByDay = (totalCasesByDay) => {
 const casesPer100k = (casesByDay, population) => casesByDay
   .map((el) => ((el / population) * 100000).toFixed(2));
 
-export const updateChartData = (data = globalDailyStats, countryCode) => {
+export const resetChart = (data = globalDailyStats, countryCode) => {
   const { cases, recovered, deaths } = data;
   const { datasets } = chart.data;
   const { options } = chart;
@@ -96,7 +96,7 @@ const handleCountrySelection = (countryCode) => {
       if (res.timeline) {
         state.dailyStats = res.timeline;
         clearGraphMessage();
-        updateChartData(res.timeline, countryCode);
+        resetChart(res.timeline, countryCode);
       }
     })
     .catch((e) => new Error(e.message));
@@ -125,7 +125,7 @@ const handleListClick = (event) => {
   if (!countryIsSelected) {
     state.countryCode = null;
     state.dailyStats = null;
-    updateChartData(globalDailyStats);
+    resetChart(globalDailyStats);
     clearGraphMessage();
   }
   if (countryIsSelected) {
@@ -141,14 +141,14 @@ const handleButtonAbsClick = () => {
   if (absoluteOn) removeTailFromLabels(' per 100k');
 
   if (activeRow) handleCountrySelection(activeRow.dataset.CountryCode);
-  if (!activeRow) updateChartData(globalDailyStats);
+  if (!activeRow) resetChart(globalDailyStats);
 };
 
 const handleIndicatorChange = () => {
   const countryIsSelected = document.querySelector('.list__row_active');
   if (!countryIsSelected) {
     setTimeout(() => {
-      updateChartData(globalDailyStats);
+      resetChart(globalDailyStats);
     }, 0);
   }
   if (countryIsSelected) {
@@ -167,9 +167,9 @@ const handleTimeframeChange = (event) => {
 
   state.timeframe = value;
   if (isCountrySelected) {
-    updateChartData(dailyStats, countryCode);
+    resetChart(dailyStats, countryCode);
   } else {
-    updateChartData(globalDailyStats);
+    resetChart(globalDailyStats);
   }
 };
 

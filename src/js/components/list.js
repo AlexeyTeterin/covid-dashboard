@@ -1,14 +1,9 @@
-import { MESSAGES } from '../constants';
+import { basicIndicators, MESSAGES } from '../constants';
 import { calcPer100k } from '../utils';
 import { getListRows, indicator, listContainer, loading } from '../dom';
-import { getFlagURL } from '../model';
+import { allCountriesStats, getFlagURL } from '../model';
 
-export const basicIndicators = [
-  'TotalConfirmed', 'TotalRecovered', 'TotalDeaths',
-  'NewConfirmed', 'NewRecovered', 'NewDeaths',
-];
-
-export const loadRows = async (data) => {
+const loadListRows = async (data) => {
   await data
     .filter((country) => country.countryInfo.iso2 !== null)
     .forEach((country) => {
@@ -57,7 +52,7 @@ export const loadRows = async (data) => {
   listContainer.dataset.status = 'loaded';
 };
 
-export const sortRows = () => {
+export const sortListRows = () => {
   const option = indicator.value;
 
   const activeElement = document.querySelector('.list__row_active');
@@ -85,7 +80,7 @@ export const sortRows = () => {
   }
 };
 
-export const createListIndicator = () => {
+const createListIndicator = () => {
   const splitWords = (string) => {
     let result = string;
     ['Total', 'Confirmed', 'Deaths', 'Recovered', 'Per', 'New'].forEach((word) => {
@@ -105,6 +100,12 @@ export const createListIndicator = () => {
     if (option === 'TotalConfirmed') selectorOption.setAttribute('selected', true);
   });
   return options;
+};
+
+export const resetList = () => {
+  createListIndicator();
+  loadListRows(allCountriesStats);
+  sortListRows();
 };
 
 setTimeout(() => {

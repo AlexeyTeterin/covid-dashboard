@@ -3,11 +3,11 @@ import {
   handleListSearch,
   handleResizeClick,
   handleThemeSwitchClick,
-  hideLoadingText,
+  hideLoadingMessage,
 } from './controller';
 import { setUpdateTime } from './utils';
 import Keyboard from './components/keyboard';
-import { updateChartData } from './components/graph';
+import { resetChart } from './components/graph';
 import {
   indicator,
   keyboardButton,
@@ -16,36 +16,35 @@ import {
   searchInput,
   themeSwitch,
 } from './dom';
-import { createListIndicator, loadRows, sortRows } from './components/list';
-import { setStats } from './components/table';
-import setMap from './components/map';
+import { resetList, sortListRows } from './components/list';
+import { resetTable } from './components/table';
+import resetMap from './components/map';
 import '../css/style.scss';
 import '../css/keyboard.css';
-import { getAllData, globalDailyStats, setGlobalStats } from './model';
+import { getAllData, setAllCountriesStats, setGlobalDailyStats, setGlobalStats } from './model';
 
 getAllData()
   .then(([worldStats, worldDailyStats, allCountriesStats]) => {
-    setGlobalStats(worldStats);
+    hideLoadingMessage();
     setUpdateTime(worldStats.updated);
-    setStats();
 
-    Object.assign(globalDailyStats, worldDailyStats);
-    updateChartData();
+    setGlobalStats(worldStats);
+    setGlobalDailyStats(worldDailyStats);
+    setAllCountriesStats(allCountriesStats);
 
-    createListIndicator();
-    loadRows(allCountriesStats);
-    sortRows();
-    hideLoadingText();
-    setMap(allCountriesStats);
-    listContainer.addEventListener('click', handleListClick);
+    resetTable();
+    resetChart();
+    resetList();
+    resetMap();
   })
   .then(() => {
     const keyboard = new Keyboard();
     keyboard.init();
     keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
 
+    listContainer.addEventListener('click', handleListClick);
+    indicator.addEventListener('change', () => setTimeout(() => sortListRows(), 0));
     resizeBtns.forEach((btn) => btn.addEventListener('click', handleResizeClick));
     themeSwitch.addEventListener('click', handleThemeSwitchClick);
     searchInput.addEventListener('input', handleListSearch);
-    indicator.addEventListener('change', () => setTimeout(() => sortRows(), 0));
   });

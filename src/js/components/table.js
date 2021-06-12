@@ -24,7 +24,7 @@ const state = {
 
 const round = (n) => Math.round(n * 100) / 100;
 
-export const setStats = () => caseTypes.forEach((type) => {
+const setStats = () => caseTypes.forEach((type) => {
   const prefix = capitalize(state.allTime ? casePrefixes.total : casePrefixes.new);
   const statName = `${prefix}${capitalize(type)}`;
   const delimeter = state.absolute ? 1 : state.actualStats.population / 100000;
@@ -106,7 +106,7 @@ const handleIndicatorChange = (event) => {
   setStats();
 };
 
-const setTableWorldStats = () => {
+export const resetTable = () => {
   buttonArea.innerText = 'World';
 
   state.resetToGlobalStats();
@@ -121,7 +121,7 @@ const setTableWorldStats = () => {
 
 buttonCount.addEventListener('click', toggleTotal);
 buttonAbs.addEventListener('click', toggleAbs);
-buttonArea.addEventListener('click', setTableWorldStats);
+buttonArea.addEventListener('click', resetTable);
 listContainer.addEventListener('click', handleListClick);
 indicator.addEventListener('change', handleIndicatorChange);
 
