@@ -1,10 +1,21 @@
 import { setGraphTheme } from './components/graph';
-import { loading, searchInput } from './dom';
+import { loading, searchInput, themeSwitch } from './dom';
 
 export const handleThemeSwitchClick = () => {
   const isDayTheme = document.body.classList.contains('day');
-  document.body.classList.toggle('day');
+
   setGraphTheme(isDayTheme ? 'night' : 'day');
+  document.body.classList.toggle('day');
+  localStorage.setItem('isDayTheme', !isDayTheme);
+};
+
+export const applySavedTheme = () => {
+  const isDayThemeSaved = localStorage.getItem('isDayTheme');
+
+  if (isDayThemeSaved === 'true') {
+    themeSwitch.setAttribute('checked', isDayThemeSaved);
+    handleThemeSwitchClick();
+  }
 };
 
 export const handleResizeClick = (event) => {

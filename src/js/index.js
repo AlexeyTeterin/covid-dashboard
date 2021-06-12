@@ -1,9 +1,11 @@
 import {
+  applySavedTheme,
   handleListClick,
   handleListSearch,
   handleResizeClick,
   handleThemeSwitchClick,
   hideLoadingMessage,
+  isDayThemeSaved,
 } from './controller';
 import { setUpdateTime } from './utils';
 import Keyboard from './components/keyboard';
@@ -23,6 +25,8 @@ import '../css/style.scss';
 import '../css/keyboard.css';
 import { getAllData, setAllCountriesStats, setGlobalDailyStats, setGlobalStats } from './model';
 
+applySavedTheme();
+
 getAllData()
   .then(([worldStats, worldDailyStats, allCountriesStats]) => {
     hideLoadingMessage();
@@ -40,8 +44,8 @@ getAllData()
   .then(() => {
     const keyboard = new Keyboard();
     keyboard.init();
-    keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
 
+    keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
     listContainer.addEventListener('click', handleListClick);
     indicator.addEventListener('change', () => setTimeout(() => sortListRows(), 0));
     resizeBtns.forEach((btn) => btn.addEventListener('click', handleResizeClick));
