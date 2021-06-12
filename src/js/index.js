@@ -19,7 +19,7 @@ import {
 } from './dom';
 import { resetList, sortListRows } from './components/list';
 import { resetTable } from './components/table';
-import resetMap from './components/map';
+import { resetMap } from './components/map';
 import '../css/style.scss';
 import '../css/keyboard.css';
 import { getAllData, setAllCountriesStats, setGlobalDailyStats, setGlobalStats } from './model';

@@ -1,4 +1,5 @@
 import { setGraphTheme } from './components/graph';
+import { resetMapTheme } from './components/map';
 import { loading, searchInput, themeSwitch } from './dom';
 
 export const handleThemeSwitchClick = () => {
@@ -7,6 +8,7 @@ export const handleThemeSwitchClick = () => {
   setGraphTheme(isDayTheme ? 'night' : 'day');
   document.body.classList.toggle('day');
   localStorage.setItem('isDayTheme', !isDayTheme);
+  resetMapTheme();
 };
 
 export const applySavedTheme = () => {

@@ -12,6 +12,7 @@ import {
   countryDefaultStyle,
   countrySelectStyle,
   mapParams,
+  mapParams2,
   mapSettings,
   mapURL,
 } from './mapSettings';
@@ -124,7 +125,7 @@ const getColor = (countryName) => {
 };
 
 const setColors = () => {
-  const colors = mapSettings.colors.reverse();
+  const colors = mapSettings.colors.slice().reverse();
   const label = document.querySelector('div.info.legend.leaflet-control');
   const { _layers } = geoJson;
   let level = maxStat[`${infoType.type}${infoType.absolute ? '' : 'Per100'}`] / 8;
@@ -174,17 +175,21 @@ const runEventListeners = () => {
     .addEventListener('click', () => setTimeout(() => map.invalidateSize(true), 250));
 };
 
-const resetMap = async () => {
+export const resetMap = async () => {
   map.setView([40, 20], 2);
   map.setMaxBounds(Leaflet.latLngBounds(southWest, northEast));
 
   basicIndicators.forEach((key) => setMaxStat(key));
-  Leaflet.tileLayer(mapURL, mapParams).addTo(map);
+  Leaflet.tileLayer(mapURL, document.body.classList.contains('day') ? mapParams2 : mapParams).addTo(map);
   mapInfo.addTo(map);
   mapLegend.addTo(map);
   geoJson = Leaflet.geoJson(countries, { style: setCountryStyle, onEachFeature }).addTo(map);
 
   runEventListeners();
+};
+
+export const resetMapTheme = () => {
+  Leaflet.tileLayer(mapURL, document.body.classList.contains('day') ? mapParams2 : mapParams).addTo(map);
 };
 
 mapInfo.onAdd = function add() {
@@ -220,11 +225,9 @@ mapLegend.onAdd = function add() {
   const div = Leaflet.DomUtil.create('div', 'info legend');
   let level = Math.round(maxStat[key] / 8);
   if (level > 1000) level = Math.round(level / 1000) * 1000;
-  const colors = mapSettings.colors.slice();
-  colors.reverse().forEach((color, i) => {
+  const colors = mapSettings.colors.slice().reverse();
+  colors.forEach((color, i) => {
     div.innerHTML += `<i style="background:${color}"></i> ${level * i}${colors[i + 1] ? `&ndash;${level * (i + 1)}<br>` : '+'}`;
   });
   return div;
 };
-
-export default resetMap;

@@ -10,6 +10,16 @@ export const mapParams = {
   accessToken: 'pk.eyJ1IjoiYWxleGV5dGV0ZXJpbiIsImEiOiJja2ppaHYyeDMxOXE2MnhvN3J5eXoxeXJ0In0.jr2Ql5GDOrgMXi1mWaUJBQ',
 };
 
+export const mapParams2 = {
+  attribution: '',
+  maxZoom: 6,
+  minZoom: 1,
+  id: 'ckm4lcssq1m9g17nw6o9jxlpb',
+  tileSize: 512,
+  zoomOffset: -1,
+  accessToken: 'pk.eyJ1IjoiYWxleGV5dGV0ZXJpbiIsImEiOiJja2ppaHYyeDMxOXE2MnhvN3J5eXoxeXJ0In0.jr2Ql5GDOrgMXi1mWaUJBQ',
+};
+
 export const mapSettings = {
   fillOpacity: 0.8,
   hoverBorderColor: '#e7e7e7',
