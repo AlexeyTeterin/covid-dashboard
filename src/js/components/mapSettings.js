@@ -25,14 +25,14 @@ export const mapSettings = {
   hoverBorderColor: '#e7e7e7',
   borderWeight: 1.5,
   colors: [
-    '#800026',
-    '#BD0026',
-    '#E31A1C',
-    '#FC4E2A',
-    '#FD8D3C',
-    '#FEB24C',
-    '#FED976',
-    '#FFEDA0',
+    '#660000',
+    '#990000',
+    '#cc0000',
+    '#ff0000',
+    '#ff3333',
+    '#ff6666',
+    '#ff9999',
+    '#ffb3b3',
   ],
 };
 
@@ -46,5 +46,5 @@ export const countrySelectStyle = {
 export const countryDefaultStyle = {
   color: '',
   opacity: mapSettings.fillOpacity,
-  fillOpacity: mapSettings.fillOpacity / 2,
+  fillOpacity: mapSettings.fillOpacity * 0.75,
 };
