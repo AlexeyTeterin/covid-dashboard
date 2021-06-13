@@ -44,25 +44,24 @@ chart.calcConfirmedByDay = (totalCasesByDay) => {
   });
 };
 
-chart.setTimeframe = (stats) => {
+chart.setTimeframe = function set(stats) {
   const { cases, recovered, deaths } = stats;
   const { datasets } = chart.data;
 
-  chart.data.labels = Object.keys(globalDailyStats.cases).slice(-state.timeframe);
+  this.data.labels = Object.keys(globalDailyStats.cases).slice(-state.timeframe);
 
   [cases, recovered, deaths]
-    .forEach((set, index) => {
-      datasets[index].data = Object.values(set).slice(-state.timeframe);
-      datasets[index + 3].data = chart.calcConfirmedByDay(set).slice(-state.timeframe);
+    .forEach((dataset, index) => {
+      datasets[index].data = Object.values(dataset).slice(-state.timeframe);
+      datasets[index + 3].data = chart.calcConfirmedByDay(dataset).slice(-state.timeframe);
     });
 };
 
-chart.addTailToLabels = (tail) => chart.data.datasets
-  .forEach((el) => {
-    const dataset = el;
-    if (dataset.label.includes(tail)) return;
-    dataset.label += tail;
+chart.addTailToLabels = function add(tail) {
+  this.data.datasets.forEach((dataset) => {
+    if (!dataset.label.includes(tail)) dataset.label += tail;
   });
+};
 
 chart.removeTailFromLabels = function remove(tail) {
   this.data.datasets.forEach((dataset) => {
@@ -100,8 +99,8 @@ chart.reset = function reset(stats = globalDailyStats, countryCode) {
   this.update();
 };
 
-chart.setSize = (style) => {
-  const { scales, title, legend } = chart.options;
+chart.setSize = function set(style) {
+  const { scales, title, legend } = this.options;
   const isFull = style === 'full';
 
   scales.xAxes[0].display = !!isFull;
@@ -111,8 +110,8 @@ chart.setSize = (style) => {
   legend.position = isFull ? 'bottom' : 'right';
 };
 
-chart.setDatasetStyles = () => {
-  chart.data.datasets.forEach((dataset, index) => {
+chart.setDatasetStyles = function set() {
+  this.data.datasets.forEach((dataset, index) => {
     Object.assign(dataset, defaultDatasetStyle);
     dataset.borderColor = dataset.pointBackgroundColor;
     if (index > 2) dataset.hidden = true;
