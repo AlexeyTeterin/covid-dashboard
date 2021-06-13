@@ -47,9 +47,7 @@ const graphSettings = {
     },
     scales: {
       xAxes: [{
-        gridLines: {
-          color: 'rgba(255, 255, 255, 0.1)',
-        },
+        gridLines: { color: 'rgba(255, 255, 255, 0.1)' },
         ticks: {
           fontColor: 'rgba(255, 255, 255, 0.5)',
           fontSize: 11,
@@ -61,9 +59,7 @@ const graphSettings = {
         },
       }],
       yAxes: [{
-        gridLines: {
-          color: 'rgba(255, 255, 255, 0.1)',
-        },
+        gridLines: { color: 'rgba(255, 255, 255, 0.1)' },
         ticks: {
           fontColor: 'rgba(255, 255, 255, 0.5)',
           fontSize: 11,
@@ -100,6 +96,14 @@ const graphSettings = {
       },
     },
   },
+};
+
+export const defaultDatasetStyle = {
+  pointBorderColor: 'rgba(0, 0, 0, 0)',
+  borderWidth: 1,
+  pointRadius: 2,
+  pointHoverRadius: 6,
+  backgroundColor: 'rgba(0, 0, 0, 0)',
 };
 
 export default graphSettings;

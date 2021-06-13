@@ -8,7 +8,7 @@ import {
 } from './controller';
 import { setUpdateTime } from './utils';
 import Keyboard from './components/keyboard';
-import { resetChart } from './components/graph';
+import chart from './components/graph';
 import {
   indicator,
   keyboardButton,
@@ -36,7 +36,7 @@ getAllData()
     setAllCountriesStats(allCountriesStats);
 
     resetTable();
-    resetChart();
+    chart.reset();
     await resetList();
     resetMap();
   })

@@ -1,6 +1,7 @@
 export const MESSAGES = {
   noInfo: 'no info',
   hover: 'Hover over a country',
+  loading: 'loading stats...',
   apiError: 'API performs caching at the moment, please try to reload page 5 minutes later.',
 };
 
@@ -20,3 +21,5 @@ export const basicIndicators = [
   'TotalConfirmed', 'TotalRecovered', 'TotalDeaths',
   'NewConfirmed', 'NewRecovered', 'NewDeaths',
 ];
+
+export const MSG_APPEAR_DURATION = 150;

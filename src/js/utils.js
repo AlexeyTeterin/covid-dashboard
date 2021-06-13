@@ -9,3 +9,6 @@ export const setUpdateTime = (updated) => {
   lastUpdateTimeEl
     .innerText = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 };
+
+export const calcCasesPer100k = (casesByDay, population) => casesByDay
+  .map((el) => ((el / population) * 100000).toFixed(2));

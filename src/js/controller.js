@@ -1,11 +1,11 @@
-import { setGraphTheme } from './components/graph';
+import chart from './components/graph';
 import { resetMapTheme } from './components/map';
 import { loading, searchInput, themeSwitch } from './dom';
 
 export const handleThemeSwitchClick = () => {
   const isDayTheme = document.body.classList.contains('day');
 
-  setGraphTheme(isDayTheme ? 'night' : 'day');
+  chart.setGraphTheme(isDayTheme ? 'night' : 'day');
   document.body.classList.toggle('day');
   localStorage.setItem('isDayTheme', !isDayTheme);
   resetMapTheme();
