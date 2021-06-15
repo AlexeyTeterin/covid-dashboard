@@ -11,13 +11,13 @@ import {
   listContainer,
 } from '../dom';
 import { getCountryStatsByDay, globalDailyStats } from '../model';
-import { MESSAGES, MSG_APPEAR_DURATION } from '../constants';
+import { DEFAULT_TIMEFRAME, MESSAGES, MSG_APPEAR_DURATION } from '../constants';
 import { calcCasesPer100k } from '../utils';
 
 const state = {
   dailyStats: null,
   countryCode: null,
-  timeframe: 0,
+  timeframe: localStorage.covidTimeframe || DEFAULT_TIMEFRAME,
 };
 
 const chart = new Chart(canvasEl, graphSettings);
@@ -47,14 +47,18 @@ chart.calcConfirmedByDay = (totalCasesByDay) => {
 chart.setTimeframe = function set(stats) {
   const { cases, recovered, deaths } = stats;
   const { datasets } = chart.data;
+  const options = graphTimeframeSelect.children;
+  const targetOption = [].find.call(options, (el) => +el.value === +state.timeframe);
 
-  this.data.labels = Object.keys(globalDailyStats.cases).slice(-state.timeframe);
+  this.data.labels = Object.keys(cases).slice(-state.timeframe);
 
   [cases, recovered, deaths]
     .forEach((dataset, index) => {
       datasets[index].data = Object.values(dataset).slice(-state.timeframe);
       datasets[index + 3].data = chart.calcConfirmedByDay(dataset).slice(-state.timeframe);
     });
+
+  targetOption.setAttribute('selected', true);
 };
 
 chart.addTailToLabels = function add(tail) {
@@ -114,7 +118,7 @@ chart.setDatasetStyles = function set() {
   this.data.datasets.forEach((dataset, index) => {
     Object.assign(dataset, defaultDatasetStyle);
     dataset.borderColor = dataset.pointBackgroundColor;
-    if (index > 2) dataset.hidden = true;
+    if (![3, 5].includes(index)) dataset.hidden = true;
   });
 };
 
@@ -202,9 +206,7 @@ const handleButtonAbsClick = () => {
 const handleIndicatorChange = () => {
   const countryIsSelected = document.querySelector('.list__row_active');
   if (!countryIsSelected) {
-    setTimeout(() => {
-      chart.reset(globalDailyStats);
-    }, 0);
+    setTimeout(() => chart.reset(globalDailyStats), 0);
   }
   if (countryIsSelected) {
     setTimeout(() => handleCountrySelection(countryIsSelected.dataset.CountryCode), 0);
@@ -221,6 +223,8 @@ const handleTimeframeChange = (event) => {
   const isCountrySelected = Boolean(state.countryCode);
 
   state.timeframe = value;
+  localStorage.covidTimeframe = value;
+
   if (isCountrySelected) {
     chart.reset(dailyStats, countryCode);
   } else {

@@ -23,3 +23,5 @@ export const basicIndicators = [
 ];
 
 export const MSG_APPEAR_DURATION = 150;
+
+export const DEFAULT_TIMEFRAME = 90;
