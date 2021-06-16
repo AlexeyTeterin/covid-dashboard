@@ -11,8 +11,8 @@ import {
 import {
   countryDefaultStyle,
   countrySelectStyle,
-  mapParams,
-  mapParams2,
+  darkMapParams,
+  lightMapParams,
   mapSettings,
   mapURL,
 } from './mapSettings';
@@ -176,11 +176,13 @@ const runEventListeners = () => {
 };
 
 export const resetMap = async () => {
+  const isLightMode = document.body.classList.contains('day');
+
   map.setView([40, 20], 2);
   map.setMaxBounds(Leaflet.latLngBounds(southWest, northEast));
 
   basicIndicators.forEach((key) => setMaxStat(key));
-  Leaflet.tileLayer(mapURL, document.body.classList.contains('day') ? mapParams2 : mapParams).addTo(map);
+  Leaflet.tileLayer(mapURL, isLightMode ? lightMapParams : darkMapParams).addTo(map);
   mapInfo.addTo(map);
   mapLegend.addTo(map);
   geoJson = Leaflet.geoJson(countries, { style: setCountryStyle, onEachFeature }).addTo(map);
@@ -189,7 +191,7 @@ export const resetMap = async () => {
 };
 
 export const resetMapTheme = () => {
-  Leaflet.tileLayer(mapURL, document.body.classList.contains('day') ? mapParams2 : mapParams).addTo(map);
+  Leaflet.tileLayer(mapURL, document.body.classList.contains('day') ? lightMapParams : darkMapParams).addTo(map);
 };
 
 mapInfo.onAdd = function add() {

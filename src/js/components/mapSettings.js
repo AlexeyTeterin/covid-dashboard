@@ -1,24 +1,24 @@
-export const mapURL = 'https://api.mapbox.com/styles/v1/alexeyteterin/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
+const mapbox = {
+  mapURL: 'https://api.mapbox.com/styles/v1/alexeyteterin/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+  token: 'pk.eyJ1IjoiYWxleGV5dGV0ZXJpbiIsImEiOiJja2ppaHYyeDMxOXE2MnhvN3J5eXoxeXJ0In0.jr2Ql5GDOrgMXi1mWaUJBQ',
+  lightMapID: 'ckm4i40vq20tz17lhsfmmwsi6',
+  darkMapID: 'ckjiols004v5219tednapnr06',
+};
 
-export const mapParams = {
+export const { mapURL } = mapbox;
+
+const mapParams = {
   attribution: '',
   maxZoom: 6,
   minZoom: 1,
-  id: 'ckjiols004v5219tednapnr06',
   tileSize: 512,
   zoomOffset: -1,
-  accessToken: 'pk.eyJ1IjoiYWxleGV5dGV0ZXJpbiIsImEiOiJja2ppaHYyeDMxOXE2MnhvN3J5eXoxeXJ0In0.jr2Ql5GDOrgMXi1mWaUJBQ',
+  accessToken: mapbox.token,
 };
 
-export const mapParams2 = {
-  attribution: '',
-  maxZoom: 6,
-  minZoom: 1,
-  id: 'ckm4lcssq1m9g17nw6o9jxlpb',
-  tileSize: 512,
-  zoomOffset: -1,
-  accessToken: 'pk.eyJ1IjoiYWxleGV5dGV0ZXJpbiIsImEiOiJja2ppaHYyeDMxOXE2MnhvN3J5eXoxeXJ0In0.jr2Ql5GDOrgMXi1mWaUJBQ',
-};
+export const darkMapParams = { id: mapbox.darkMapID, ...mapParams };
+
+export const lightMapParams = { ...mapParams, id: mapbox.lightMapID };
 
 export const mapSettings = {
   fillOpacity: 0.8,
