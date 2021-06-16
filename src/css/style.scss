@@ -1,7 +1,16 @@
+$color-body-primary: hsl(202, 44%, 8%);
+$color-body-day: #e7e7e7;
+$color-section-bg: rgba(255, 255, 255, 0.1);
+$color-section-bg-day: #fff;
+$color-section-bg-abs: #242f34;
+$color-light-text: rgba(255, 255, 255, 0.85);
+$color-dark-text: rgba(255, 255, 255, 0.15);
+
+$graph-msg-appear-duration: 150ms;
+
 @mixin block-border {
   min-height: 0;
-  transition: opacity 0.5s,
-    width 0.5s, height 0.5s, box-shadow 0.2s;
+  transition: opacity 0.5s, width 0.5s, height 0.5s, box-shadow 0.2s;
 
   &:hover {
     box-shadow: 0 0 4px 0 rgba(255, 255, 255, 0.4);
@@ -20,12 +29,6 @@
   justify-content: center;
 }
 
-$color-body-primary: hsl(202, 44%, 8%);
-$color-section-bg: rgba(255, 255, 255, 0.10);
-$color-section-bg-abs: #242F34;
-$color-light-text: rgba(255, 255, 255, 0.85);
-$color-dark-text: rgba(255, 255, 255, 0.15);
-
 body {
   display: flex;
   flex-direction: column;
@@ -37,8 +40,111 @@ body {
   box-sizing: border-box;
   background: $color-body-primary;
   color: aliceblue;
-  font-family: 'Roboto',
-    sans-serif;
+  font-family: "Roboto", sans-serif;
+}
+
+body.day {
+  background-color: $color-body-day;
+  color: black;
+
+  .title span {
+    color: black;
+  }
+
+  .list__header {
+    color: black;
+    background-color: $color-section-bg-day;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  }
+
+  .list__container {
+    color: black;
+    background-color: $color-section-bg-day;
+  }
+
+  .list__indicator {
+    color: black !important;
+  }
+
+  #list__search {
+    color: black;
+    background-color: $color-section-bg-day;
+  }
+
+  .list .list__container .list__row_active {
+    background-color: rgba(0, 0, 0, 0.15);
+    color: black;
+  }
+
+  .keyboard-button {
+    filter: invert(0) !important;
+  }
+
+  .table-wrapper {
+    background-color: $color-section-bg-day;
+    color: black;
+
+    button {
+      color: black;
+    }
+
+    .row .total-or-new {
+      color: black;
+    }
+
+    .row .cases div:first-child {
+      color: black;
+    }
+  }
+
+  .map {
+    color: white;
+  }
+
+  .graph {
+    background-color: $color-section-bg-day;
+  }
+
+  .graph-timeframe {
+    color: black;
+    background: $color-section-bg-day;
+  }
+
+  button {
+    background: rgba(0, 0, 0, 0.05);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  button.total,
+  button.absolute {
+    span:last-child {
+      color: gray;
+    }
+  }
+
+  button.new,
+  button.relative {
+    color: gray;
+
+    span:last-child {
+      color: black;
+    }
+  }
+
+  footer {
+    color: rgba(0, 0, 0, 0.4);
+
+    a {
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    img {
+      filter: invert(0);
+    }
+  }
 }
 
 main {
@@ -66,7 +172,7 @@ button {
   border-radius: 4px;
   outline: none;
   color: $color-light-text;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   transition: background 0.1s;
   cursor: pointer;
 
@@ -85,10 +191,9 @@ button {
 
 button.total,
 button.absolute {
-
   span:first-child::before {
     position: absolute;
-    content: '●';
+    content: "●";
     left: -1rem;
   }
 
@@ -107,9 +212,70 @@ button.relative {
 
   span:last-child::before {
     position: absolute;
-    content: '●';
+    content: "●";
     left: -1rem;
   }
+}
+
+.switch {
+  position: absolute;
+  display: inline-block;
+  left: 1rem;
+  top: 1.25rem;
+  width: 52px;
+  height: 26px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 2px;
+  bottom: 2px;
+  background-color: rgba(0, 0, 0, 0.7);
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+
+input:checked + .slider {
+  background-color: #ffffff;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 
 ::-webkit-scrollbar {
@@ -117,7 +283,7 @@ button.relative {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.0);
+  background: rgba(255, 255, 255, 0);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -156,7 +322,7 @@ button.relative {
   }
 
   50% {
-    opacity: 1.0;
+    opacity: 1;
   }
 
   100% {
@@ -215,13 +381,36 @@ button.relative {
         }
       }
     }
-
   }
 
-  >span {
+  > span {
     color: rgba(255, 255, 255, 0.5);
     font-size: 14px;
   }
+}
+
+.graph-message {
+  width: 100%;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  opacity: 0;
+  transition: opacity $graph-msg-appear-duration;
+}
+
+.graph-timeframe {
+  position: absolute;
+  top: 4px;
+  right: 20px;
+  outline: none;
+  background: $color-section-bg-abs;
+  color: $color-section-bg-day;
+}
+
+.hidden {
+  visibility: hidden;
 }
 
 .max-min-btn {
@@ -269,7 +458,6 @@ button.relative {
 .content-bot {
   display: flex;
   width: 100%;
-  padding: 0;
   max-width: 1600px;
   justify-content: center;
   box-sizing: border-box;
@@ -311,7 +499,7 @@ button.relative {
       background: inherit;
       color: rgba(255, 255, 255, 0.55);
       border: none;
-      font-family: 'Roboto', sans-serif;
+      font-family: "Roboto", sans-serif;
       line-height: 1.5rem;
       height: 1.5rem;
       font-size: 1rem;
@@ -344,7 +532,7 @@ button.relative {
           color: transparent;
         }
 
-        &~button {
+        & ~ button {
           &:hover {
             opacity: 0.6;
           }
@@ -400,7 +588,7 @@ button.relative {
       line-height: 1.5rem;
       cursor: default;
 
-      >div:first-child {
+      > div:first-child {
         padding: 0 0 0 28px;
         background-position: 0;
         background-size: 24px;
@@ -408,7 +596,7 @@ button.relative {
         width: 100%;
       }
 
-      >div:last-child {
+      > div:last-child {
         display: flex;
         align-items: center;
       }
@@ -488,21 +676,19 @@ button.relative {
     align-items: center;
   }
 
-  >div {
+  > div {
     width: 100%;
     padding: 0.5rem 0.5rem;
     flex-direction: column;
 
-    &>div:first-child {
+    & > div:first-child {
       font-size: 1rem;
       color: rgba(255, 255, 255, 0.55);
     }
 
-    &>div:last-child {
+    & > div:last-child {
       font-weight: bold;
     }
-
-    &.cases {}
   }
 
   .cases-confirmed {
@@ -615,7 +801,6 @@ footer {
 }
 
 @media screen and (max-width: 1023px) {
-
   .content-top {
     @include flex-column;
     min-height: unset;

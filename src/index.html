@@ -5,8 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-  <link rel="stylesheet" href="./css/style.css">
-  <link rel="stylesheet" href="./css/keyboard.css">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <link rel="shortcut icon" href="./assets/img/favicon.svg" type="image/svg">
@@ -18,6 +16,11 @@
     <div class="title">
       <h2></span><a href="."><span class="title__icon"></span>COVID-19 Dashboard</a></h2>
       <span>Last update time: <span class="day-updated">update in progress...</span></span>
+      
+      <label class="switch">
+        <input type="checkbox" id="checkbox">
+        <span class="slider round"></span>
+      </label>
     </div>
 
     <div class="loading pulsate">Loading...</div>
@@ -63,7 +66,7 @@
           </div>
         </div>
         <div class="row switchers">
-          <button class="row-title-count total"><span>all time</span><br><span>last day</span></button>
+          <button class="row-title-count total"><span class="total">all time</span><br><span class="new">last day</span></button>
           <button class="row-title-abs absolute"><span>absolute</span><br><span>relative</span></button>
         </div>
       </div>
@@ -72,6 +75,14 @@
     <div class="content-bot hidden">
       <div class="graph resizable">
         <div class="max-min-btn"></div>
+        <div class="graph-message hidden"></div>
+        <select name="timeframe" id="timeframe" class="graph-timeframe">
+          <option value="30">1 month</option>
+          <option value="90">3 months</option>
+          <option value="180">6 months</option>
+          <option value="365">1 year</option>
+          <option value="0">Alltime</option>
+        </select>
         <canvas class="chart" id="chart">
         </canvas>
       </div>

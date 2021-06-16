@@ -1,8 +1,8 @@
-import layouts from './keyboardLayouts.js';
+import layouts from './keyboardLayouts';
 
-const textarea = document.querySelector('#list__search');
+import { textarea } from '../dom';
 
-export default class KEYBOARD {
+export default class Keyboard {
   constructor() {
     this.properties = {
       value: '',
@@ -51,9 +51,7 @@ export default class KEYBOARD {
   }
 
   toggleCapsLock() {
-    const {
-      keys,
-    } = this.elements;
+    const { keys } = this.elements;
     const {
       english,
       shift,
@@ -102,9 +100,7 @@ export default class KEYBOARD {
   }
 
   shiftPress() {
-    const {
-      keys,
-    } = this.elements;
+    const { keys } = this.elements;
     const {
       en,
       ruShifted,
@@ -134,9 +130,7 @@ export default class KEYBOARD {
   }
 
   shiftUnpress() {
-    const {
-      keys,
-    } = this.elements;
+    const { keys } = this.elements;
     const {
       ru,
       en,
@@ -442,9 +436,10 @@ export default class KEYBOARD {
   }
 
   toggleKeyboard() {
-    const keyboard = this.elements.main;
-    if (keyboard.classList.contains('goDown')) this.showKeyboard();
-    else this.hideKeyboard();
+    const { main } = this.elements;
+    const isKeyboardHidden = main.classList.contains('goDown');
+
+    isKeyboardHidden ? this.showKeyboard() : this.hideKeyboard();
   }
 
   setCursorPos(pos) {
@@ -471,19 +466,12 @@ export default class KEYBOARD {
     return this.properties.value;
   }
 
-  // Input from real keyboard
   phisycalInput() {
-    const {
-      whichCodes,
-    } = this.elements.layouts;
-    const {
-      capsLock,
-      shift,
-    } = this.properties;
+    const { whichCodes } = this.elements.layouts;
+    const { keys } = this.elements;
+    const { capsLock, shift } = this.properties;
     const keySet = [];
-    this.elements.keys.forEach((key) => {
-      keySet.push(key.textContent);
-    });
+    keys.forEach((key) => keySet.push(key.textContent));
 
     document.onkeydown = (event) => {
       const pos = whichCodes.indexOf(event.which);
@@ -621,9 +609,7 @@ export default class KEYBOARD {
   }
 
   toggleSound() {
-    const {
-      sound,
-    } = this.properties;
+    const { sound } = this.properties;
     const soundBtn = document.querySelector('#sound');
     if (sound) {
       soundBtn.classList.remove('keyboard__key--active');
@@ -637,9 +623,7 @@ export default class KEYBOARD {
   }
 
   toggleMic() {
-    const {
-      micOn,
-    } = this.properties;
+    const { micOn } = this.properties;
     const micBtn = document.querySelector('#mic');
     if (micOn) {
       micBtn.classList.remove('keyboard__key--active', 'pressed');
@@ -669,9 +653,7 @@ export default class KEYBOARD {
       shift,
       english,
     } = this.properties;
-    const {
-      keys,
-    } = this.elements;
+    const { keys } = this.elements;
     const langButtonText = document.getElementById('lang').textContent;
 
     for (let index = 0; index < keys.length; index += 1) {
