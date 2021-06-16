@@ -246,12 +246,11 @@ button.relative {
 
 .slider:before {
   position: absolute;
-  content: "";
+  content: attr(data-content);
   height: 22px;
   width: 22px;
   left: 2px;
   bottom: 2px;
-  background-color: rgba(0, 0, 0, 0.7);
   -webkit-transition: 0.2s;
   transition: 0.2s;
 }
