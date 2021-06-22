@@ -1,31 +1,40 @@
+// @flow
 import chart from './components/graph';
 import { resetMapTheme } from './components/map';
-import { loading, searchInput, themeSwitch } from './dom';
+import {
+  buttonArea,
+  contentBottom,
+  contentTop,
+  getActiveListRow,
+  loading,
+  searchInput,
+  themeSwitch,
+} from './dom';
 
-export const handleThemeSwitchClick = () => {
-  const slider = document.querySelector('.slider.round');
-  const isDayTheme = document.body.classList.contains('day');
+export const handleThemeSwitchClick = (): void => {
+  const slider: ?HTMLElement = document.querySelector('.slider.round');
+  const isDayTheme: ?boolean = document.body?.classList.contains('day');
 
   chart.setGraphTheme(isDayTheme ? 'night' : 'day');
-  slider.setAttribute('data-content', isDayTheme ? '🌒' : '☀️');
-  document.body.classList.toggle('day');
-  localStorage.setItem('isDayTheme', !isDayTheme);
+  slider?.setAttribute('data-content', isDayTheme ? '🌒' : '☀️');
+  document.body?.classList.toggle('day');
+  localStorage.setItem('isDayTheme', String(!isDayTheme));
   resetMapTheme();
 };
 
-export const applySavedTheme = () => {
+export const applySavedTheme = (): void => {
   const isDayThemeSaved = localStorage.getItem('isDayTheme');
 
   if (isDayThemeSaved === 'true') {
-    themeSwitch.setAttribute('checked', isDayThemeSaved);
+    themeSwitch?.setAttribute('checked', isDayThemeSaved);
     handleThemeSwitchClick();
   }
 };
 
-export const handleResizeClick = (event) => {
-  document.querySelector('.content-top').classList.toggle('flex');
-  const target = event.target.parentElement;
-  event.target.classList.toggle('min');
+export const handleResizeClick = (event: SyntheticInputEvent<HTMLElement>): void => {
+  contentTop?.classList.toggle('flex');
+  const { target } = event;
+  target?.parentElement?.classList.toggle('min');
   Array.from(document.querySelectorAll('.resizable'))
     .filter((div) => div !== target)
     .forEach((div) => div.classList.toggle('hidden'));
@@ -33,8 +42,9 @@ export const handleResizeClick = (event) => {
 };
 
 export const handleListSearch = () => {
-  const input = document.querySelector('#list__search');
-  const filter = input.value.toUpperCase();
+  if (!(searchInput instanceof HTMLInputElement)) return;
+
+  const filter = searchInput.value.toUpperCase();
   const rows = Array.from(document.getElementsByClassName('list__row'));
 
   rows.forEach((element) => {
@@ -45,24 +55,26 @@ export const handleListSearch = () => {
   });
 };
 
-export const handleListClick = (event) => {
+export const handleListClick = (event: SyntheticInputEvent<HTMLElement>) => {
   const target = event.target.parentElement;
-  const activeElement = document.querySelector('.list__row_active');
-  if (!target.classList.contains('list__row')) return;
+  const activeElement = getActiveListRow();
+  if (!target?.classList.contains('list__row')) return;
 
   if (activeElement) activeElement.classList.remove('list__row_active');
-  target.classList.add('list__row_active');
+  target?.classList.add('list__row_active');
+
   if (activeElement === target) {
-    target.classList.remove('list__row_active');
-    setTimeout(() => document.querySelector('.row-title-area').dispatchEvent(new Event('click')), 50);
+    target?.classList.remove('list__row_active');
+    setTimeout(() => buttonArea?.dispatchEvent(new Event('click')), 50);
   }
-  searchInput.value = '';
   handleListSearch();
-  target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  if (searchInput instanceof HTMLInputElement) searchInput.value = '';
 };
 
-export const hideLoadingMessage = () => {
-  loading.classList.add('hidden');
-  document.querySelector('.content-top').classList.remove('hidden');
-  document.querySelector('.content-bot').classList.remove('hidden');
+export const hideLoadingMessage = (): void => {
+  loading?.classList.add('hidden');
+  contentTop?.classList.remove('hidden');
+  contentBottom?.classList.remove('hidden');
 };

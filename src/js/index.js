@@ -40,7 +40,7 @@ getAllData()
     resetTable();
     chart.reset();
     await resetList();
-    resetMap();
+    await resetMap();
   })
   .then(() => {
     const keyboard = new Keyboard();

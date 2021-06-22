@@ -1,16 +1,17 @@
 // @flow
 import { lastUpdateTimeEl } from './dom';
 
-export const capitalize = (str: string) => str[0].toUpperCase() + str.slice(1);
+export const capitalize = (str: string): string => str[0].toUpperCase() + str.slice(1);
 
-export const calcPer100k = (value, population) => +((value / population) * 100000)
-  .toFixed(2);
+export const calcPer100k = (value: number, population: number): number => +((value
+  / population) * 100000).toFixed(2);
 
-export const setUpdateTime = (updated) => {
+export const setUpdateTime = (updated: number): void => {
+  if (!lastUpdateTimeEl) return;
   const date = new Date(updated);
-  lastUpdateTimeEl
-    .innerText = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+  lastUpdateTimeEl.innerText = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 };
 
-export const calcCasesPer100k = (casesByDay, population) => casesByDay
+export const calcCasesPer100k = (casesByDay: Array<number>,
+  population: number): Array<string> => casesByDay
   .map((el) => ((el / population) * 100000).toFixed(2));
