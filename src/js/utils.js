@@ -1,8 +1,10 @@
+// @flow
 import { lastUpdateTimeEl } from './dom';
 
-export const capitalize = (str) => str[0].toUpperCase() + str.slice(1);
+export const capitalize = (str: string) => str[0].toUpperCase() + str.slice(1);
 
-export const calcPer100k = (value, population) => +((value / population) * 100000).toFixed(2);
+export const calcPer100k = (value, population) => +((value / population) * 100000)
+  .toFixed(2);
 
 export const setUpdateTime = (updated) => {
   const date = new Date(updated);
