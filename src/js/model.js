@@ -7,13 +7,13 @@ export const allCountriesStats: Array<ICountryStats> = [];
 
 export const setGlobalStats = (stats: IWorldStats): void => {
   Object.assign(globalStats, {
-    population: stats.population,
-    NewConfirmed: stats.todayCases,
-    TotalConfirmed: stats.cases,
-    NewDeaths: stats.todayDeaths,
-    TotalDeaths: stats.deaths,
-    NewRecovered: stats.todayRecovered,
-    TotalRecovered: stats.recovered,
+    population: +stats.population,
+    NewConfirmed: +stats.todayCases,
+    TotalConfirmed: +stats.cases,
+    NewDeaths: +stats.todayDeaths,
+    TotalDeaths: +stats.deaths,
+    NewRecovered: +stats.todayRecovered,
+    TotalRecovered: +stats.recovered,
   });
 };
 

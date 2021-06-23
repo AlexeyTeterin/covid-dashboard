@@ -31,17 +31,20 @@ export const applySavedTheme = (): void => {
   }
 };
 
-export const handleResizeClick = (event: SyntheticInputEvent<HTMLElement>): void => {
-  contentTop?.classList.toggle('flex');
+export const handleResizeClick = (event: Event): void => {
   const { target } = event;
-  target?.parentElement?.classList.toggle('min');
+  if (!(target instanceof HTMLElement)) return;
+  const { parentElement } = target;
+
+  contentTop?.classList.toggle('flex');
+  parentElement?.classList.toggle('min');
   Array.from(document.querySelectorAll('.resizable'))
-    .filter((div) => div !== target)
+    .filter((div) => div !== parentElement)
     .forEach((div) => div.classList.toggle('hidden'));
-  target.classList.toggle('fit-window');
+  parentElement?.classList.toggle('fit-window');
 };
 
-export const handleListSearch = () => {
+export const handleListSearch = (): void => {
   if (!(searchInput instanceof HTMLInputElement)) return;
 
   const filter = searchInput.value.toUpperCase();
@@ -55,20 +58,23 @@ export const handleListSearch = () => {
   });
 };
 
-export const handleListClick = (event: SyntheticInputEvent<HTMLElement>) => {
-  const target = event.target.parentElement;
+export const handleListClick = (event: Event) => {
+  if (!(event.target instanceof HTMLElement)) return;
+
+  const { parentElement } = event.target;
   const activeElement = getActiveListRow();
-  if (!target?.classList.contains('list__row')) return;
+
+  if (!parentElement?.classList.contains('list__row')) return;
 
   if (activeElement) activeElement.classList.remove('list__row_active');
-  target?.classList.add('list__row_active');
+  parentElement?.classList.add('list__row_active');
 
-  if (activeElement === target) {
-    target?.classList.remove('list__row_active');
+  if (activeElement === parentElement) {
+    parentElement?.classList.remove('list__row_active');
     setTimeout(() => buttonArea?.dispatchEvent(new Event('click')), 50);
   }
   handleListSearch();
-  target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  parentElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
   if (searchInput instanceof HTMLInputElement) searchInput.value = '';
 };

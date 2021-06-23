@@ -46,10 +46,10 @@ getAllData()
     const keyboard = new Keyboard();
     keyboard.init();
 
-    keyboardButton.addEventListener('click', () => keyboard.toggleKeyboard());
-    listContainer.addEventListener('click', handleListClick);
-    indicator.addEventListener('change', () => setTimeout(() => sortListRows(), 0));
+    keyboardButton?.addEventListener('click', () => keyboard.toggleKeyboard());
+    listContainer?.addEventListener('click', handleListClick);
+    indicator?.addEventListener('change', () => setTimeout(() => sortListRows(), 0));
     resizeBtns.forEach((btn) => btn.addEventListener('click', handleResizeClick));
-    themeSwitch.addEventListener('click', handleThemeSwitchClick);
-    searchInput.addEventListener('input', handleListSearch);
+    themeSwitch?.addEventListener('click', handleThemeSwitchClick);
+    searchInput?.addEventListener('input', handleListSearch);
   });
