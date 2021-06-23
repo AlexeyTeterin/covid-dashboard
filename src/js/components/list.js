@@ -1,35 +1,34 @@
 // @flow
 import { basicIndicators, MESSAGES } from '../constants';
+import type { ICountryStats } from '../types';
 import { calcPer100k } from '../utils';
 import { getListRows, indicator, listContainer, loading } from '../dom';
 import { allCountriesStats, getFlagURL } from '../model';
+import type { ICountryDataset } from './types';
 
-const loadListRows = async (allCountriesData) => {
+const loadListRows = async (allCountriesData: Array<ICountryStats>): Promise<void> => {
   await allCountriesData
-    .filter((countryData) => countryData.countryInfo.iso2 !== null)
-    .forEach((countryData) => {
+    .filter((countryData: ICountryStats) => countryData.countryInfo.iso2 !== null)
+    .forEach((countryData: ICountryStats) => {
       const row = document.createElement('div');
       const countryName = document.createElement('div');
       const statValue = document.createElement('div');
-      const flagURL = getFlagURL(countryData.countryInfo.iso2);
-
-      row.classList.add('list__row');
-      countryName.innerText = countryData.country;
-      countryName.style.setProperty('background-image', flagURL);
       const {
         countryInfo,
         population,
         cases,
+        country,
         recovered,
         deaths,
         todayCases,
         todayDeaths,
         todayRecovered,
       } = countryData;
-      const countryDataset = {
+      const flagURL: string = getFlagURL(countryData.countryInfo.iso2);
+      const countryDataset: ICountryDataset = {
         CountryCode: countryInfo.iso2,
         id: countryInfo.iso3,
-        Country: countryData.country,
+        Country: country,
         population: population.toString(),
         TotalConfirmed: cases.toString(),
         TotalRecovered: recovered.toString(),
@@ -45,6 +44,10 @@ const loadListRows = async (allCountriesData) => {
         NewDeathsPer100k: calcPer100k(todayDeaths, population).toString(),
       };
 
+      row.classList.add('list__row');
+      countryName.innerText = country;
+      countryName.style.setProperty('background-image', flagURL);
+
       Object.assign(row.dataset, countryDataset);
 
       row.append(countryName, statValue);
@@ -56,24 +59,24 @@ const loadListRows = async (allCountriesData) => {
 export const sortListRows = (): void => {
   if (!(indicator instanceof HTMLSelectElement)) return;
 
-  const option = indicator?.value;
-  const activeElement = document.querySelector('.list__row_active');
-  const rows = getListRows();
-  const rowsSorted = rows ? Array.from(rows).sort((a, b) => {
+  const option: string = indicator?.value;
+  const activeElement: ?HTMLElement = document.querySelector('.list__row_active');
+  const rows: ?NodeList<HTMLElement> = getListRows();
+  const rowsSorted: ?Array<HTMLElement> = rows ? Array.from(rows).sort((a, b) => {
     const firstNum = parseFloat(a.dataset[option]);
     const secondNum = parseFloat(b.dataset[option]);
     if (firstNum === secondNum) return 0;
     return (firstNum > secondNum) ? -1 : 1;
   }) : null;
 
-  rows?.forEach((row) => {
-    const rowPosition = rowsSorted?.indexOf(row);
+  rows?.forEach((row: HTMLElement) => {
+    const rowPosition: ?number = rowsSorted?.indexOf(row);
 
     row.style.setProperty('order', rowPosition?.toString());
-    const value = row.children[1];
-    value.textContent = parseFloat(row.dataset[option]).toLocaleString();
-    const pos = value.textContent.length - 2;
-    if (value.textContent.charAt(pos) === ',') value.textContent += '0';
+    const firstChild: HTMLElement = row.children[1];
+    firstChild.textContent = parseFloat(row.dataset[option]).toLocaleString();
+    const pos: number = firstChild.textContent.length - 2;
+    if (firstChild.textContent.charAt(pos) === ',') firstChild.textContent += '0';
   });
 
   if (activeElement) {
@@ -81,29 +84,28 @@ export const sortListRows = (): void => {
   }
 };
 
-const createListIndicator = () => {
-  const splitWords = (string) => {
-    let result = string;
-    ['Total', 'Confirmed', 'Deaths', 'Recovered', 'Per', 'New'].forEach((word) => {
+const createListIndicator = (): void => {
+  const splitWords = (str: string): string => {
+    let result: string = str;
+    ['Total', 'Confirmed', 'Deaths', 'Recovered', 'Per', 'New'].forEach((word: string) => {
       result = result.replace(word, `${word} `);
     });
     return result;
   };
-  const options = basicIndicators.slice();
+  const options: Array<string> = basicIndicators.slice();
 
-  options.forEach((option) => options.push(`${option}Per100k`));
-  options.forEach((option) => {
-    const selectorOption = document.createElement('option');
+  options.forEach((option: string) => options.push(`${option}Per100k`));
+  options.forEach((option: string) => {
+    const selectorOption: HTMLOptionElement = document.createElement('option');
     selectorOption.value = option;
     selectorOption.textContent = splitWords(option);
 
     indicator?.appendChild(selectorOption);
     if (option === 'TotalConfirmed') selectorOption.setAttribute('selected', 'true');
   });
-  return options;
 };
 
-export const resetList = async () => {
+export const resetList = async (): Promise<void> => {
   createListIndicator();
   await loadListRows(allCountriesStats);
   sortListRows();

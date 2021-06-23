@@ -1,3 +1,4 @@
+// @flow
 import { casePrefixes, caseTypes, tableTitles } from '../constants';
 import {
   buttonAbs,
@@ -7,120 +8,138 @@ import {
   listContainer,
   tableDivs,
 } from '../dom';
-import { capitalize } from '../utils';
+import { capitalize, round } from '../utils';
 import { getFlagURL, globalStats } from '../model';
+import type { caseNames, ITableState } from './types';
 
-const state = {
-  actualStats: {},
+const actualStats = {};
+
+const state: ITableState = {
   allTime: true,
   absolute: true,
   confirmed: 0,
   recovered: 0,
   deaths: 0,
   resetToGlobalStats() {
-    Object.assign(this.actualStats, globalStats);
+    Object.assign(actualStats, globalStats);
   },
 };
 
-const round = (n) => Math.round(n * 100) / 100;
+const setStats = (): void => caseTypes.forEach((caseName: caseNames) => {
+  const prefix: string = capitalize(state.allTime ? casePrefixes.total : casePrefixes.new);
+  const statName: string = `${prefix}${capitalize(caseName)}`;
+  const delimiter: number = state.absolute ? 1 : +actualStats.population / 100000;
+  const targetEl: ?HTMLElement = tableDivs[caseName];
 
-const setStats = () => caseTypes.forEach((type) => {
-  const prefix = capitalize(state.allTime ? casePrefixes.total : casePrefixes.new);
-  const statName = `${prefix}${capitalize(type)}`;
-  const delimeter = state.absolute ? 1 : state.actualStats.population / 100000;
-
-  state[type] = state.actualStats[statName];
-  tableDivs[type].innerText = round(state[type] / delimeter).toLocaleString();
+  state[caseName] = +actualStats[statName];
+  if (targetEl) targetEl.innerText = round(state[caseName] / delimiter).toLocaleString();
 });
 
-const getSelectedCaseType = () => {
-  const options = Array.from(indicator.querySelectorAll('option'));
-  const selectedOption = options.filter((option) => option.selected)[0].value;
-  options.forEach((option) => option.setAttribute('selected', false));
-  const targetOption = options.filter((option) => option.value === indicator.value)[0];
-  targetOption.setAttribute('selected', true);
+const getSelectedCaseType = (): string => {
+  const options: ?NodeList<HTMLOptionElement> = indicator?.querySelectorAll('option');
+  if (!(indicator instanceof HTMLSelectElement) || !options) return '';
+  const selectedOptionValue: string = Array.from(options)
+    .filter((option: HTMLOptionElement) => option.selected)[0].value;
+  const targetOption: HTMLOptionElement = Array.from(options)
+    .filter((option: HTMLOptionElement) => option.value === indicator.value)[0];
 
-  return selectedOption.replace(/(New)|(Total)|(Per100k)/g, '');
+  options.forEach((option: HTMLOptionElement) => option.setAttribute('selected', 'false'));
+  targetOption.setAttribute('selected', 'true');
+
+  return selectedOptionValue.replace(/(New)|(Total)|(Per100k)/g, '');
 };
 
-const dispatchListUpdate = () => setTimeout(() => indicator.dispatchEvent(new Event('change')), 0);
+const dispatchListUpdate = () => setTimeout(() => indicator?.dispatchEvent(new Event('change')), 0);
 
-const toggleTotal = () => {
-  const prefix = capitalize(!state.allTime ? casePrefixes.total : casePrefixes.new);
-  const postfix = state.absolute ? '' : 'Per100k';
-  const caseType = getSelectedCaseType();
+const toggleTotal = (): void => {
+  const prefix: string = capitalize(!state.allTime ? casePrefixes.total : casePrefixes.new);
+  const postfix: string = state.absolute ? '' : 'Per100k';
+  const caseType: string = getSelectedCaseType();
+
+  if (!(indicator instanceof HTMLSelectElement)) return;
+
   indicator.value = `${prefix}${caseType}${postfix}`;
 
   state.allTime = !state.allTime;
 
-  tableDivs.totalOrNew.innerHTML = state.allTime ? tableTitles.total : tableTitles.new;
+  if (tableDivs.totalOrNew) {
+    tableDivs.totalOrNew.innerHTML = state.allTime ? tableTitles.total : tableTitles.new;
+  }
 
   dispatchListUpdate();
-  buttonCount.classList.toggle('total');
-  buttonCount.classList.toggle('new');
+  buttonCount?.classList.toggle('total');
+  buttonCount?.classList.toggle('new');
   setStats();
 };
 
-const toggleAbs = () => {
-  const prefix = capitalize(state.allTime ? casePrefixes.total : casePrefixes.new);
-  const postfix = state.absolute ? 'Per100k' : '';
-  const casesType = getSelectedCaseType();
-  indicator.value = `${prefix}${casesType}${postfix}`;
+const toggleAbs = (): void => {
+  const prefix: string = capitalize(state.allTime ? casePrefixes.total : casePrefixes.new);
+  const postfix: string = state.absolute ? 'Per100k' : '';
+  const caseType: string = getSelectedCaseType();
 
+  if (!(indicator instanceof HTMLSelectElement)) return;
+
+  indicator.value = `${prefix}${caseType}${postfix}`;
   state.absolute = !state.absolute;
-
-  document.querySelectorAll('.tail').forEach((el) => {
+  document.querySelectorAll('.tail').forEach((el: HTMLElement) => {
     el.innerHTML = state.absolute ? '' : '&nbsp;per 100 k';
   });
 
   dispatchListUpdate();
-  buttonAbs.classList.toggle('absolute');
-  buttonAbs.classList.toggle('relative');
+  buttonAbs?.classList.toggle('absolute');
+  buttonAbs?.classList.toggle('relative');
   setStats();
 };
 
-const handleListClick = (event) => {
-  const { actualStats } = state;
-
-  const listRows = Array.from(listContainer.querySelectorAll('.list__row'));
-  const clickedRow = event.target.parentElement;
-  const clickedCountryCode = clickedRow.dataset.CountryCode;
-  const getActualStats = () => listRows
-    .find((row) => row.dataset.CountryCode === clickedCountryCode).dataset;
+const handleListClick = (event: Event): void => {
+  const { target } = event;
+  if (!(target instanceof HTMLElement)) return;
+  const listRows: Array<HTMLElement> = Array.from(listContainer?.querySelectorAll('.list__row') || []);
+  const clickedRow = target.parentElement;
+  if (!(clickedRow instanceof HTMLElement)) return;
+  const clickedCountryCode: string = clickedRow.dataset.CountryCode;
+  const getActualStats = (): {} => {
+    const targetRow = listRows
+      .find((row: HTMLElement) => row.dataset.CountryCode === clickedCountryCode);
+    if (!(targetRow instanceof HTMLElement)) return {};
+    return targetRow.dataset;
+  };
 
   if (!clickedCountryCode) return;
 
   Object.assign(actualStats, getActualStats() || globalStats);
 
-  buttonArea.innerHTML = `<span>ww</span>${actualStats.Country}`;
-  buttonArea.firstChild.style.setProperty('background-image', getFlagURL(actualStats.CountryCode));
+  if (!buttonArea) return;
+  buttonArea.innerHTML = `<span>ww</span>${actualStats.Country || ''}`;
+  if (!(buttonArea.firstChild instanceof HTMLElement)) return;
+  buttonArea.firstChild.style.setProperty('background-image', getFlagURL(actualStats.CountryCode || ''));
   setStats();
 };
 
-const handleIndicatorChange = (event) => {
+const handleIndicatorChange = (event: Event): void => {
+  if (!(event.target instanceof HTMLSelectElement)) return;
   const { value } = event.target;
-  if (!value) return;
 
-  if (value.includes('Total') !== buttonCount.classList.contains('total')) toggleTotal();
-  if (value.includes('100k') === buttonAbs.classList.contains('absolute')) toggleAbs();
+  if (value.includes('Total') !== buttonCount?.classList.contains('total')) toggleTotal();
+  if (value.includes('100k') === buttonAbs?.classList.contains('absolute')) toggleAbs();
   setStats();
 };
 
-export const resetTable = () => {
-  buttonArea.innerText = 'World';
+export const resetTable = (): void => {
+  if (buttonArea) buttonArea.innerText = 'World';
 
   state.resetToGlobalStats();
   setStats();
 
-  const activeListRow = document.querySelector('.list__row_active');
-  const click = new Event('click', { bubbles: true });
-  if (activeListRow) activeListRow.firstChild.dispatchEvent(click);
+  const activeListRow: ?HTMLElement = document.querySelector('.list__row_active');
+  const click: Event = new Event('click', { bubbles: true });
+  if (activeListRow) activeListRow.firstChild?.dispatchEvent(click);
 };
 
-buttonCount.addEventListener('click', toggleTotal);
-buttonAbs.addEventListener('click', toggleAbs);
-buttonArea.addEventListener('click', resetTable);
-listContainer.addEventListener('click', handleListClick);
-indicator.addEventListener('change', handleIndicatorChange);
+buttonCount?.addEventListener('click', toggleTotal);
+buttonAbs?.addEventListener('click', toggleAbs);
+buttonArea?.addEventListener('click', resetTable);
+listContainer?.addEventListener('click', handleListClick);
+indicator?.addEventListener('change', handleIndicatorChange);
 
 export default globalStats;

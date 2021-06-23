@@ -15,7 +15,7 @@ import {
   indicator,
   keyboardButton,
   listContainer,
-  resizeBtns,
+  resizeButtons,
   searchInput,
   themeSwitch,
 } from './dom';
@@ -49,7 +49,7 @@ getAllData()
     keyboardButton?.addEventListener('click', () => keyboard.toggleKeyboard());
     listContainer?.addEventListener('click', handleListClick);
     indicator?.addEventListener('change', () => setTimeout(() => sortListRows(), 0));
-    resizeBtns.forEach((btn) => btn.addEventListener('click', handleResizeClick));
+    resizeButtons.forEach((btn) => btn.addEventListener('click', handleResizeClick));
     themeSwitch?.addEventListener('click', handleThemeSwitchClick);
     searchInput?.addEventListener('input', handleListSearch);
   });

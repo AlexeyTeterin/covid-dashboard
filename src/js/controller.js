@@ -23,7 +23,7 @@ export const handleThemeSwitchClick = (): void => {
 };
 
 export const applySavedTheme = (): void => {
-  const isDayThemeSaved = localStorage.getItem('isDayTheme');
+  const isDayThemeSaved: ?string = localStorage.getItem('isDayTheme');
 
   if (isDayThemeSaved === 'true') {
     themeSwitch?.setAttribute('checked', isDayThemeSaved);
@@ -47,22 +47,22 @@ export const handleResizeClick = (event: Event): void => {
 export const handleListSearch = (): void => {
   if (!(searchInput instanceof HTMLInputElement)) return;
 
-  const filter = searchInput.value.toUpperCase();
-  const rows = Array.from(document.getElementsByClassName('list__row'));
+  const filter: string = searchInput.value.toUpperCase();
+  const rows: Array<HTMLElement> = Array.from(document.getElementsByClassName('list__row'));
 
   rows.forEach((element) => {
     const row = element;
-    const countryName = row.children[0].textContent;
+    const countryName: string = row.children[0].textContent;
     if (countryName.toUpperCase().indexOf(filter) >= 0) row.style.display = '';
     else row.style.display = 'none';
   });
 };
 
-export const handleListClick = (event: Event) => {
+export const handleListClick = (event: Event): void => {
   if (!(event.target instanceof HTMLElement)) return;
 
   const { parentElement } = event.target;
-  const activeElement = getActiveListRow();
+  const activeElement: ?HTMLElement = getActiveListRow();
 
   if (!parentElement?.classList.contains('list__row')) return;
 
