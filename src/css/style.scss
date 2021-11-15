@@ -590,7 +590,7 @@ input:checked + .slider:before {
       > div:first-child {
         padding: 0 0 0 28px;
         background-position: 0;
-        background-size: 24px;
+        background-size: 24px 16px;
         background-repeat: no-repeat;
         width: 100%;
       }
@@ -646,8 +646,11 @@ input:checked + .slider:before {
 
   .row-title-area span {
     background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     width: 24px;
     height: 24px;
+    margin-right: 6px;
     color: transparent;
   }
 
